@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DWS Envelopamento</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img src="img/logoLOJA.png">
+    </div>
+
+    <nav>
+        <a href="principal.html">MENU</a>
+        <a href="servico.html">SERVIÇOS</a>
+        <a href="#">CONTATO</a>
+    </nav>
+
+     <div class="icone-user">
+
+        <img src="img/icon.user2.png" id="userIcon">
+
+        <div class="menu-user" id="menuUser">
+            <a href="login.html">Login</a>
+            <a href="cadastro.html">Cadastro</a>
+        
+    </div>
+
+    </div>
+</header>
+
+<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    
+    <div class="carousel-item active" data-bs-interval="3000">
+      <img src="img/MotoSuzuki.png" class="d-block w-100" alt="Moto Suzuki">
+    </div>
+
+    <div class="carousel-item" data-bs-interval="3000">
+      <img src="img/bragado.png" class="d-block w-100" alt="Bragado">
+    </div>
+
+    <div class="carousel-item" data-bs-interval="3000">
+      <img src="img/FachadaOb.png" class="d-block w-100" alt="FachadaOb">
+    </div>
+
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<section class="inicio-servico">
+    <p class="mini-text">Confie em nós</p>
+
+    <h1>Inicie um serviço conosco</h1>
+
+    <p class="descricao">
+        Temos prestado serviços de alta qualidade ao longo dos anos, sempre focando 
+        na satisfação do cliente. A confiança que nossos clientes depositam em nós é 
+        de 100%, e isso nos motiva a continuar a oferecer o melhor. Nossa dedicação e 
+        atenção aos detalhes garantem que todos os produtos e serviços sejam 
+        realizados com esmero.
+    </p>
+</section>
+                 
+<footer class="footer">
+    <h2 class="textobranco">
+        © KRONYX 2026 . Todos os direitos reservados.
+        Política de Privacidade • Termos de Uso • Contato
+        Instagram • LinkedIn • WhatsApp
+    </h2>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/*pegando o icone do usuario*/
+const iconeUser = document.getElementById("userIcon");
+/*pegando o menu dropdown*/
+const menuUser = document.getElementById("menuUser");
+/*evento de clique no icone*/
+iconeUser.addEventListener("click", () => {
+/*se estiver aberto, fecha*/
+    if(menuUser.style.display === "flex"){
+        menuUser.style.display = "none";
+    }
+/*se estiver fechado, abre*/
+    else{
+        menuUser.style.display = "flex";
+    }
+
+});
+
+</script>
+
+</body>
+</html>
