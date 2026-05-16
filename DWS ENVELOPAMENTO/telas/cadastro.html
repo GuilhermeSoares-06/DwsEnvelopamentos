@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cadastro</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+body{
+    background-color: #3B3B3B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.cadastro-box{
+    width: 450px;
+    background-color: #808080;
+    border-radius: 40px;
+    padding: 40px;
+    text-align: center;
+}
+
+.cadastro-box img{
+    width: 120px;
+    margin-bottom: 30px;
+}
+
+.input-box{
+    margin-bottom: 20px;
+}
+
+.input-box input{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+}
+
+.btn-cadastro{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background-color: #F23535;
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="cadastro-box">
+
+    <img src="../img/icon.user2.png">
+
+    <form action="../PHP/CadastroUsuario.php" method="POST">
+
+        <div class="input-box">
+            <input type="text" name="nome" placeholder="USUÁRIO" required>
+        </div>
+
+        <div class="input-box">
+            <input type="password" name="senha" placeholder="SENHA" required>
+        </div>
+
+        <button type="submit" class="btn-cadastro">
+            CADASTRAR
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
