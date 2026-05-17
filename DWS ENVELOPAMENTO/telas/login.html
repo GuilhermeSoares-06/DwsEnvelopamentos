@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+<!--configuração de acentos e caracteres especiais-->
+<meta charset="UTF-8">
+
+<!--responsividade para celular-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!--titulo da pagina-->
+<title>Login</title>
+
+<!--conexao com o css principal-->
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+/*corpo da pagina*/
+body{
+    background-color: #3B3B3B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/*caixa principal do login*/
+.login-box{
+    width: 400px;
+    background-color: #808080;
+    border-radius: 40px;
+    padding: 40px;
+    text-align: center;
+}
+
+/*icone de usuario*/
+.login-box img{
+    width: 120px;
+    margin-bottom: 30px;
+}
+
+/*espacamento dos inputs*/
+.input-box{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+/*estilo dos campos*/
+.input-box input{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+}
+
+/*botao entrar*/
+.btn-login{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background-color: #F23535;
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!--caixa principal-->
+<div class="login-box">
+ 
+    <img src="../img/icon.user2.png" alt="Usuário">
+
+    <!--FORMULÁRIO DE LOGIN - ADICIONADO-->
+    <form action="../PHP/login.php" method="POST">
+        
+        <!--campo usuario-->
+        <div class="input-box">
+            <input type="text" name="nome" placeholder="USUÁRIO" required>
+        </div>
+
+        <!--campo senha-->
+        <div class="input-box">
+            <input type="password" name="senha" placeholder="SENHA" required>
+        </div>
+
+        <!--botao entrar-->
+        <button type="submit" class="btn-login">ENTRAR</button>
+        
+    </form>
+
+    <!--link para cadastro-->
+    <a href="cadastro.html" class="cadastro-link">Não tem conta? Cadastre-se</a>
+
+</div>
+
+</body>
+</html>
