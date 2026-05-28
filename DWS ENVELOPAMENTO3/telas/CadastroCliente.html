@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cadastro de Cliente - DWS Envelopamento</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+
+body{
+    background-color: #3B3B3B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.cadastro-box{
+    width: 450px;
+    background-color: #808080;
+    border-radius: 40px;
+    padding: 40px;
+    text-align: center;
+}
+
+.cadastro-box img{
+    width: 120px;
+    margin-bottom: 30px;
+}
+
+.input-box{
+    margin-bottom: 20px;
+}
+
+.input-box input{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.btn-cadastro{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background-color: #F23535;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.btn-cadastro:hover{
+    background-color: #c91f2c;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="cadastro-box">
+
+    <img src="../img/icon.user2.png" alt="Cadastro">
+
+    <form action="../PHP/Clientes/CadastroCliente.php" method="POST">
+
+        <div class="input-box">
+            <input type="text" name="nome" placeholder="NOME COMPLETO" required>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="cpf" placeholder="CPF (000.000.000-00)" required>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="endereco" placeholder="ENDEREÇO" required>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="telefone" placeholder="TELEFONE (14) 99999-9999" required>
+        </div>
+
+        <button type="submit" class="btn-cadastro">
+            CADASTRAR CLIENTE
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
