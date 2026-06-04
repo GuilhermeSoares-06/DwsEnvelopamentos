@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Serviços DWS</title>
+
+<link rel="stylesheet" href="../css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+    background: linear-gradient(135deg, #2b2b2b, #3b3b3b);
+}
+
+/* HEADER */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:#000;
+    border-bottom:2px solid #F23545;
+    position:relative;
+}
+
+.logo img{
+    height:80px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:0 20px;
+    font-size:0.9rem;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#F23535;
+}
+
+/* USUÁRIO */
+.icone-user{
+    position:relative;
+}
+
+.icone-user img{
+    width:45px;
+    cursor:pointer;
+    border-radius:50%;
+}
+
+.menu-user{
+    position:absolute;
+    top:60px;
+    right:0;
+    background:#403E3F;
+    border:1px solid #F23535;
+    border-radius:10px;
+    display:none;
+    flex-direction:column;
+    width:160px;
+    z-index:9999;
+}
+
+.menu-user a{
+    color:white;
+    text-decoration:none;
+    padding:14px;
+}
+
+.menu-user a:hover{
+    background:#F23535;
+}
+
+/* TITULO */
+.page-title{
+    text-align:center;
+    color:white;
+    margin-top:40px;
+    font-size:40px;
+    font-weight:bold;
+}
+
+.page-subtitle{
+    text-align:center;
+    color:#dcdcdc;
+    margin-bottom:10px;
+}
+
+/* BOTAO PEDIDO */
+.btn-pedido-container{
+    display:flex;
+    justify-content:center;
+    margin-bottom:40px;
+}
+
+.btn-pedido{
+    background:#F23535;
+    color:white;
+    padding:14px 28px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:16px;
+    transition:0.3s;
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+.btn-pedido:hover{
+    background:#ff1f1f;
+    transform: scale(1.05);
+}
+
+/* CARDS */
+.cards-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:30px;
+    padding:40px 20px;
+}
+
+.card{
+    width:280px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    transition:0.4s ease;
+    cursor:pointer;
+}
+
+.card:hover{
+    transform: translateY(-12px) scale(1.03);
+}
+
+.card img{
+    width:100%;
+    height:190px;
+    object-fit:cover;
+    transition:0.4s ease;
+}
+
+.card:hover img{
+    transform: scale(1.08);
+}
+
+.card-content{
+    padding:18px;
+    text-align:center;
+}
+
+.card-title{
+    font-size:20px;
+    color:white;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+.card-text{
+    font-size:14px;
+    color:#dcdcdc;
+}
+
+/* FOOTER */
+.footer{
+    padding:15px;
+    text-align:center;
+    background:#808080;
+}
+
+.textobranco{
+    color:white;
+    font-size:0.9rem;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <img src="../img/logoLOJA.png">
+    </div>
+
+    <nav>
+        <a href="principal.html">MENU</a>
+        <a href="servico.html">SERVIÇOS</a>
+        <a href="contato.html">CONTATO</a>
+    </nav>
+
+    <div class="icone-user">
+        <img src="../img/icon.user2.png" id="userIcon">
+
+        <div class="menu-user" id="menuUser">
+            <a href="loginClientes.html">Login</a>
+            <a href="CadastroCliente.html">Cadastro</a>
+        </div>
+    </div>
+
+</header>
+
+<!-- TITULO -->
+<h1 class="page-title">Nossos Serviços</h1>
+<p class="page-subtitle">Qualidade e confiança em cada projeto</p>
+
+<!-- BOTAO PEDIDO -->
+<div class="btn-pedido-container">
+    <a href="contato.html" class="btn-pedido">
+        📦 Fazer Pedido
+    </a>
+</div>
+
+<!-- CARDS -->
+<div class="cards-container">
+
+    <div class="card">
+        <img src="../img/MotoSuzuki.png">
+        <div class="card-content">
+            <h2 class="card-title">Envelopamento Moto</h2>
+            <p class="card-text">Personalização completa com acabamento premium.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="../img/bragado.png">
+        <div class="card-content">
+            <h2 class="card-title">Envelopamento Carro</h2>
+            <p class="card-text">Proteção e estilo para seu veículo.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="../img/FachadaOb.png">
+        <div class="card-content">
+            <h2 class="card-title">Fachadas</h2>
+            <p class="card-text">Design moderno para sua empresa.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="../img/MotoSuzuki.png">
+        <div class="card-content">
+            <h2 class="card-title">Adesivos</h2>
+            <p class="card-text">Criação personalizada de adesivos.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="../img/MotoSuzuki.png">
+        <div class="card-content">
+            <h2 class="card-title">Plotagem</h2>
+            <p class="card-text">Identidade visual para veículos e lojas.</p>
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <h2 class="textobranco">
+        © KRONYX 2026 . Todos os direitos reservados.
+        Política de Privacidade • Termos de Uso • Contato
+        Instagram • LinkedIn • WhatsApp
+    </h2>
+</footer>
+
+<script>
+
+const iconeUser = document.getElementById("userIcon");
+const menuUser = document.getElementById("menuUser");
+
+iconeUser.addEventListener("click", () => {
+    menuUser.style.display = (menuUser.style.display === "flex") ? "none" : "flex";
+});
+
+function fazerPedido() {
+
+    let telefone = "5514996175617";
+
+    let texto =
+`Olá! Gostaria de fazer um pedido:
+
+Tenho interesse nos serviços da DWS Envelopamento.`;
+
+    let url = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(texto);
+
+    window.open(url, "_blank");
+}
+
+</script>
+
+</body>
+</html>
