@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendamento de Serviço - DWS Envelopamento</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="../../img/logoLOJA.png" alt="Logo DWS" onerror="this.src = 'https://via.placeholder.com/60x60?text=DWS'" />
+    </div>
+    <nav>
+      <a href="principal.html">MENU</a>
+      <a href="servico.html">SERVIÇOS</a>
+      <a href="sobre.html">SOBRE NÓS</a>
+    </nav>
+    <div class="icone-user">
+      <img src="../../img/icon.user2.png" id="userIcon" alt="User" onerror="this.src = 'https://via.placeholder.com/45x45?text=U'" />
+      <div class="menu-user" id="menuUser">
+        <a href="loginClientes.html">Login</a>
+        <a href="CadastroCliente.html">Cadastro</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="agendamento-wrapper">
+    <div class="page-title">
+      <h1><i class="fas fa-calendar-alt"></i> Agendamento de Serviços</h1>
+      <p>Selecione a data, horário e serviço para solicitar seu orçamento</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Coluna esquerda -->
+      <div class="col-lg-8">
+        <!-- Calendário -->
+        <div class="calendario-container">
+          <h3><i class="fas fa-calendar-week"></i> Selecione a Data</h3>
+          <div id="calendario"></div>
+        </div>
+
+        <!-- Horários -->
+        <div class="horarios-container">
+          <h3><i class="fas fa-clock"></i> Horários Disponíveis</h3>
+          <div id="horariosList" class="horarios-grid">
+            <div class="text-center text-white p-4">Selecione uma data para ver os horários</div>
+          </div>
+        </div>
+
+        <!-- Serviços -->
+        <div class="servico-grid" id="servicosGrid">
+          <div class="servico-card" data-tipo="carro" data-preco-base="800">
+            <div class="servico-icon"><i class="fas fa-car"></i></div>
+            <h4>Carro</h4>
+            <div class="servico-preco-base">R$ 800+</div>
+          </div>
+          <div class="servico-card" data-tipo="moto" data-preco-base="500">
+            <div class="servico-icon"><i class="fas fa-motorcycle"></i></div>
+            <h4>Moto</h4>
+            <div class="servico-preco-base">R$ 500+</div>
+          </div>
+          <div class="servico-card" data-tipo="caminhao" data-preco-base="2500">
+            <div class="servico-icon"><i class="fas fa-truck"></i></div>
+            <h4>Caminhão</h4>
+            <div class="servico-preco-base">R$ 2.500+</div>
+          </div>
+          <div class="servico-card" data-tipo="aquatico" data-preco-base="1800">
+            <div class="servico-icon"><i class="fas fa-ship"></i></div>
+            <h4>Aquático</h4>
+            <div class="servico-preco-base">R$ 1.800+</div>
+          </div>
+          <div class="servico-card" data-tipo="mobilia" data-preco-base="300">
+            <div class="servico-icon"><i class="fas fa-couch"></i></div>
+            <h4>Mobília</h4>
+            <div class="servico-preco-base">R$ 300+</div>
+          </div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="form-detalhes">
+          <h3><i class="fas fa-clipboard-list"></i> Dados do Cliente</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-user"></i> Nome completo *</label>
+                <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-phone"></i> Telefone/WhatsApp *</label>
+                <input type="tel" class="form-control" id="telefone" placeholder="(14) 99999-9999" required />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-envelope"></i> E-mail</label>
+                <input type="email" class="form-control" id="email" placeholder="seuemail@exemplo.com" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-palette"></i> Tipo de acabamento</label>
+                <select class="form-select" id="acabamento">
+                  <option value="1.0">Fosco (sem acréscimo)</option>
+                  <option value="1.15">Brilhante (+15%)</option>
+                  <option value="1.30">Perolizado (+30%)</option>
+                  <option value="1.40">Texturizado (+40%)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-car-side"></i> Veículo/Mobília *</label>
+            <input type="text" class="form-control" id="veiculo" placeholder="Ex: HB20 2020 - ABC1D23" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-file-alt"></i> Descrição do serviço *</label>
+            <textarea class="form-control" id="descricao" placeholder="Descreva o que deseja envelopar, cores, observações..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna direita -->
+      <div class="col-lg-4">
+        <div class="orcamento-sidebar">
+          <h3><i class="fas fa-calculator"></i> Resumo do Agendamento</h3>
+
+          <div class="info-agendamento">
+            <p><i class="fas fa-calendar-day"></i> <strong>Data:</strong> <span id="dataSelecionada">Nenhuma</span></p>
+            <p><i class="fas fa-clock"></i> <strong>Horário:</strong> <span id="horarioSelecionado">Nenhum</span></p>
+            <p><i class="fas fa-tools"></i> <strong>Serviço:</strong> <span id="servicoResumo">Nenhum</span></p>
+          </div>
+
+          <div id="resumoOrcamento">
+            <div class="preco-item">
+              <span>Valor base:</span>
+              <span id="valorBase">R$ 0,00</span>
+            </div>
+            <div class="preco-item">
+              <span>Acabamento:</span>
+              <span id="valorAcabamento">+0%</span>
+            </div>
+            <div class="preco-total">
+              <span>VALOR TOTAL:</span>
+              <span id="valorTotal">R$ 0,00</span>
+            </div>
+          </div>
+
+          <button class="btn-agendar" id="btnAgendar">
+            <i class="fas fa-check-circle"></i> Confirmar Agendamento
+          </button>
+
+          <div class="lista-agendamentos mt-3">
+            <h4><i class="fas fa-list"></i> Próximos Agendamentos</h4>
+            <div id="listaAgendamentos"></div>
+          </div>
+
+          <p style="color: #888; font-size: 0.7rem; text-align: center; margin-top: 15px;">
+            *Valor estimado. Confirmação após análise.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <h2>© KRONYX 2026 . Todos os direitos reservados. Política de Privacidade • Termos de Uso • Contato</h2>
+  </footer>
+
+  <div class="toast-notification" id="toastMsg">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastText">Agendamento realizado!</span>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js"></script>
+    <script src="../../js/agendamento.js"></script>
+    
+</body>
+</html>
