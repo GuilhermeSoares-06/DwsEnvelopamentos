@@ -1,0 +1,50 @@
+CREATE TABLE IF NOT EXISTS servicos (
+    serid INT AUTO_INCREMENT PRIMARY KEY,
+    
+    cliid INT NULL,
+
+    nome_cliente VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NULL,
+
+    veiculo VARCHAR(100) NOT NULL,
+    descricao_servico TEXT NOT NULL,
+
+    data_agendamento DATE NOT NULL,
+    horario VARCHAR(5) NOT NULL,
+
+    servico_tipo VARCHAR(20) NOT NULL,
+    servico_nome VARCHAR(50) NOT NULL,
+    valor_total VARCHAR(20) NOT NULL,
+
+    acabamento VARCHAR(50) NULL,
+
+    status ENUM(
+        'agendado',
+        'confirmado',
+        'concluido',
+        'cancelado'
+    ) DEFAULT 'agendado',
+
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    INDEX idx_data_horario (data_agendamento, horario),
+    INDEX idx_status (status),
+    INDEX idx_cliente (cliid),
+
+    CONSTRAINT fk_servicos_clientes
+        FOREIGN KEY (cliid)
+        REFERENCES clientes(cliid)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+ALTER TABLE servicos
+ADD CONSTRAINT fk_servicos_clientes
+FOREIGN KEY (cliid)
+REFERENCES clientes(cliid)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
