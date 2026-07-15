@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+<!--configuração de acentos e caracteres especiais-->
+<meta charset="UTF-8">
+
+<!--responsividade para celular-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!--titulo da pagina-->
+<title>Login</title>
+
+<!--conexao com o css principal-->
+<link rel="stylesheet" href="../../css/style.css">
+
+<style>
+
+/*corpo da pagina*/
+body{
+    background-color: #3B3B3B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/*caixa principal do login*/
+.login-box{
+    /*o max-width serviu para que em dispositivos mais largos a caixa de texto não fique larga e mantenha o seu tamanho*/
+    width: 400px;
+    max-width: 400px;
+    background-color: #808080;
+    border-radius: 40px;
+    padding: 40px;
+    text-align: center;
+}
+
+
+/*icone de usuario*/
+.login-box img{
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+/*espacamento dos inputs*/
+.input-box{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+/*estilo dos campos*/
+.input-box input{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 18px;
+
+}
+
+/*botao entrar*/
+
+.btn-login{
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #F23535;
+    color: black;
+    font-size:22px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+
+}
+.cadastro-link{
+    color: #F23535;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.cadastro-link:hover{
+    color:white;
+}
+/* responsividade da parte do login */
+
+@media (max-width: 1024px){
+
+    .login-box{
+        width: 80%;
+        max-width: 400px;
+    }
+
+}
+
+@media (max-width: 768px){
+
+    .login-box{
+        width: 90%;
+        max-width: 400px;
+        padding: 30px;
+    }
+
+    .login-box img{
+        width: 100px;
+    }
+
+    .btn-login{
+        font-size: 24px;
+    }
+
+}
+
+
+@media (max-width: 480px){
+
+    .login-box{
+        padding: 25px;
+        border-radius: 30px;
+    }
+
+    .login-box img{
+        width: 90px;
+        margin-bottom: 20px;
+    }
+
+    .input-box input{
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .btn-login{
+        font-size: 22px;
+        padding: 12px;
+    }
+
+}
+
+
+@media (max-width: 360px){
+
+    .login-box{
+        padding: 20px;
+    }
+
+    .login-box img{
+        width: 80px;
+    }
+
+    .input-box input{
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .btn-login{
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .cadastro-link{
+        font-size: 12px;
+    }
+
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<!--caixa principal-->
+<div class="login-box">
+ 
+    <img src="../../img/icon.user2.png" alt="Usuário">
+
+    <!--FORMULÁRIO DE LOGIN - ADICIONADO-->
+    <form action="../PHP/Usuarios/Login.php" method="POST">
+        
+        <!--campo usuario-->
+        <div class="input-box">
+            <input type="text" name="nome" placeholder="USUÁRIO" required>
+        </div>
+
+        <!--campo senha-->
+        <div class="input-box">
+            <input type="password" name="senha" placeholder="SENHA" required>
+        </div>
+
+        <!--botao entrar-->
+        <button type="submit" class="btn-login">ENTRAR</button>
+        
+    </form>
+
+    <!--link para cadastro-->
+    <a href="cadastro.html" class="cadastro-link">Não tem conta? Cadastre-se</a>
+
+</div>
+
+</body>
+</html>
