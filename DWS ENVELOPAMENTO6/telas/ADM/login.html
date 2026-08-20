@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login ADM - DWS Envelopamento</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* CORPO DA PÁGINA */
+        body {
+            background: linear-gradient(135deg, #1e1e1e, #3b3b3b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* CAIXA PRINCIPAL DO LOGIN */
+        .login-box {
+            width: 420px;
+            max-width: 100%;
+            background: #403E3F;
+            border-radius: 30px;
+            padding: 45px 40px;
+            text-align: center;
+            border: 2px solid #F23535;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ÍCONE DE ADMIN */
+        .login-box .admin-icon {
+            width: 100px;
+            height: 100px;
+            background: #F23535;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 50px;
+            color: white;
+        }
+
+        .login-box h1 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .login-box .subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .login-box .admin-badge {
+            background: rgba(242, 53, 53, 0.15);
+            color: #F23535;
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid #F23535;
+        }
+
+        /* ESPAÇAMENTO DOS INPUTS */
+        .input-box {
+            display: flex;
+            margin-bottom: 18px;
+        }
+
+        /* ESTILO DOS CAMPOS */
+        .input-box input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: #2b2b2b;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-box input::placeholder {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .input-box input:focus {
+            border-color: #F23535;
+            background: #1e1e1e;
+            box-shadow: 0 0 20px rgba(242, 53, 53, 0.1);
+        }
+
+        /* BOTÃO ENTRAR */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #F23535, #c91f2c);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 25px rgba(242, 53, 53, 0.4);
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        .btn-login i {
+            margin-right: 8px;
+        }
+
+        /* LINK CADASTRO */
+        .cadastro-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .cadastro-link:hover {
+            color: #F23535;
+        }
+
+        .cadastro-link strong {
+            color: #F23535;
+        }
+
+        .divider {
+            color: #555;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+
+        /* LINK VOLTAR */
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #555;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #F23535;
+        }
+
+        /* MENSAGEM DE ERRO */
+        .error-msg {
+            background: rgba(242, 53, 53, 0.15);
+            color: #F23535;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #F23535;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* =============================================
+           RESPONSIVIDADE
+           ============================================= */
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .login-box .admin-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+
+            .login-box h1 {
+                font-size: 20px;
+            }
+
+            .input-box input {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+
+            .btn-login {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-box {
+                padding: 20px 15px;
+            }
+
+            .login-box .admin-icon {
+                width: 65px;
+                height: 65px;
+                font-size: 32px;
+            }
+
+            .login-box h1 {
+                font-size: 18px;
+            }
+
+            .input-box input {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .btn-login {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CAIXA PRINCIPAL -->
+    <div class="login-box">
+
+        <!-- ÍCONE DE ADMIN -->
+        <div class="admin-icon">👑</div>
+
+        <!-- TÍTULO -->
+        <h1>Área Administrativa</h1>
+        <p class="subtitle">Acesse o painel de controle</p>
+        <div class="admin-badge">🔒 ACESSO RESTRITO</div>
+
+        <!-- MENSAGEM DE ERRO -->
+        <div id="errorMsg" class="error-msg">
+            ⚠️ Usuário ou senha incorretos.
+        </div>
+
+        <!-- FORMULÁRIO DE LOGIN -->
+        <form action="../../PHP/ADM/LoginADM.php" method="POST" id="loginForm">
+
+            <!-- CAMPO USUÁRIO -->
+            <div class="input-box">
+                <input type="text" name="nome" id="nome" placeholder="USUÁRIO ADMIN" required autofocus>
+            </div>
+
+            <!-- CAMPO SENHA -->
+            <div class="input-box">
+                <input type="password" name="senha" id="senha" placeholder="SENHA" required>
+            </div>
+
+            <!-- BOTÃO ENTRAR -->
+            <button type="submit" class="btn-login" id="btnLogin">
+                🔑 ENTRAR
+            </button>
+
+        </form>
+
+        <div class="divider">— — —</div>
+
+        <!-- LINK PARA LOGIN CLIENTE -->
+        <a href="../Cliente/loginClientes.html" class="cadastro-link">
+            🔄 <strong>Acessar como Cliente</strong>
+        </a>
+
+        <br><br>
+
+        <!-- LINK VOLTAR -->
+        <a href="principalFUN.html" class="back-link">← Voltar ao Menu</a>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica se tem erro na URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('erro') === '1') {
+                const errorMsg = document.getElementById('errorMsg');
+                errorMsg.textContent = '⚠️ Usuário ou senha incorretos. Tente novamente.';
+                errorMsg.classList.add('show');
+            }
+
+            // Validação do formulário
+            const form = document.getElementById('loginForm');
+            const btn = document.getElementById('btnLogin');
+
+            form.addEventListener('submit', function(e) {
+                const nome = document.getElementById('nome').value.trim();
+                const senha = document.getElementById('senha').value.trim();
+
+                if (!nome || !senha) {
+                    e.preventDefault();
+                    const errorMsg = document.getElementById('errorMsg');
+                    errorMsg.textContent = '⚠️ Preencha todos os campos!';
+                    errorMsg.classList.add('show');
+                    return;
+                }
+
+                btn.innerHTML = '⏳ Entrando...';
+                btn.disabled = true;
+            });
+        });
+    </script>
+
+</body>
+</html>
