@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendamento de Serviço - DWS Envelopamento</title>
+  <link rel="icon" type="image/png" href="../../img/logoabas.png">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .modelo-selects-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    .btn-buscar-modelo {
+      background: transparent;
+      border: 2px dashed #555;
+      color: #aaa;
+      padding: 12px 20px;
+      border-radius: 10px;
+      width: 100%;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .btn-buscar-modelo:hover {
+      border-color: #f23535;
+      color: #f23535;
+      background: rgba(242, 53, 53, 0.05);
+    }
+
+    .veiculo-selecionado-input {
+      background: #1a1a2e;
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 12px 16px;
+      width: 100%;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: not-allowed;
+      color: #fff;
+      display: block !important;
+    }
+    .veiculo-selecionado-input.selecionado {
+      border-color: #4caf50;
+      color: #4caf50;
+    }
+
+    .modelo-selecionado-info {
+      background: #1a1a2e;
+      border: 1px solid #f23535;
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .modelo-selecionado-info .modelo-nome-selecionado {
+      color: #fff;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .modelo-selecionado-info .modelo-remover {
+      color: #f23535;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+    }
+    .modelo-selecionado-info .modelo-remover:hover {
+      color: #ff6b6b;
+    }
+
+    /* Modal Estilos */
+    .modal-modelos .modal-content {
+      background: #1a1a2e;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 16px;
+    }
+    .modal-modelos .modal-header {
+      border-bottom: 1px solid #333;
+      padding: 16px 24px;
+    }
+    .modal-modelos .modal-header .btn-close {
+      filter: invert(1);
+    }
+    .modal-modelos .modal-body {
+      padding: 20px 24px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .modal-modelos .modal-footer {
+      border-top: 1px solid #333;
+      padding: 16px 24px;
+    }
+    .modal-modelos .search-box {
+      background: #2a2a3e;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 16px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    .modal-modelos .search-box::placeholder {
+      color: #888;
+    }
+    .modal-modelos .search-box:focus {
+      outline: none;
+      border-color: #f23535;
+      box-shadow: 0 0 0 2px rgba(242,53,53,0.2);
+    }
+    .modal-modelos .modelo-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-bottom: 1px solid #2a2a3e;
+    }
+    .modal-modelos .modelo-item:hover {
+      background: #2a2a42;
+    }
+    .modal-modelos .modelo-item .modelo-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-modelos .modelo-item .modelo-nome {
+      font-weight: 500;
+      color: #fff;
+    }
+    .modal-modelos .modelo-item .modelo-detalhe {
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+    .modal-modelos .modelo-item .modelo-select-btn {
+      background: #f23535;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .modal-modelos .modelo-item .modelo-select-btn:hover {
+      background: #d42a2a;
+    }
+    .modal-modelos .modelo-item.selecionado {
+      background: #2a2a5e;
+      border-left: 3px solid #f23535;
+    }
+    .modal-modelos .empty-message {
+      text-align: center;
+      color: #888;
+      padding: 40px 0;
+    }
+    .modal-modelos .count-badge {
+      background: #333;
+      color: #aaa;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    .filter-tipo-btn.active {
+      background: #f23535 !important;
+      border-color: #f23535 !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="../../img/logoLOJA.png" alt="Logo DWS" onerror="this.src = 'https://via.placeholder.com/60x60?text=DWS'" />
+    </div>
+    <nav>
+      <a href="principal.html">MENU</a>
+      <a href="servico.html">SERVIÇOS</a>
+      <a href="sobre.html">SOBRE NÓS</a>
+    </nav>
+    <div class="icone-user">
+      <img src="../../img/icon.user2.png" id="userIcon" alt="User" onerror="this.src = 'https://via.placeholder.com/45x45?text=U'" />
+      <div class="menu-user" id="menuUser">
+        <a href="loginClientes.html">Login</a>
+        <a href="CadastroCliente.html">Cadastro</a>
+      </div>
+    </div>
+  </header>
+
+<div class="agendamento-wrapper">
+
+    <div class="row g-4">
+      <!-- Coluna esquerda -->
+      <div class="col-lg-8">
+        <!-- Calendário -->
+        <div class="calendario-container">
+          <h3><i class="fas fa-calendar-week"></i> Selecione a Data</h3>
+          <div id="calendario"></div>
+        </div>
+
+        <!-- Horários -->
+        <div class="horarios-container">
+          <h3><i class="fas fa-clock"></i> Horários Disponíveis</h3>
+          <div id="horariosList" class="horarios-grid">
+            <div class="text-center text-white p-4">Selecione uma data para ver os horários</div>
+          </div>
+        </div>
+
+        <!-- Serviços -->
+        <div class="servico-grid" id="servicosGrid">
+          <div class="servico-card" data-tipo="carro" data-preco-base="800">
+            <div class="servico-icon"><i class="fas fa-car"></i></div>
+            <h4>Carro</h4>
+            <div class="servico-preco-base">R$ 800+</div>
+          </div>
+          <div class="servico-card" data-tipo="moto" data-preco-base="500">
+            <div class="servico-icon"><i class="fas fa-motorcycle"></i></div>
+            <h4>Moto</h4>
+            <div class="servico-preco-base">R$ 500+</div>
+          </div>
+          <div class="servico-card" data-tipo="caminhao" data-preco-base="2500">
+            <div class="servico-icon"><i class="fas fa-truck"></i></div>
+            <h4>Caminhão</h4>
+            <div class="servico-preco-base">R$ 2.500+</div>
+          </div>
+          <div class="servico-card" data-tipo="aquatico" data-preco-base="1800">
+            <div class="servico-icon"><i class="fas fa-ship"></i></div>
+            <h4>Aquático</h4>
+            <div class="servico-preco-base">R$ 1.800+</div>
+          </div>
+          <div class="servico-card" data-tipo="mobilia" data-preco-base="300">
+            <div class="servico-icon"><i class="fas fa-couch"></i></div>
+            <h4>Mobília</h4>
+            <div class="servico-preco-base">R$ 300+</div>
+          </div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="form-detalhes">
+          <h3><i class="fas fa-clipboard-list"></i> Dados do Cliente</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-envelope"></i> E-mail</label>
+                <input type="email" class="form-control" id="email" placeholder="seuemail@exemplo.com" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-palette"></i> Tipo de acabamento</label>
+                <select class="form-select" id="acabamento">
+                  <option value="1.0">Fosco (sem acréscimo)</option>
+                  <option value="1.15">Brilhante (+15%)</option>
+                  <option value="1.30">Perolizado (+30%)</option>
+                  <option value="1.40">Texturizado (+40%)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-car-side"></i> Modelo do Veículo/Mobília *</label>
+            <div id="modeloSelectsContainer" class="modelo-selects-container">
+              <!-- Botão para abrir modal -->
+              <button type="button" class="btn-buscar-modelo" id="btnAbrirModalModelos">
+                <i class="fas fa-search"></i> Buscar Modelo
+              </button>
+              
+              <!-- Campo para mostrar o modelo selecionado -->
+              <input type="text" class="veiculo-selecionado-input" id="veiculoInput" placeholder="Nenhum modelo selecionado" readonly />
+              
+              <!-- Área para mostrar o modelo selecionado com opção de remover -->
+              <div class="modelo-selecionado-info" id="modeloSelecionadoInfo">
+                <span class="modelo-nome-selecionado" id="modeloSelecionadoNome">Nenhum modelo selecionado</span>
+                <button class="modelo-remover" id="btnRemoverModelo" title="Remover modelo selecionado">
+                  <i class="fas fa-times-circle"></i>
+                </button>
+              </div>
+              
+              <input type="hidden" id="veiculo" required />
+              <input type="hidden" id="tipoServicoHidden" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-file-alt"></i> Descrição do serviço *</label>
+            <textarea class="form-control" id="descricao" placeholder="Descreva o que deseja envelopar, cores, observações..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna direita -->
+      <div class="col-lg-4">
+        <div class="orcamento-sidebar">
+          <h3><i class="fas fa-calculator"></i> Resumo do Agendamento</h3>
+
+          <div class="info-agendamento">
+            <p><i class="fas fa-calendar-day"></i> <strong>Data:</strong> <span id="dataSelecionada">Nenhuma</span></p>
+            <p><i class="fas fa-clock"></i> <strong>Horário:</strong> <span id="horarioSelecionado">Nenhum</span></p>
+            <p><i class="fas fa-tools"></i> <strong>Serviço:</strong> <span id="servicoResumo">Nenhum</span></p>
+            <p><i class="fas fa-car-side"></i> <strong>Modelo:</strong> <span id="modeloResumo">Nenhum</span></p>
+          </div>
+
+          <div id="resumoOrcamento">
+            <div class="preco-item">
+              <span>Valor base:</span>
+              <span id="valorBase">R$ 0,00</span>
+            </div>
+            <div class="preco-item">
+              <span>Acabamento:</span>
+              <span id="valorAcabamento">+0%</span>
+            </div>
+            <div class="preco-total">
+              <span>VALOR TOTAL:</span>
+              <span id="valorTotal">R$ 0,00</span>
+            </div>
+          </div>
+
+          <button class="btn-agendar" id="btnAgendar">
+            <i class="fas fa-check-circle"></i> Confirmar Agendamento
+          </button>
+
+          <p style="color: #888; font-size: 0.7rem; text-align: center; margin-top: 15px;">
+            *Valor estimado. Confirmação após análise.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <h2>© KRONYX 2026 . Todos os direitos reservados. Política de Privacidade • Termos de Uso • Contato</h2>
+  </footer>
+
+  <div class="toast-notification" id="toastMsg">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastText">Agendamento realizado!</span>
+  </div>
+
+  <!-- MODAL DE MODELOS -->
+  <div class="modal fade modal-modelos" id="modalModelos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-list me-2"></i> Selecionar Modelo
+            <span class="count-badge ms-2" id="modalCountBadge">0</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex gap-2 mb-3 flex-wrap">
+            <input type="text" class="search-box" id="modalSearchInput" placeholder="🔍 Buscar modelo..." />
+            <div class="d-flex gap-1 flex-wrap">
+              <button class="btn btn-sm btn-outline-secondary filter-tipo-btn active" data-tipo="todos">Todos</button>
+              <button class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="carro">Carros</button>
+              <button class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="moto">Motos</button>
+              <button class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="caminhao">Caminhões</button>
+              <button class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="aquatico">Aquáticos</button>
+              <button class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="mobilia">Mobília</button>
+            </div>
+          </div>
+          <div id="modalModelosList">
+            <div class="text-center text-white-50 p-4">Carregando modelos...</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="modalConfirmBtn" disabled style="background:#f23535; border-color:#f23535;">
+            <i class="fas fa-check"></i> Selecionar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="../../js/main.js?v=4"></script>
+  <script src="../../js/agendamento.js?v=4"></script>
+  <script>
+    const fotoContato = localStorage.getItem("fotoPerfilDWS");
+    if (fotoContato) {
+      document.getElementById("userIcon").src = fotoContato;
+    }
+  </script>
+
+  <script>
+    (function() {
+      // Dados dos modelos
+      const modelosPorTipo = {
+        carro: [
+          { id: 1, label: "Honda Civic" },
+          { id: 2, label: "Toyota Corolla" },
+          { id: 3, label: "Chevrolet Onix" },
+          { id: 4, label: "Volkswagen Gol" },
+          { id: 5, label: "Hyundai HB20" },
+          { id: 6, label: "Chevrolet Camaro" },
+          { id: 7, label: "Ford Mustang" },
+          { id: 8, label: "Volkswagen Jetta" },
+          { id: 9, label: "Hyundai Creta" },
+          { id: 10, label: "Jeep Compass" }
+        ],
+        moto: [
+          { id: 1, label: "Honda CG 160 Titan" },
+          { id: 2, label: "Honda CB 500F" },
+          { id: 3, label: "Yamaha MT-03" },
+          { id: 4, label: "Yamaha Fazer 250" },
+          { id: 5, label: "Honda Biz 125" },
+          { id: 6, label: "Yamaha Lander 250" },
+          { id: 7, label: "Kawasaki Ninja 400" },
+          { id: 8, label: "BMW F 850 GS" },
+          { id: 9, label: "Harley-Davidson Iron 883" },
+          { id: 10, label: "Suzuki GSX-S750" }
+        ],
+        caminhao: [
+          { id: 1, label: "Mercedes-Benz Actros 2651" },
+          { id: 2, label: "Volvo FH 540" },
+          { id: 3, label: "Scania R 450" },
+          { id: 4, label: "Volkswagen Meteor 29.520" },
+          { id: 5, label: "DAF XF 530" },
+          { id: 6, label: "Iveco S-Way" },
+          { id: 7, label: "Mercedes-Benz Atego 1719" },
+          { id: 8, label: "Volvo VM 330" },
+          { id: 9, label: "Scania P 360" },
+          { id: 10, label: "Ford Cargo 2429" }
+        ],
+        aquatico: [
+          { id: 1, label: "Focker FS 230" },
+          { id: 2, label: "Schaefer 250 WA" },
+          { id: 3, label: "Real Powerboats Real 24" },
+          { id: 4, label: "NX Boats NX 290" },
+          { id: 5, label: "Fishing Raptor Fishing 19" },
+          { id: 6, label: "Runner Runner 330" },
+          { id: 7, label: "Schaefer Phantom 303" },
+          { id: 8, label: "Focker Focker 240" },
+          { id: 9, label: "NX Boats NX 260" },
+          { id: 10, label: "Real Powerboats Real 29" }
+        ],
+        mobilia: [
+          { id: 1, label: "Mesa 1,80m x 0,90m" },
+          { id: 2, label: "Mesa 2,00m x 1,00m" },
+          { id: 3, label: "Armário 2,00m x 0,80m" },
+          { id: 4, label: "Guarda-roupa 2,20m x 0,60m" },
+          { id: 5, label: "Sofá 2,50m x 1,00m" },
+          { id: 6, label: "Sofá 3,00m x 1,00m" },
+          { id: 7, label: "Cama casal 1,88m x 1,38m" },
+          { id: 8, label: "Cama queen 1,98m x 1,58m" },
+          { id: 9, label: "Estante 1,80m x 0,40m" },
+          { id: 10, label: "Escrivaninha 1,40m x 0,60m" }
+        ]
+      };
+
+      let modeloSelecionado = null;
+      let tipoSelecionado = null;
+      let filtroAtual = 'todos';
+      let termoBusca = '';
+
+      const veiculoHidden = document.getElementById("veiculo");
+      const veiculoInput = document.getElementById("veiculoInput");
+      const tipoServicoHidden = document.getElementById("tipoServicoHidden");
+      const modeloSelecionadoInfo = document.getElementById("modeloSelecionadoInfo");
+      const modeloSelecionadoNome = document.getElementById("modeloSelecionadoNome");
+      const btnAbrirModal = document.getElementById("btnAbrirModalModelos");
+      const btnRemoverModelo = document.getElementById("btnRemoverModelo");
+      const modeloResumo = document.getElementById("modeloResumo");
+
+      const modalModelos = new bootstrap.Modal(document.getElementById('modalModelos'));
+      const modalList = document.getElementById('modalModelosList');
+      const modalSearch = document.getElementById('modalSearchInput');
+      const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+      const modalCountBadge = document.getElementById('modalCountBadge');
+      const filterBtns = document.querySelectorAll('.filter-tipo-btn');
+
+      function getTipoLabel(tipo) {
+        const labels = { carro: 'Carro', moto: 'Moto', caminhao: 'Caminhão', aquatico: 'Aquático', mobilia: 'Mobília' };
+        return labels[tipo] || tipo;
+      }
+
+      function getTipoIcon(tipo) {
+        const icons = { carro: '🚗', moto: '🏍️', caminhao: '🚛', aquatico: '⛵', mobilia: '🪑' };
+        return icons[tipo] || '📦';
+      }
+
+      function atualizarInterface() {
+        console.log('Atualizando interface com modelo:', modeloSelecionado);
+
+        if (modeloSelecionado) {
+          // Mostra o campo de seleção
+          modeloSelecionadoInfo.style.display = 'flex';
+          const nomeCompleto = `${getTipoIcon(modeloSelecionado.tipo)} ${modeloSelecionado.label}`;
+          modeloSelecionadoNome.textContent = nomeCompleto;
+
+          // Atualiza os campos
+          veiculoHidden.value = modeloSelecionado.label;
+          veiculoInput.value = nomeCompleto;
+          veiculoInput.className = 'veiculo-selecionado-input selecionado';
+          tipoServicoHidden.value = modeloSelecionado.tipo;
+          btnAbrirModal.style.display = 'none';
+          modeloResumo.textContent = modeloSelecionado.label;
+
+          console.log('✅ Modelo selecionado:', modeloSelecionado.label);
+          console.log('✅ veiculoInput.value:', veiculoInput.value);
+          console.log('✅ veiculoHidden.value:', veiculoHidden.value);
+        } else {
+          modeloSelecionadoInfo.style.display = 'none';
+          veiculoHidden.value = '';
+          veiculoInput.value = '';
+          veiculoInput.className = 'veiculo-selecionado-input';
+          veiculoInput.placeholder = 'Nenhum modelo selecionado';
+          tipoServicoHidden.value = '';
+          btnAbrirModal.style.display = 'block';
+          modeloResumo.textContent = 'Nenhum';
+        }
+      }
+
+      function renderizarModal() {
+        let todosModelos = [];
+        const tipos = Object.keys(modelosPorTipo);
+
+        if (filtroAtual === 'todos') {
+          tipos.forEach(tipo => {
+            modelosPorTipo[tipo].forEach(item => {
+              todosModelos.push({ ...item, tipo, tipoLabel: getTipoLabel(tipo) });
+            });
+          });
+        } else if (modelosPorTipo[filtroAtual]) {
+          modelosPorTipo[filtroAtual].forEach(item => {
+            todosModelos.push({ ...item, tipo: filtroAtual, tipoLabel: getTipoLabel(filtroAtual) });
+          });
+        }
+
+        if (termoBusca.trim()) {
+          const termo = termoBusca.toLowerCase().trim();
+          todosModelos = todosModelos.filter(item => item.label.toLowerCase().includes(termo));
+        }
+
+        todosModelos.sort((a, b) => {
+          if (a.tipo !== b.tipo) return a.tipo.localeCompare(b.tipo);
+          return a.label.localeCompare(b.label);
+        });
+
+        modalCountBadge.textContent = todosModelos.length;
+
+        if (todosModelos.length === 0) {
+          modalList.innerHTML = `<div class="empty-message"><i class="fas fa-search" style="font-size:2rem;display:block;margin-bottom:12px;"></i>Nenhum modelo encontrado</div>`;
+          return;
+        }
+
+        let html = '';
+        let currentTipo = '';
+        todosModelos.forEach(item => {
+          if (item.tipo !== currentTipo) {
+            currentTipo = item.tipo;
+            html += `<div class="mt-2 mb-1"><span class="badge bg-secondary">${getTipoIcon(currentTipo)} ${getTipoLabel(currentTipo)}</span></div>`;
+          }
+          const isSelected = modeloSelecionado && modeloSelecionado.id === item.id && modeloSelecionado.tipo === item.tipo;
+          html += `
+            <div class="modelo-item ${isSelected ? 'selecionado' : ''}" data-id="${item.id}" data-tipo="${item.tipo}" data-label="${item.label}">
+              <div class="modelo-info">
+                <span class="modelo-nome">${item.label}</span>
+                <span class="modelo-detalhe">${item.tipoLabel}</span>
+              </div>
+              <button class="modelo-select-btn" data-id="${item.id}" data-tipo="${item.tipo}" data-label="${item.label}">
+                ${isSelected ? '✓ Selecionado' : 'Selecionar'}
+              </button>
+            </div>
+          `;
+        });
+
+        modalList.innerHTML = html;
+
+        modalList.querySelectorAll('.modelo-item').forEach(el => {
+          el.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modelo-select-btn')) return;
+            const id = parseInt(this.dataset.id);
+            const tipo = this.dataset.tipo;
+            const label = this.dataset.label;
+            selecionarNoModal(id, tipo, label);
+          });
+        });
+
+        modalList.querySelectorAll('.modelo-select-btn').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const id = parseInt(this.dataset.id);
+            const tipo = this.dataset.tipo;
+            const label = this.dataset.label;
+            selecionarNoModal(id, tipo, label);
+          });
+        });
+      }
+
+      function selecionarNoModal(id, tipo, label) {
+        modeloSelecionado = { id, tipo, label };
+
+        modalList.querySelectorAll('.modelo-item').forEach(el => {
+          const isSelected = parseInt(el.dataset.id) === id && el.dataset.tipo === tipo;
+          el.classList.toggle('selecionado', isSelected);
+          const btn = el.querySelector('.modelo-select-btn');
+          if (btn) btn.textContent = isSelected ? '✓ Selecionado' : 'Selecionar';
+        });
+
+        modalConfirmBtn.disabled = false;
+        modalConfirmBtn.innerHTML = `<i class="fas fa-check"></i> Selecionar: ${label}`;
+      }
+
+      function aplicarSelecao() {
+        if (!modeloSelecionado) {
+          mostrarToast('Selecione um modelo primeiro!');
+          return;
+        }
+        console.log('✅ Aplicando seleção final:', modeloSelecionado);
+        atualizarInterface();
+        modalModelos.hide();
+        mostrarToast(`✅ Modelo "${modeloSelecionado.label}" selecionado!`);
+      }
+
+      function removerModelo() {
+        console.log('🗑️ Removendo modelo');
+        modeloSelecionado = null;
+        atualizarInterface();
+        mostrarToast('Modelo removido!');
+      }
+
+      function mostrarToast(msg) {
+        const toast = document.getElementById('toastMsg');
+        const toastText = document.getElementById('toastText');
+        toastText.textContent = msg;
+        toast.classList.add('show');
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+        setTimeout(() => {
+          toast.classList.remove('show');
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-20px)';
+        }, 3000);
+      }
+
+      // Eventos
+      btnAbrirModal.addEventListener('click', function() {
+        console.log('🔄 Abrindo modal');
+        if (tipoSelecionado) {
+          filtroAtual = tipoSelecionado;
+          filterBtns.forEach(b => b.classList.toggle('active', b.dataset.tipo === tipoSelecionado));
+        }
+        renderizarModal();
+        modalModelos.show();
+      });
+
+      modalConfirmBtn.addEventListener('click', aplicarSelecao);
+      btnRemoverModelo.addEventListener('click', removerModelo);
+
+      modalSearch.addEventListener('input', function() {
+        termoBusca = this.value;
+        renderizarModal();
+      });
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          filtroAtual = this.dataset.tipo;
+          renderizarModal();
+        });
+      });
+
+      document.querySelectorAll(".servico-card").forEach(card => {
+        card.addEventListener("click", function() {
+          const tipo = this.getAttribute("data-tipo");
+          console.log('🔄 Serviço selecionado:', tipo);
+          tipoSelecionado = tipo;
+          modeloSelecionado = null;
+          atualizarInterface();
+          filtroAtual = tipo;
+          filterBtns.forEach(b => b.classList.toggle('active', b.dataset.tipo === tipo));
+          modalConfirmBtn.disabled = true;
+          modalConfirmBtn.innerHTML = '<i class="fas fa-check"></i> Selecionar';
+          document.getElementById('servicoResumo').textContent = getTipoLabel(tipo);
+        });
+      });
+
+      document.getElementById('btnAgendar').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const data = document.getElementById('dataSelecionada').textContent;
+        const horario = document.getElementById('horarioSelecionado').textContent;
+        const servico = document.getElementById('servicoResumo').textContent;
+        const modelo = document.getElementById('veiculo').value;
+        const email = document.getElementById('email').value;
+        const descricao = document.getElementById('descricao').value;
+
+        console.log('📋 Dados do agendamento:', { data, horario, servico, modelo, email, descricao });
+
+        if (data === 'Nenhuma' || data === 'Nenhuma selecionada') {
+          mostrarToast('⚠️ Selecione uma data!');
+          return;
+        }
+        if (horario === 'Nenhum' || horario === 'Nenhum selecionado') {
+          mostrarToast('⚠️ Selecione um horário!');
+          return;
+        }
+        if (servico === 'Nenhum') {
+          mostrarToast('⚠️ Selecione um serviço!');
+          return;
+        }
+        if (!modelo || modelo === '') {
+          mostrarToast('⚠️ Selecione um modelo!');
+          return;
+        }
+        if (!email || email === '') {
+          mostrarToast('⚠️ Preencha seu e-mail!');
+          return;
+        }
+        if (!descricao || descricao === '') {
+          mostrarToast('⚠️ Descreva o serviço!');
+          return;
+        }
+
+        mostrarToast('✅ Agendamento realizado com sucesso!');
+        console.log('✅ Agendamento confirmado!');
+      });
+
+      // Inicialização
+      atualizarInterface();
+      console.log("🚀 Sistema carregado!");
+    })();
+  </script>
+
+</body>
+</html>
