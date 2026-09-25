@@ -1,0 +1,285 @@
+/* =============================================================
+   global.css - ESTILOS GLOBAIS AUXILIARES
+   -------------------------------------------------------------
+   Este arquivo contém apenas estilos AUXILIARES que são
+   usados em várias páginas do sistema.
+   
+   ⚠️ IMPORTANTE: Os estilos principais (menu, cards, calendário,
+   modais, etc.) estão TODOS no style.css.
+   
+   Este arquivo serve para:
+   - Toast notifications
+   - Status de login (logado/deslogado)
+   - Classes utilitárias genéricas
+   ============================================================= */
+
+/* =============================================
+   TOAST NOTIFICATIONS
+   ============================================= */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #4CAF50;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    z-index: 9999;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    gap: 12px;
+    max-width: 450px;
+    min-width: 280px;
+    animation: slideInUp 0.3s ease;
+    border-left: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+.toast-notification.error {
+    background: #F23535;
+}
+
+.toast-notification .toast-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.toast-notification .toast-text {
+    flex: 1;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* =============================================
+   STATUS DE LOGIN
+   ============================================= */
+.status-logado {
+    color: #4CAF50;
+    font-weight: 600;
+    padding: 8px 18px;
+    background: rgba(76, 175, 80, 0.12);
+    border-radius: 25px;
+    border: 1px solid #4CAF50;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.status-logado strong {
+    color: #fff;
+}
+
+.status-deslogado {
+    color: #ff9800;
+    font-weight: 600;
+    padding: 8px 18px;
+    background: rgba(255, 152, 0, 0.12);
+    border-radius: 25px;
+    border: 1px solid #ff9800;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.status-deslogado a {
+    color: #F23535;
+    text-decoration: underline;
+}
+
+/* =============================================
+   SCROLLBAR PERSONALIZADA
+   ============================================= */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2b2b2b;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #F23535;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c91f2c;
+}
+
+/* =============================================
+   UTILITÁRIOS
+   ============================================= */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.mb-30 { margin-bottom: 30px; }
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-column { display: flex; flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+
+.gap-10 { gap: 10px; }
+.gap-20 { gap: 20px; }
+.gap-30 { gap: 30px; }
+
+.hidden { display: none !important; }
+
+/* =============================================
+   RESPONSIVIDADE
+   ============================================= */
+@media (max-width: 768px) {
+    .toast-notification {
+        bottom: 15px;
+        right: 15px;
+        left: 15px;
+        max-width: none;
+        min-width: auto;
+        font-size: 14px;
+        padding: 14px 18px;
+    }
+}
+
+/* =============================================
+   FUNDO GLOBAL — DEGRADÊ PRETO SOFISTICADO
+   ============================================= */
+html {
+    background: #0a0a0a;
+    background-image: linear-gradient(135deg, #0a0a0a 0%, #111111 25%, #000000 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+body {
+    background: transparent;
+    background-image:
+        radial-gradient(ellipse at top left, rgba(242, 53, 53, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(242, 53, 53, 0.04) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0a 0%, #111111 25%, #000000 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* ============================================================
+   GARANTIA DE BOTÕES VISÍVEIS EM TODAS AS TELAS
+   ============================================================ */
+
+/* Botões nunca somem */
+.action-buttons, .actions, .modal-actions,
+.modal-actions-triplo, .modal-actions-duplo {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    align-items: center;
+}
+
+.btn-action, .btn-edit, .btn-delete, .btn-finalizar,
+.btn-modal, .btn-search, .btn-limpar, .btn-clear,
+.btn-salvar, .btn-adicionar, .btn-cadastro, .btn-login,
+.btn-agendar, .btn-pedido, .btn-voltar {
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Mobile: empilha botões */
+@media (max-width: 600px) {
+    .action-buttons, .actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    .action-buttons .btn-action, .actions .btn-action {
+        width: 100%;
+    }
+    .modal-actions, .modal-actions-triplo, .modal-actions-duplo {
+        flex-direction: column !important;
+    }
+    .modal-actions .btn-modal,
+    .modal-actions-triplo .btn-modal,
+    .modal-actions-duplo .btn-modal {
+        width: 100% !important;
+    }
+}
+
+/* Modais: nunca estouram */
+.modal-content, .modal-box {
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-overlay {
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+.modal-overlay.active { display: flex; }
+
+/* Toasts nunca saem */
+.toast, .toast-notification {
+    max-width: calc(100vw - 40px) !important;
+    right: 20px !important;
+    bottom: 20px !important;
+}
+@media (max-width: 500px) {
+    .toast, .toast-notification {
+        left: 12px !important;
+        right: 12px !important;
+        bottom: 12px !important;
+    }
+}
+
+/* Inputs não estouram */
+input, textarea, select, button {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Tabelas em mobile */
+@media (max-width: 768px) {
+    table { font-size: 13px; }
+    th { font-size: 11px; padding: 10px 8px; }
+    td { padding: 10px 8px; }
+}
+
+/* Scroll horizontal de tabela */
+.table-wrap, .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+}

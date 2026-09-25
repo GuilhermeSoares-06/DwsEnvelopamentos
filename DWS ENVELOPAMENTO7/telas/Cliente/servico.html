@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Serviços — DWS Envelopamento</title>
+<link rel="icon" type="image/png" href="../../img/logoabas.png">
+<link rel="stylesheet" href="../../css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Space Grotesk', sans-serif; background: #050505; color: #fff; overflow-x: hidden; }
+
+.bg-animated { position: fixed; inset: 0; z-index: -2;
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(242, 53, 53, 0.10) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 85%, rgba(242, 53, 53, 0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, #0a0a0a 0%, #000 100%);
+}
+.bg-grid { position: fixed; inset: 0; z-index: -1;
+    background-image:
+        linear-gradient(rgba(242, 53, 53, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242, 53, 53, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    animation: gridMove 25s linear infinite;
+}
+@keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+
+.particle { position: fixed; color: rgba(242, 53, 53, 0.05); font-size: 4rem; z-index: -1; pointer-events: none; animation: float 20s ease-in-out infinite; }
+.particle:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; font-size: 5rem; }
+.particle:nth-child(2) { top: 30%; right: 8%; animation-delay: -5s; font-size: 3rem; }
+.particle:nth-child(3) { bottom: 20%; left: 10%; animation-delay: -10s; font-size: 4rem; }
+.particle:nth-child(4) { bottom: 10%; right: 15%; animation-delay: -15s; font-size: 3.5rem; }
+.particle:nth-child(5) { top: 60%; left: 50%; animation-delay: -7s; font-size: 3.5rem; }
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.05; }
+    50% { transform: translateY(-40px) rotate(15deg); opacity: 0.12; }
+}
+
+header {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(242, 53, 53, 0.3) !important;
+}
+
+.hero-servicos { position: relative; padding: 120px 20px 60px; text-align: center; overflow: hidden; }
+.hero-servicos::after {
+    content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 2px;
+    background: linear-gradient(90deg, transparent, #f23535, transparent);
+}
+.hero-badge-servicos {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(242, 53, 53, 0.1); border: 1px solid rgba(242, 53, 53, 0.3);
+    color: #f23535; padding: 8px 22px; border-radius: 50px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px;
+    animation: fadeInDown 0.8s ease both;
+}
+.hero-badge-servicos i { animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+.hero-title-servicos {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900; line-height: 1.05; letter-spacing: -2px;
+    text-transform: uppercase; margin-bottom: 20px;
+    animation: fadeInUp 0.8s ease 0.2s both;
+}
+.hero-title-servicos span {
+    background: linear-gradient(135deg, #f23535, #ff6b6b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-subtitle-servicos {
+    color: #a4a5a6; font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.7; max-width: 640px; margin: 0 auto 40px;
+    animation: fadeInUp 0.8s ease 0.4s both;
+}
+.btn-pedido-hero {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 18px 42px;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; text-decoration: none;
+    font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(242, 53, 53, 0.35);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; overflow: hidden;
+    animation: fadeInUp 0.8s ease 0.6s both;
+}
+.btn-pedido-hero::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+}
+.btn-pedido-hero:hover::before { left: 100%; }
+.btn-pedido-hero:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 25px 60px rgba(242, 53, 53, 0.5); color: #fff; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+
+.servicos-section { padding: 80px 20px 120px; max-width: 1400px; margin: 0 auto; }
+.servicos-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    flex-wrap: wrap; gap: 20px; margin-bottom: 60px; padding-bottom: 25px;
+    border-bottom: 1px solid rgba(242, 53, 53, 0.15);
+}
+.servicos-header-left h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800;
+    text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 8px;
+}
+.servicos-header-left h2 span {
+    background: linear-gradient(135deg, #f23535, #ff6b6b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.servicos-header-left p { color: #888; font-size: 0.95rem; }
+.servicos-count { display: flex; align-items: center; gap: 10px; color: #888; font-size: 0.85rem; }
+.servicos-count strong { font-family: 'Orbitron', sans-serif; color: #f23535; font-size: 1.3rem; }
+
+.cards-container {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+}
+.card-servico {
+    position: relative; border-radius: 24px; overflow: hidden;
+    background: #0a0a0a; cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    aspect-ratio: 4/5; display: block; text-decoration: none; color: inherit;
+    animation: cardIn 0.6s ease both;
+}
+@keyframes cardIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.card-servico::before {
+    content: ''; position: absolute; inset: -2px; border-radius: 24px; padding: 2px;
+    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: ledRotate 4s linear infinite;
+    opacity: 0; transition: opacity 0.4s ease; z-index: 5; pointer-events: none;
+}
+.card-servico:hover::before { opacity: 1; }
+@keyframes ledRotate { 0% { --angle: 0deg; } 100% { --angle: 360deg; } }
+.card-servico:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(242, 53, 53, 0.25);
+}
+.card-servico-img {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card-servico:hover .card-servico-img { transform: scale(1.15); }
+.card-servico-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.95) 100%);
+    z-index: 1;
+}
+.card-servico-icon {
+    position: absolute; top: 25px; left: 25px;
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    border-radius: 18px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; color: #fff;
+    box-shadow: 0 15px 35px rgba(242, 53, 53, 0.5);
+    transform: rotate(-5deg); transition: all 0.4s ease; z-index: 2;
+}
+.card-servico:hover .card-servico-icon { transform: rotate(0deg) scale(1.1); box-shadow: 0 20px 45px rgba(242, 53, 53, 0.7); }
+.card-servico-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 35px 30px; z-index: 2;
+    transform: translateY(20px); transition: transform 0.5s ease;
+}
+.card-servico:hover .card-servico-content { transform: translateY(0); }
+.card-servico-tag {
+    display: inline-block;
+    background: rgba(242, 53, 53, 0.15); border: 1px solid rgba(242, 53, 53, 0.4);
+    color: #f23535; padding: 4px 14px; border-radius: 50px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px;
+}
+.card-servico-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem; font-weight: 800; margin-bottom: 12px;
+    letter-spacing: -0.5px; line-height: 1.2; color: #fff;
+}
+.card-servico-desc {
+    color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 18px;
+    opacity: 0; max-height: 0; transition: all 0.5s ease; overflow: hidden;
+}
+.card-servico:hover .card-servico-desc { opacity: 1; max-height: 100px; }
+.card-servico-arrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: #f23535; font-weight: 700; font-size: 0.85rem;
+    font-family: 'Orbitron', sans-serif; letter-spacing: 1px; text-transform: uppercase;
+    transition: gap 0.3s ease;
+}
+.card-servico:hover .card-servico-arrow { gap: 15px; }
+
+.cta-servicos { padding: 100px 20px; text-align: center; position: relative; overflow: hidden; }
+.cta-card-servicos {
+    max-width: 900px; margin: 0 auto;
+    background: linear-gradient(145deg, rgba(242, 53, 53, 0.08), rgba(201, 31, 44, 0.02));
+    border-radius: 32px; padding: 70px 40px;
+    backdrop-filter: blur(20px); position: relative; overflow: hidden;
+}
+.cta-card-servicos::before {
+    content: ''; position: absolute; inset: -3px; border-radius: 32px; padding: 3px;
+    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: ledRotate 4s linear infinite;
+}
+.cta-card-servicos h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 900; text-transform: uppercase; letter-spacing: -1px;
+    margin-bottom: 15px; position: relative; z-index: 1;
+}
+.cta-card-servicos h2 span {
+    background: linear-gradient(135deg, #f23535, #ff6b6b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.cta-card-servicos p {
+    color: #ccc; font-size: 1.05rem; max-width: 550px;
+    margin: 0 auto 35px; line-height: 1.7; position: relative; z-index: 1;
+}
+.cta-buttons-servicos {
+    display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;
+    position: relative; z-index: 1;
+}
+.btn-cta-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 36px;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; text-decoration: none;
+    font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 35px rgba(242, 53, 53, 0.35);
+}
+.btn-cta-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 25px 55px rgba(242, 53, 53, 0.5); color: #fff; }
+.btn-cta-outline {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 36px;
+    background: rgba(255,255,255,0.03); color: #fff; text-decoration: none;
+    font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.3s ease;
+}
+.btn-cta-outline:hover {
+    background: rgba(242, 53, 53, 0.1); border-color: #f23535;
+    color: #f23535; transform: translateY(-4px);
+}
+
+.footer {
+    background: #0a0a0a; padding: 40px 32px; text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.03); position: relative;
+}
+.footer::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #f23535, #ff6b6b, #f23535, transparent);
+    background-size: 200% 100%; animation: ledMove 3s linear infinite;
+}
+@keyframes ledMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.footer p { color: #555; font-size: 0.75rem; margin: 0; letter-spacing: 0.3px; }
+.footer p a { color: #888; text-decoration: none; transition: 0.2s; }
+.footer p a:hover { color: #f23535; }
+.footer p .sep { color: #333; margin: 0 8px; }
+
+@media (max-width: 768px) {
+    .hero-servicos { padding: 100px 20px 40px; }
+    .servicos-section { padding: 60px 20px 80px; }
+    .servicos-header { flex-direction: column; align-items: flex-start; }
+    .cards-container { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .card-servico { aspect-ratio: 3/4; }
+    .card-servico-content { padding: 25px 20px; }
+    .card-servico-title { font-size: 1.2rem; }
+    .card-servico-icon { width: 50px; height: 50px; font-size: 1.3rem; top: 20px; left: 20px; }
+    .cta-card-servicos { padding: 50px 25px; border-radius: 24px; }
+    .particle { display: none; }
+}
+
+@media (max-width: 480px) {
+    .cards-container { grid-template-columns: 1fr; }
+    .btn-pedido-hero { padding: 16px 30px; font-size: 0.75rem; }
+    .cta-buttons-servicos { flex-direction: column; width: 100%; }
+    .btn-cta-primary, .btn-cta-outline { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-animated"></div>
+<div class="bg-grid"></div>
+<i class="fas fa-car particle"></i>
+<i class="fas fa-motorcycle particle"></i>
+<i class="fas fa-spray-can particle"></i>
+<i class="fas fa-paint-roller particle"></i>
+<i class="fas fa-truck particle"></i>
+
+<header>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle-global" id="menuToggleGlobal" aria-label="Abrir menu" type="button">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="logo">
+            <img src="../../img/logoLOJA.png" alt="Logo DWS">
+        </div>
+    </div>
+    <nav id="navGlobal">
+        <a href="principal.html"><i class="fas fa-home"></i> MENU</a>
+        <a href="servico.html"><i class="fas fa-tools"></i> SERVIÇOS</a>
+        <a href="sobre.html"><i class="fas fa-info-circle"></i> SOBRE NÓS</a>
+        <a href="contato.html"><i class="fas fa-calendar-check"></i> AGENDAR</a>
+    </nav>
+    <div class="icone-user">
+        <img src="../../img/icon.user2.png" id="userIcon" alt="User">
+        <div class="menu-user" id="menuUser">
+            <a href="loginClientes.html">Login</a>
+            <a href="CadastroCliente.html">Cadastro</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero-servicos">
+    <div class="hero-badge-servicos">
+        <i class="fas fa-star"></i>
+        QUALIDADE PREMIUM
+    </div>
+    <h1 class="hero-title-servicos">
+        Nossos <span>Serviços</span>
+    </h1>
+    <p class="hero-subtitle-servicos">
+        Do envelopamento automotivo à personalização de ambientes. Cada projeto recebe atenção total e acabamento profissional.
+    </p>
+    <a href="contato.html" class="btn-pedido-hero">
+        <i class="fas fa-calendar-check"></i>
+        Fazer Pedido
+    </a>
+</section>
+
+<section class="servicos-section">
+    <div class="servicos-header">
+        <div class="servicos-header-left">
+            <h2>O que <span>fazemos</span></h2>
+            <p>Escolha um serviço para saber mais</p>
+        </div>
+        <div class="servicos-count">
+            <i class="fas fa-layer-group"></i>
+            <strong>6</strong> serviços
+        </div>
+    </div>
+
+    <div class="cards-container">
+
+        <a href="contato.html" class="card-servico">
+            <div class="card-servico-img" style="background-image: url('../../img/moto_sedicao.png');"></div>
+            <div class="card-servico-overlay"></div>
+            <div class="card-servico-icon"><i class="fas fa-motorcycle"></i></div>
+            <div class="card-servico-content">
+                <span class="card-servico-tag">Motos</span>
+                <h3 class="card-servico-title">Envelopamento Moto</h3>
+                <p class="card-servico-desc">Personalização completa com acabamento premium. Do design à aplicação.</p>
+                <span class="card-servico-arrow">Agendar <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+
+        <a href="contato.html" class="card-servico">
+            <div class="card-servico-img" style="background-image: url('../../img/bragado_sedicao.webp');"></div>
+            <div class="card-servico-overlay"></div>
+            <div class="card-servico-icon"><i class="fas fa-car"></i></div>
+            <div class="card-servico-content">
+                <span class="card-servico-tag">Carros</span>
+                <h3 class="card-servico-title">Envelopamento Carro</h3>
+                <p class="card-servico-desc">Proteção e estilo em um só serviço. Materiais de alta durabilidade.</p>
+                <span class="card-servico-arrow">Agendar <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+
+        <a href="contato.html" class="card-servico">
+            <div class="card-servico-img" style="background-image: url('../../img/fachada_vidroarte.webp');"></div>
+            <div class="card-servico-overlay"></div>
+            <div class="card-servico-icon"><i class="fas fa-store"></i></div>
+            <div class="card-servico-content">
+                <span class="card-servico-tag">Comercial</span>
+                <h3 class="card-servico-title">Fachadas</h3>
+                <p class="card-servico-desc">Design moderno para sua empresa. Sua marca vista com destaque.</p>
+                <span class="card-servico-arrow">Agendar <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+
+        <a href="contato.html" class="card-servico">
+            <div class="card-servico-img" style="background-image: url('../../img/MotoSuzuki.png');"></div>
+            <div class="card-servico-overlay"></div>
+            <div class="card-servico-icon"><i class="fas fa-tags"></i></div>
+            <div class="card-servico-content">
+                <span class="card-servico-tag">Personalização</span>
+                <h3 class="card-servico-title">Adesivos</h3>
+                <p class="card-servico-desc">Criação personalizada de adesivos com corte de precisão.</p>
+                <span class="card-servico-arrow">Agendar <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+
+        <a href="contato.html" class="card-servico">
+            <div class="card-servico-img" style="background-image: url('../../img/MotoSuzuki.png');"></div>
+            <div class="card-servico-overlay"></div>
+            <div class="card-servico-icon"><i class="fas fa-pen-ruler"></i></div>
+            <div class="card-servico-content">
+                <span class="card-servico-tag">Plotagem</span>
+                <h3 class="card-servico-title">Plotagem</h3>
+                <p class="card-servico-desc">Identidade visual completa para veículos e lojas.</p>
+                <span class="card-servico-arrow">Agendar <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+
+        <a href="contato.html" class="card-servico">
+            <div class="card-servico-img" style="background-image: url('../../img/MotoSuzuki.png');"></div>
+            <div class="card-servico-overlay"></div>
+            <div class="card-servico-icon"><i class="fas fa-couch"></i></div>
+            <div class="card-servico-content">
+                <span class="card-servico-tag">Móveis</span>
+                <h3 class="card-servico-title">Envelopamento Móveis</h3>
+                <p class="card-servico-desc">Renovação e personalização de móveis com acabamento impecável.</p>
+                <span class="card-servico-arrow">Agendar <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<section class="cta-servicos">
+    <div class="cta-card-servicos">
+        <h2>Pronto para <span>começar</span>?</h2>
+        <p>Agende agora seu atendimento e transforme seu projeto com a DWS Envelopamento.</p>
+        <div class="cta-buttons-servicos">
+            <a href="contato.html" class="btn-cta-primary">
+                <i class="fas fa-calendar-check"></i>
+                Agendar Agora
+            </a>
+            <a href="principal.html" class="btn-cta-outline">
+                <i class="fas fa-images"></i>
+                Ver Galeria
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>
+        © 2026 <strong style="color: #f23535;">KRONYX</strong> — Todos os direitos reservados.
+        <span class="sep">•</span>
+        <a href="#">Política de Privacidade</a>
+        <span class="sep">•</span>
+        <a href="#">Termos de Uso</a>
+        <span class="sep">•</span>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#" style="margin-left: 4px;"><i class="fab fa-linkedin"></i></a>
+        <a href="#" style="margin-left: 4px;"><i class="fab fa-whatsapp"></i></a>
+    </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/menu-mobile.js"></script>
+<script src="../../js/menu-user.js"></script>
+<script src="../../js/main.js"></script>
+<script src="../../js/servicos.js"></script>
+
+<script>
+    document.querySelectorAll('.card-servico, .cta-card-servicos').forEach((el, index) => {
+        let angle = 0;
+        const speed = 1.2 + (index % 5) * 0.15;
+        function animate() {
+            angle = (angle + speed) % 360;
+            el.style.setProperty('--angle', angle + 'deg');
+            requestAnimationFrame(animate);
+        }
+        animate();
+    });
+
+    const fotoServico = localStorage.getItem("fotoPerfilDWS");
+    if (fotoServico) {
+        const icon = document.getElementById("userIcon");
+        if (icon) icon.src = fotoServico;
+    }
+
+    function fazerPedido() {
+        const telefone = "5514996175617";
+        const texto = "Olá! Gostaria de fazer um pedido:\nTenho interesse nos serviços da DWS Envelopamento.";
+        const url = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(texto);
+        window.open(url, "_blank");
+    }
+</script>
+
+<script src="../../js/page-transition.js"></script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<meta name="format-detection" content="telephone=no">
+<title>Galeria de Serviços — DWS Envelopamento</title>
+<link rel="icon" type="image/png" href="../../img/logoabas.png">
+<link rel="stylesheet" href="../../css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --primary: #f23535;
+    --primary-dark: #c91f2c;
+    --primary-light: #ff6b6b;
+    --bg-dark: #050505;
+}
+body {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    background: var(--bg-dark); color: #fff;
+    overflow-x: hidden; line-height: 1.6;
+}
+
+.bg-animated {
+    position: fixed; inset: 0; z-index: -2;
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(242, 53, 53, 0.10) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 85%, rgba(242, 53, 53, 0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, #0a0a0a 0%, #000000 100%);
+}
+.bg-grid {
+    position: fixed; inset: 0; z-index: -1;
+    background-image:
+        linear-gradient(rgba(242, 53, 53, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242, 53, 53, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    animation: gridMove 25s linear infinite;
+}
+@keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+
+header {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(242, 53, 53, 0.3) !important;
+}
+
+.hero-loja { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 100px 20px 60px; }
+.hero-loja-bg {
+    position: absolute; inset: 0;
+    background-image: url('../../img/loja.jpg');
+    background-size: cover; background-position: center;
+    filter: brightness(0.35) saturate(1.2); z-index: 1;
+}
+.hero-loja-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.95) 100%);
+}
+.hero-loja-content { position: relative; z-index: 2; max-width: 900px; text-align: center; padding: 40px 30px; }
+.hero-loja-content::before {
+    content: ''; position: absolute; inset: -3px; border-radius: 30px; padding: 3px;
+    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: ledRotate 4s linear infinite; pointer-events: none;
+}
+@keyframes ledRotate { 0% { --angle: 0deg; } 100% { --angle: 360deg; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+.hero-badge-loja {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(242, 53, 53, 0.15); border: 1px solid rgba(242, 53, 53, 0.4);
+    color: #f23535; padding: 10px 24px; border-radius: 50px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px;
+    backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease both;
+}
+.hero-badge-loja i { animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+.hero-loja-content h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900; color: #fff; line-height: 1.05;
+    letter-spacing: -2px; margin-bottom: 25px; text-transform: uppercase;
+    animation: fadeInUp 0.8s ease 0.2s both;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+}
+.hero-loja-content h1 span {
+    background: linear-gradient(135deg, #f23535, #ff6b6b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    display: inline-block;
+}
+.hero-endereco {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px; padding: 25px 40px; margin-top: 20px;
+    animation: fadeInUp 0.8s ease 0.4s both;
+}
+.hero-endereco .tag-novo {
+    display: inline-block;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; padding: 5px 16px; border-radius: 50px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 15px; box-shadow: 0 8px 20px rgba(242, 53, 53, 0.4);
+}
+.hero-endereco .endereco-linha {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    color: #fff; font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;
+}
+.hero-endereco .endereco-linha i { color: #f23535; font-size: 1.3rem; }
+.hero-endereco .endereco-ref { color: #aaa; font-size: 0.9rem; font-style: italic; }
+
+.section-header-galeria { text-align: center; max-width: 900px; margin: 0 auto 70px; padding: 0 20px; }
+.section-tag-galeria {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(242, 53, 53, 0.08); border: 1px solid rgba(242, 53, 53, 0.3);
+    color: #f23535; padding: 8px 22px; border-radius: 50px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px;
+}
+.section-title-galeria {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    font-weight: 900; color: #fff; line-height: 1.1;
+    letter-spacing: -1px; margin-bottom: 20px; text-transform: uppercase;
+}
+.section-title-galeria span {
+    background: linear-gradient(135deg, #f23535, #ff6b6b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.section-desc-galeria { color: #a4a5a6; font-size: 1.05rem; line-height: 1.7; max-width: 600px; margin: 0 auto; }
+
+.filtros-container {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 50px; padding: 0 20px;
+}
+.filtro-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: #ccc; padding: 12px 26px; border-radius: 50px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+.filtro-btn:hover { border-color: #f23535; color: #fff; background: rgba(242, 53, 53, 0.08); transform: translateY(-3px); }
+.filtro-btn.active {
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    border-color: #f23535; color: #fff;
+    box-shadow: 0 10px 30px rgba(242, 53, 53, 0.4);
+    transform: translateY(-3px);
+}
+
+.galeria-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 20px 100px; }
+.galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
+
+.galeria-card {
+    position: relative; border-radius: 24px; overflow: hidden;
+    background: #0a0a0a; cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    aspect-ratio: 4/5;
+}
+.galeria-card::before {
+    content: ''; position: absolute; inset: -2px; border-radius: 24px; padding: 2px;
+    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: ledRotate 4s linear infinite;
+    opacity: 0; transition: opacity 0.4s ease; z-index: 5; pointer-events: none;
+}
+.galeria-card:hover::before { opacity: 1; }
+.galeria-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(242, 53, 53, 0.25);
+}
+.galeria-card-img {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.galeria-card:hover .galeria-card-img { transform: scale(1.15); }
+.galeria-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0.95) 100%);
+    z-index: 1;
+}
+.galeria-card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 35px 30px; z-index: 2;
+    transform: translateY(25px); transition: transform 0.5s ease;
+}
+.galeria-card:hover .galeria-card-content { transform: translateY(0); }
+.galeria-card-tipo {
+    display: inline-block;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; padding: 5px 16px; border-radius: 50px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 15px; box-shadow: 0 8px 20px rgba(242, 53, 53, 0.4);
+}
+.galeria-card-titulo {
+    font-family: 'Orbitron', sans-serif; color: #fff;
+    font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2;
+}
+.galeria-card-desc {
+    color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 18px;
+    opacity: 0; max-height: 0; transition: all 0.5s ease; overflow: hidden;
+}
+.galeria-card:hover .galeria-card-desc { opacity: 1; max-height: 100px; }
+.galeria-card-info {
+    display: flex; align-items: center; gap: 12px;
+    color: #888; font-size: 0.8rem; padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.galeria-card-info i { color: #f23535; }
+
+.empty-galeria { grid-column: 1 / -1; text-align: center; padding: 100px 20px; color: #555; }
+.empty-galeria i { font-size: 5rem; color: rgba(242, 53, 53, 0.15); margin-bottom: 25px; display: block; }
+.empty-galeria h3 {
+    font-family: 'Orbitron', sans-serif; color: #888;
+    font-size: 1.2rem; margin-bottom: 10px;
+    text-transform: uppercase; letter-spacing: 2px;
+}
+.empty-galeria p { color: #666; font-size: 0.95rem; }
+
+.cta-galeria { padding: 120px 20px; text-align: center; position: relative; overflow: hidden; }
+.cta-galeria-card {
+    position: relative; max-width: 900px; margin: 0 auto;
+    background: linear-gradient(145deg, rgba(242, 53, 53, 0.08), rgba(201, 31, 44, 0.02));
+    border-radius: 32px; padding: 80px 50px;
+    backdrop-filter: blur(20px); overflow: hidden;
+}
+.cta-galeria-card::before {
+    content: ''; position: absolute; inset: -3px; border-radius: 32px; padding: 3px;
+    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: ledRotate 4s linear infinite;
+}
+.cta-galeria-card h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900; color: #fff; margin-bottom: 20px;
+    letter-spacing: -1px; text-transform: uppercase;
+    position: relative; z-index: 1;
+}
+.cta-galeria-card h2 span {
+    background: linear-gradient(135deg, #f23535, #ff6b6b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.cta-galeria-card p {
+    color: #ccc; font-size: 1.05rem; max-width: 550px;
+    margin: 0 auto 40px; line-height: 1.7;
+    position: relative; z-index: 1;
+}
+.btn-cta-galeria {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 20px 45px;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; text-decoration: none;
+    font-family: 'Orbitron', sans-serif; font-weight: 700;
+    font-size: 0.9rem; letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 14px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 35px rgba(242, 53, 53, 0.35);
+    z-index: 1; overflow: hidden;
+}
+.btn-cta-galeria::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+.btn-cta-galeria:hover::before { left: 100%; }
+.btn-cta-galeria:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 25px 55px rgba(242, 53, 53, 0.5); color: #fff; }
+
+.footer {
+    background: #0a0a0a; padding: 40px 32px; text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.03); position: relative;
+}
+.footer::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #f23535, #ff6b6b, #f23535, transparent);
+    background-size: 200% 100%; animation: ledMove 3s linear infinite;
+}
+@keyframes ledMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.footer p { color: #555; font-size: 0.75rem; margin: 0; letter-spacing: 0.3px; }
+.footer p a { color: #888; text-decoration: none; transition: 0.2s; }
+.footer p a:hover { color: #f23535; }
+.footer p .sep { color: #333; margin: 0 8px; }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+    .hero-loja-content { padding: 30px 20px; }
+    .hero-endereco { padding: 20px 25px; }
+    .hero-endereco .endereco-linha { font-size: 1rem; }
+    .galeria-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .galeria-card { aspect-ratio: 3/4; }
+    .cta-galeria-card { padding: 55px 30px; border-radius: 24px; }
+    .filtros-container { gap: 8px; }
+    .filtro-btn { padding: 10px 18px; font-size: 0.7rem; }
+}
+@media (max-width: 480px) {
+    .galeria-grid { grid-template-columns: 1fr; }
+    .hero-endereco .endereco-linha { flex-direction: column; gap: 5px; font-size: 0.95rem; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-animated"></div>
+<div class="bg-grid"></div>
+
+<header>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle-global" id="menuToggleGlobal" aria-label="Abrir menu" type="button">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="logo">
+            <img src="../../img/logoLOJA.png" alt="Logo DWS">
+        </div>
+    </div>
+    <nav id="navGlobal">
+        <a href="principal.html"><i class="fas fa-home"></i> MENU</a>
+        <a href="servico.html"><i class="fas fa-tools"></i> SERVIÇOS</a>
+        <a href="sobre.html"><i class="fas fa-info-circle"></i> SOBRE NÓS</a>
+        <a href="contato.html"><i class="fas fa-calendar-check"></i> AGENDAR</a>
+    </nav>
+    <div class="icone-user">
+        <img src="../../img/icon.user2.png" id="userIcon" alt="User">
+        <div class="menu-user" id="menuUser">
+            <a href="loginClientes.html">Login</a>
+            <a href="CadastroCliente.html">Cadastro</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero-loja">
+    <div class="hero-loja-bg"></div>
+    <div class="hero-loja-content">
+        <div class="hero-badge-loja">
+            <i class="fas fa-map-marker-alt"></i>
+            NOVO ENDEREÇO
+        </div>
+        <h1>
+            BEM-VINDO À<br>
+            <span>DWS ENVELOPAMENTOS</span>
+        </h1>
+        <div class="hero-endereco">
+            <div class="tag-novo">✨ AGORA EM NOVO ENDEREÇO</div>
+            <div class="endereco-linha">
+                <i class="fas fa-location-dot"></i>
+                <span>Av. Ver. Milton Spínola, nº 931</span>
+            </div>
+            <div class="endereco-ref">Passando a pousada Manacá</div>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 100px 0 0;">
+    <div class="section-header-galeria reveal">
+        <div class="section-tag-galeria">
+            <i class="fas fa-images"></i>
+            NOSSOS TRABALHOS
+        </div>
+        <h2 class="section-title-galeria">
+            GALERIA DE <span>SERVIÇOS</span>
+        </h2>
+        <p class="section-desc-galeria">
+            Veja alguns dos nossos trabalhos mais recentes. Cada projeto é único.
+        </p>
+    </div>
+
+    <div class="filtros-container reveal">
+        <button class="filtro-btn active" data-tipo="todos"><i class="fas fa-th"></i> Todos</button>
+        <button class="filtro-btn" data-tipo="carro"><i class="fas fa-car"></i> Carros</button>
+        <button class="filtro-btn" data-tipo="moto"><i class="fas fa-motorcycle"></i> Motos</button>
+        <button class="filtro-btn" data-tipo="caminhao"><i class="fas fa-truck"></i> Caminhões</button>
+        <button class="filtro-btn" data-tipo="aquatico"><i class="fas fa-ship"></i> Aquáticos</button>
+        <button class="filtro-btn" data-tipo="mobilia"><i class="fas fa-couch"></i> Mobília</button>
+    </div>
+
+    <div class="galeria-wrapper">
+        <div class="galeria-grid" id="galeriaGrid">
+            <div class="empty-galeria">
+                <i class="fas fa-spinner fa-spin"></i>
+                <h3>Carregando galeria...</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-galeria">
+    <div class="cta-galeria-card reveal">
+        <h2>GOSTOU DO NOSSO <span>TRABALHO</span>?</h2>
+        <p>Agende agora seu atendimento e transforme seu veículo com a DWS Envelopamento.</p>
+        <a href="contato.html" class="btn-cta-galeria">
+            <i class="fas fa-calendar-check"></i>
+            AGENDAR AGORA
+        </a>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>
+        © 2026 <strong style="color: #f23535;">KRONYX</strong> — Todos os direitos reservados.
+        <span class="sep">•</span>
+        <a href="#">Política de Privacidade</a>
+        <span class="sep">•</span>
+        <a href="#">Termos de Uso</a>
+        <span class="sep">•</span>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#" style="margin-left: 4px;"><i class="fab fa-linkedin"></i></a>
+        <a href="#" style="margin-left: 4px;"><i class="fab fa-whatsapp"></i></a>
+    </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/menu-mobile.js"></script>
+<script src="../../js/menu-user.js"></script>
+<script src="../../js/main.js"></script>
+<script src="../../js/servicos.js"></script>
+
+<script>
+document.querySelectorAll('.galeria-card, .hero-loja-content, .cta-galeria-card').forEach((el, index) => {
+    let angle = 0;
+    const speed = 1.2 + (index % 5) * 0.15;
+    function animate() {
+        angle = (angle + speed) % 360;
+        el.style.setProperty('--angle', angle + 'deg');
+        requestAnimationFrame(animate);
+    }
+    animate();
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+let galeriaCompleta = [];
+let filtroAtual = 'todos';
+
+async function carregarGaleria() {
+    const grid = document.getElementById('galeriaGrid');
+    try {
+        const res = await fetch('../../PHP/Clientes/galeria.php', { credentials: 'include', cache: 'no-store' });
+        const data = await res.json();
+        if (data.status === 'sucesso' && data.items && data.items.length > 0) {
+            galeriaCompleta = data.items;
+            renderizarGaleria();
+        } else {
+            grid.innerHTML = `<div class="empty-galeria"><i class="fas fa-images"></i><h3>Nenhum trabalho ainda</h3><p>Em breve adicionaremos nossos trabalhos mais recentes.</p></div>`;
+        }
+    } catch (e) {
+        grid.innerHTML = `<div class="empty-galeria"><i class="fas fa-exclamation-triangle"></i><h3>Erro ao carregar</h3><p>Verifique sua conexão e tente novamente.</p></div>`;
+    }
+}
+
+function renderizarGaleria() {
+    const grid = document.getElementById('galeriaGrid');
+    let items = galeriaCompleta;
+    if (filtroAtual !== 'todos') items = items.filter(i => i.tipo === filtroAtual);
+    if (items.length === 0) {
+        grid.innerHTML = `<div class="empty-galeria"><i class="fas fa-search"></i><h3>Nenhum item nesta categoria</h3><p>Tente selecionar outra categoria.</p></div>`;
+        return;
+    }
+    grid.innerHTML = items.map((item, index) => `
+        <div class="galeria-card reveal" style="transition-delay: ${index * 0.05}s">
+            <div class="galeria-card-img" style="background-image: url('../../${item.imagem}');"></div>
+            <div class="galeria-card-overlay"></div>
+            <div class="galeria-card-content">
+                <span class="galeria-card-tipo">${traduzirTipo(item.tipo)}</span>
+                <h3 class="galeria-card-titulo">${escapeHtml(item.titulo)}</h3>
+                ${item.descricao ? `<p class="galeria-card-desc">${escapeHtml(item.descricao)}</p>` : ''}
+                <div class="galeria-card-info">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>${formatarData(item.criado_em)}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    grid.querySelectorAll('.galeria-card').forEach((el, index) => {
+        let angle = 0;
+        const speed = 1.2 + (index % 5) * 0.15;
+        function animate() {
+            angle = (angle + speed) % 360;
+            el.style.setProperty('--angle', angle + 'deg');
+            requestAnimationFrame(animate);
+        }
+        animate();
+    });
+}
+
+function traduzirTipo(tipo) {
+    const map = { 'carro': 'Carro', 'moto': 'Moto', 'caminhao': 'Caminhão', 'aquatico': 'Aquático', 'mobilia': 'Mobília' };
+    return map[tipo] || tipo;
+}
+function formatarData(dataStr) {
+    if (!dataStr) return '—';
+    try {
+        const d = new Date(dataStr.replace(' ', 'T'));
+        return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch (e) { return dataStr; }
+}
+function escapeHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto;
+    return div.innerHTML;
+}
+
+document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        filtroAtual = this.dataset.tipo;
+        renderizarGaleria();
+    });
+});
+
+const foto = localStorage.getItem('fotoPerfilDWS');
+if (foto) document.getElementById('userIcon').src = foto;
+
+document.addEventListener('DOMContentLoaded', carregarGaleria);
+</script>
+
+<script src="../../js/page-transition.js"></script>
+</body>
+</html>

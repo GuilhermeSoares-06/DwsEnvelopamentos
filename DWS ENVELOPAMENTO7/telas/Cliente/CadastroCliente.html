@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Cadastro - DWS Envelopamento</title>
+<link rel="icon" type="image/png" href="../../img/logoabas.png">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #050505;
+        background-image:
+            radial-gradient(ellipse at top left, rgba(242, 53, 53, 0.10) 0%, transparent 50%),
+            radial-gradient(ellipse at bottom right, rgba(242, 53, 53, 0.06) 0%, transparent 50%);
+        background-attachment: fixed;
+        margin: 0;
+        padding: 20px;
+        font-family: 'Space Grotesk', sans-serif;
+        overflow-x: hidden;
+    }
+
+    .bg-grid {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image:
+            linear-gradient(rgba(242, 53, 53, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(242, 53, 53, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+        -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+        animation: gridMove 25s linear infinite;
+    }
+    @keyframes gridMove {
+        0% { background-position: 0 0; }
+        100% { background-position: 60px 60px; }
+    }
+
+    .cadastro-box {
+        width: 520px;
+        max-width: 100%;
+        background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(10, 10, 10, 0.98));
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 45px 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cadastro-box::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 30px;
+        padding: 2px;
+        background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: ledRotate 4s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes ledRotate {
+        0% { --angle: 0deg; }
+        100% { --angle: 360deg; }
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(40px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .btn-voltar {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #aaa;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.3s;
+        padding: 8px 14px;
+        border-radius: 10px;
+        font-family: inherit;
+        z-index: 2;
+    }
+    .btn-voltar:hover {
+        color: #f23535;
+        border-color: rgba(242, 53, 53, 0.4);
+        background: rgba(242, 53, 53, 0.08);
+        transform: translateX(-3px);
+    }
+
+    .cadastro-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #f23535, #c91f2c);
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 15px auto 22px;
+        font-size: 2.2rem;
+        color: #fff;
+        box-shadow: 0 20px 50px rgba(242,53,53,0.4);
+        transform: rotate(-5deg);
+        animation: floatIcon 3s ease-in-out infinite;
+    }
+    @keyframes floatIcon {
+        0%, 100% { transform: rotate(-5deg) translateY(0); }
+        50% { transform: rotate(-5deg) translateY(-8px); }
+    }
+
+    .cadastro-header { margin-bottom: 25px; }
+
+    .cadastro-header h2 {
+        color: #fff;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+    }
+
+    .cadastro-header p { color: #888; font-size: 0.9rem; }
+
+    .form-section {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+    .form-section-title {
+        color: #f23535;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(242, 53, 53, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-row.cep { grid-template-columns: 130px 1fr; }
+
+    .input-box {
+        position: relative;
+        margin-bottom: 12px;
+        width: 100%;
+    }
+    .input-box .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+        font-size: 0.9rem;
+        transition: 0.3s;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .input-box input {
+        width: 100%;
+        padding: 14px 16px 14px 44px;
+        border: 2px solid rgba(255,255,255,0.08);
+        outline: none;
+        font-size: 0.9rem;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.02);
+        color: #fff;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+    .input-box input::placeholder { color: #555; font-weight: 400; }
+    .input-box input:focus {
+        border-color: #f23535;
+        background: rgba(242,53,53,0.03);
+        box-shadow: 0 0 0 4px rgba(242, 53, 53, 0.1);
+    }
+    .input-box input:focus ~ .input-icon { color: #f23535; }
+    .input-box input:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .input-box input.cep-loading {
+        background-image: linear-gradient(90deg, transparent, rgba(242,53,53,0.1), transparent);
+        background-size: 200% 100%;
+        animation: cepLoading 1.5s linear infinite;
+    }
+    @keyframes cepLoading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    .input-box input.cep-sucesso {
+        border-color: rgba(76, 175, 80, 0.5);
+    }
+
+    .input-box input.senha-erro {
+        border-color: rgba(244, 67, 54, 0.6);
+        background: rgba(244, 67, 54, 0.05);
+    }
+    .input-box input.senha-ok {
+        border-color: rgba(76, 175, 80, 0.6);
+        background: rgba(76, 175, 80, 0.05);
+    }
+
+    .senha-forca {
+        display: flex;
+        gap: 4px;
+        margin-top: 6px;
+        margin-bottom: 4px;
+    }
+    .senha-forca-bar {
+        flex: 1;
+        height: 4px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 4px;
+        transition: 0.3s;
+    }
+    .senha-forca-bar.fraca { background: #f44336; }
+    .senha-forca-bar.media { background: #FF9800; }
+    .senha-forca-bar.boa { background: #2196F3; }
+    .senha-forca-bar.forte { background: #4CAF50; }
+
+    .senha-forca-texto {
+        font-size: 0.72rem;
+        color: #888;
+        text-align: left;
+        margin-bottom: 4px;
+        padding-left: 4px;
+        min-height: 16px;
+    }
+    .senha-forca-texto.fraca { color: #f44336; }
+    .senha-forca-texto.media { color: #FF9800; }
+    .senha-forca-texto.boa { color: #2196F3; }
+    .senha-forca-texto.forte { color: #4CAF50; }
+
+    .senha-requisitos {
+        text-align: left;
+        font-size: 0.72rem;
+        color: #888;
+        padding: 10px 14px;
+        background: rgba(255,255,255,0.02);
+        border-radius: 10px;
+        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 12px;
+    }
+    .senha-requisitos .req {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.3s;
+    }
+    .senha-requisitos .req i {
+        font-size: 0.65rem;
+        color: #555;
+        transition: 0.3s;
+    }
+    .senha-requisitos .req.ok {
+        color: #4CAF50;
+    }
+    .senha-requisitos .req.ok i {
+        color: #4CAF50;
+    }
+
+    .msg-confirmar {
+        font-size: 0.72rem;
+        margin-top: -8px;
+        margin-bottom: 12px;
+        padding-left: 4px;
+        min-height: 16px;
+        text-align: left;
+    }
+    .msg-confirmar.ok { color: #4CAF50; }
+    .msg-confirmar.erro { color: #f44336; }
+
+    .btn-cadastro {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #f23535, #c91f2c);
+        color: white;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 8px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(242,53,53,0.3);
+    }
+    .btn-cadastro::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+        transition: left 0.6s ease;
+    }
+    .btn-cadastro:hover:not(:disabled)::before { left: 100%; }
+    .btn-cadastro:hover:not(:disabled) {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 25px 55px rgba(242,53,53,0.5);
+    }
+    .btn-cadastro:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        background: linear-gradient(135deg, #444, #333);
+    }
+
+    .cadastro-footer {
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        color: #777;
+        font-size: 0.85rem;
+    }
+    .cadastro-footer a {
+        color: #f23535;
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+    .cadastro-footer a:hover { color: #ff6b6b; text-decoration: underline; }
+
+    @media (max-width: 500px) {
+        html, body { padding: 12px; }
+        .cadastro-box { padding: 35px 22px; border-radius: 24px; }
+        .cadastro-icon { width: 65px; height: 65px; font-size: 1.8rem; margin: 10px auto 18px; }
+        .cadastro-header h2 { font-size: 1.2rem; }
+        .form-row { grid-template-columns: 1fr; }
+        .form-row.cep { grid-template-columns: 100px 1fr; }
+        .input-box input { padding: 13px 14px 13px 42px; font-size: 0.88rem; }
+        .btn-cadastro { font-size: 0.8rem; padding: 14px; }
+        .btn-voltar { top: 15px; left: 15px; padding: 6px 10px; font-size: 0.75rem; }
+    }
+</style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <div class="cadastro-box">
+        <button class="btn-voltar" onclick="sair()" type="button">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </button>
+
+        <div class="cadastro-icon">
+            <i class="fas fa-user-plus"></i>
+        </div>
+
+        <div class="cadastro-header">
+            <h2>Criar Conta</h2>
+            <p>Preencha seus dados para começar</p>
+        </div>
+
+        <form action="../../PHP/Clientes/CadastroCliente.php" method="POST" autocomplete="off" id="formCadastro">
+
+            <!-- DADOS PESSOAIS -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-user"></i> Dados Pessoais
+                </div>
+
+                <div class="input-box">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" name="nome" id="nome" placeholder="NOME COMPLETO" required maxlength="100">
+                </div>
+
+                <div class="input-box">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" name="email" id="email" placeholder="E-MAIL" required maxlength="150">
+                </div>
+
+                <div class="input-box">
+                    <i class="fas fa-id-card input-icon"></i>
+                    <input type="text" name="cpf" id="cpf" placeholder="CPF (000.000.000-00)" required maxlength="14" inputmode="numeric">
+                </div>
+
+                <div class="input-box">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input type="text" name="telefone" id="telefone" placeholder="TELEFONE (14) 99999-9999" required maxlength="15" inputmode="numeric">
+                </div>
+            </div>
+
+            <!-- ENDEREÇO -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-map-marker-alt"></i> Endereço
+                </div>
+
+                <div class="form-row cep">
+                    <div class="input-box">
+                        <i class="fas fa-mail-bulk input-icon"></i>
+                        <input type="text" name="cep" id="cep" placeholder="CEP" maxlength="9" inputmode="numeric" required>
+                    </div>
+                    <div class="input-box">
+                        <i class="fas fa-map input-icon"></i>
+                        <input type="text" name="rua" id="rua" placeholder="RUA / AVENIDA" required maxlength="150">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-box">
+                        <i class="fas fa-hashtag input-icon"></i>
+                        <input type="text" name="numero" id="numero" placeholder="NÚMERO" required maxlength="10">
+                    </div>
+                    <div class="input-box">
+                        <i class="fas fa-building input-icon"></i>
+                        <input type="text" name="complemento" id="complemento" placeholder="COMPLEMENTO (opcional)" maxlength="50">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-box">
+                        <i class="fas fa-city input-icon"></i>
+                        <input type="text" name="bairro" id="bairro" placeholder="BAIRRO" required maxlength="100">
+                    </div>
+                    <div class="input-box">
+                        <i class="fas fa-globe input-icon"></i>
+                        <input type="text" name="cidade" id="cidade" placeholder="CIDADE" required maxlength="100">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-box">
+                        <i class="fas fa-flag input-icon"></i>
+                        <input type="text" name="estado" id="estado" placeholder="ESTADO (UF)" required maxlength="2" style="text-transform: uppercase;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SENHA -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-lock"></i> Segurança
+                </div>
+
+                <div class="input-box">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" name="Senha" id="senha" placeholder="SENHA" autocomplete="new-password" required>
+                </div>
+
+                <div class="senha-forca">
+                    <div class="senha-forca-bar" id="bar1"></div>
+                    <div class="senha-forca-bar" id="bar2"></div>
+                    <div class="senha-forca-bar" id="bar3"></div>
+                    <div class="senha-forca-bar" id="bar4"></div>
+                </div>
+                <div class="senha-forca-texto" id="senhaForcaTexto"></div>
+
+                <div class="senha-requisitos">
+                    <div class="req" id="req-maiuscula"><i class="fas fa-circle"></i> Letra maiúscula</div>
+                    <div class="req" id="req-minuscula"><i class="fas fa-circle"></i> Letra minúscula</div>
+                    <div class="req" id="req-numero"><i class="fas fa-circle"></i> Número</div>
+                    <div class="req" id="req-especial"><i class="fas fa-circle"></i> Caractere especial</div>
+                    <div class="req" id="req-tamanho"><i class="fas fa-circle"></i> Mín. 8 caracteres</div>
+                </div>
+
+                <!-- CONFIRMAR SENHA -->
+                <div class="input-box">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" name="Senha2" id="senha2" placeholder="CONFIRMAR SENHA" autocomplete="new-password" required>
+                </div>
+                <div class="msg-confirmar" id="msgConfirmar"></div>
+            </div>
+
+            <!-- BOTÃO COMEÇA DESABILITADO -->
+            <button type="submit" class="btn-cadastro" id="btnCadastrar" disabled>
+                <i class="fas fa-user-plus"></i> CADASTRAR
+            </button>
+        </form>
+
+        <div class="cadastro-footer">
+            Já tem uma conta?<a href="loginClientes.html">Entrar</a>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // SAIR
+        // =============================================
+        function sair() {
+            if (history.length > 1) {
+                history.back();
+            } else {
+                window.location.href = 'principal.html';
+            }
+        }
+
+        // =============================================
+        // MÁSCARA DE CPF
+        // =============================================
+        const campoCpf = document.getElementById('cpf');
+        if (campoCpf) {
+            campoCpf.addEventListener('input', function(e) {
+                let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+                v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = v;
+            });
+        }
+
+        // =============================================
+        // MÁSCARA DE TELEFONE
+        // =============================================
+        const campoTelefone = document.getElementById('telefone');
+        if (campoTelefone) {
+            campoTelefone.addEventListener('input', function(e) {
+                let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+                if (v.length > 10) {
+                    v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+                } else if (v.length > 6) {
+                    v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+                } else if (v.length > 2) {
+                    v = v.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2');
+                } else if (v.length > 0) {
+                    v = v.replace(/^(\d{0,2}).*/, '($1');
+                }
+                e.target.value = v;
+            });
+        }
+
+        // =============================================
+        // CEP AUTOMÁTICO
+        // =============================================
+        const campoCep = document.getElementById('cep');
+        if (campoCep) {
+            campoCep.addEventListener('input', function(e) {
+                let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+                if (v.length > 5) v = v.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+                e.target.value = v;
+                if (v.replace(/\D/g, '').length === 8) buscarCep(v.replace(/\D/g, ''));
+            });
+
+            campoCep.addEventListener('blur', function(e) {
+                const cep = e.target.value.replace(/\D/g, '');
+                if (cep.length === 8) buscarCep(cep);
+            });
+        }
+
+        async function buscarCep(cep) {
+            const inputCep = document.getElementById('cep');
+            inputCep.classList.add('cep-loading');
+
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await res.json();
+
+                if (data.erro) {
+                    inputCep.classList.remove('cep-loading', 'cep-sucesso');
+                    alert('❌ CEP não encontrado.');
+                    return;
+                }
+
+                if (data.logradouro) document.getElementById('rua').value = data.logradouro;
+                if (data.bairro) document.getElementById('bairro').value = data.bairro;
+                if (data.localidade) document.getElementById('cidade').value = data.localidade;
+                if (data.uf) document.getElementById('estado').value = data.uf;
+
+                inputCep.classList.remove('cep-loading');
+                inputCep.classList.add('cep-sucesso');
+                document.getElementById('numero').focus();
+
+                // Revalida o botão
+                validarTudo();
+            } catch (e) {
+                console.error(e);
+                inputCep.classList.remove('cep-loading', 'cep-sucesso');
+                alert('❌ Erro ao buscar CEP.');
+            }
+        }
+
+        // =============================================
+        // FORÇA DA SENHA
+        // =============================================
+        const campoSenha = document.getElementById('senha');
+        if (campoSenha) {
+            campoSenha.addEventListener('input', function() {
+                const senha = this.value;
+
+                const temMaiuscula = /[A-Z]/.test(senha);
+                const temMinuscula = /[a-z]/.test(senha);
+                const temNumero = /[0-9]/.test(senha);
+                const temEspecial = /[^A-Za-z0-9]/.test(senha);
+                const temTamanho = senha.length >= 8;
+
+                atualizarRequisito('req-maiuscula', temMaiuscula);
+                atualizarRequisito('req-minuscula', temMinuscula);
+                atualizarRequisito('req-numero', temNumero);
+                atualizarRequisito('req-especial', temEspecial);
+                atualizarRequisito('req-tamanho', temTamanho);
+
+                let pontos = 0;
+                if (temMaiuscula) pontos++;
+                if (temMinuscula) pontos++;
+                if (temNumero) pontos++;
+                if (temEspecial) pontos++;
+                if (temTamanho) pontos++;
+
+                const barras = [
+                    document.getElementById('bar1'),
+                    document.getElementById('bar2'),
+                    document.getElementById('bar3'),
+                    document.getElementById('bar4'),
+                ];
+                barras.forEach(b => b.className = 'senha-forca-bar');
+
+                let nivel = '';
+                let texto = '';
+
+                if (senha.length === 0) {
+                    texto = '';
+                } else if (pontos <= 2) {
+                    nivel = 'fraca'; texto = '🔴 Senha fraca';
+                    barras[0].classList.add('fraca');
+                } else if (pontos === 3) {
+                    nivel = 'media'; texto = '🟠 Senha média';
+                    barras[0].classList.add('media'); barras[1].classList.add('media');
+                } else if (pontos === 4) {
+                    nivel = 'boa'; texto = '🔵 Senha boa';
+                    barras[0].classList.add('boa'); barras[1].classList.add('boa'); barras[2].classList.add('boa');
+                } else {
+                    nivel = 'forte'; texto = '🟢 Senha forte';
+                    barras.forEach(b => b.classList.add('forte'));
+                }
+
+                const textEl = document.getElementById('senhaForcaTexto');
+                textEl.textContent = texto;
+                textEl.className = 'senha-forca-texto ' + nivel;
+
+                validarTudo();
+            });
+        }
+
+        function atualizarRequisito(id, ok) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (ok) {
+                el.classList.add('ok');
+                el.querySelector('i').className = 'fas fa-check-circle';
+            } else {
+                el.classList.remove('ok');
+                el.querySelector('i').className = 'fas fa-circle';
+            }
+        }
+
+        // =============================================
+        // VALIDAÇÃO GERAL — HABILITA/DESABILITA O BOTÃO
+        // =============================================
+        function validarTudo() {
+            const nome       = document.getElementById('nome')?.value.trim() || '';
+            const email      = document.getElementById('email')?.value.trim() || '';
+            const cpf        = document.getElementById('cpf')?.value.replace(/\D/g, '') || '';
+            const telefone   = document.getElementById('telefone')?.value.replace(/\D/g, '') || '';
+            const cep        = document.getElementById('cep')?.value.replace(/\D/g, '') || '';
+            const rua        = document.getElementById('rua')?.value.trim() || '';
+            const numero     = document.getElementById('numero')?.value.trim() || '';
+            const bairro     = document.getElementById('bairro')?.value.trim() || '';
+            const cidade     = document.getElementById('cidade')?.value.trim() || '';
+            const estado     = document.getElementById('estado')?.value.trim() || '';
+            const senha      = document.getElementById('senha')?.value || '';
+            const senha2     = document.getElementById('senha2')?.value || '';
+
+            // Requisitos da senha
+            const temMaiuscula = /[A-Z]/.test(senha);
+            const temMinuscula = /[a-z]/.test(senha);
+            const temNumero    = /[0-9]/.test(senha);
+            const temEspecial  = /[^A-Za-z0-9]/.test(senha);
+            const temTamanho   = senha.length >= 8;
+            const senhaForte   = temMaiuscula && temMinuscula && temNumero && temEspecial && temTamanho;
+
+            // Feedback visual da confirmação
+            const msg = document.getElementById('msgConfirmar');
+            const input2 = document.getElementById('senha2');
+            if (msg && input2) {
+                if (!senha2) {
+                    msg.textContent = '';
+                    msg.className = 'msg-confirmar';
+                    input2.classList.remove('senha-erro', 'senha-ok');
+                } else if (senha === senha2) {
+                    msg.textContent = '✅ Senhas conferem';
+                    msg.className = 'msg-confirmar ok';
+                    input2.classList.remove('senha-erro');
+                    input2.classList.add('senha-ok');
+                } else {
+                    msg.textContent = '❌ Senhas não conferem';
+                    msg.className = 'msg-confirmar erro';
+                    input2.classList.remove('senha-ok');
+                    input2.classList.add('senha-erro');
+                }
+            }
+
+            // Verifica se TUDO está preenchido e válido
+            const tudoPreenchido =
+                nome.length >= 3 &&
+                email.includes('@') && email.includes('.') &&
+                cpf.length === 11 &&
+                telefone.length >= 10 &&
+                cep.length === 8 &&
+                rua &&
+                numero &&
+                bairro &&
+                cidade &&
+                estado.length === 2 &&
+                senhaForte &&
+                senha === senha2 && senha2.length > 0;
+
+            // Habilita/desabilita o botão
+            const btn = document.getElementById('btnCadastrar');
+            if (btn) btn.disabled = !tudoPreenchido;
+
+            return tudoPreenchido;
+        }
+
+        // =============================================
+        // RODAR VALIDAÇÃO EM TODOS OS CAMPOS
+        // =============================================
+        document.querySelectorAll('#formCadastro input').forEach(input => {
+            input.addEventListener('input', validarTudo);
+            input.addEventListener('change', validarTudo);
+            input.addEventListener('blur', validarTudo);
+        });
+
+        // Roda uma vez ao carregar
+        setTimeout(validarTudo, 100);
+
+        // =============================================
+        // SUBMIT — DUPLA CHECAGEM
+        // =============================================
+        const formCadastro = document.getElementById('formCadastro');
+        if (formCadastro) {
+            formCadastro.addEventListener('submit', function(e) {
+                if (!validarTudo()) {
+                    e.preventDefault();
+                    alert('⚠️ Preencha todos os campos corretamente antes de cadastrar.');
+                    return;
+                }
+
+                const btn = document.getElementById('btnCadastrar');
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CADASTRANDO...';
+                    btn.disabled = true;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
