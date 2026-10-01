@@ -1,0 +1,210 @@
+/* =============================================
+   page-transition.css — Animação de envelopamento
+   ============================================= */
+
+.dws-pt-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    pointer-events: none;
+    overflow: hidden;
+    visibility: hidden;
+    font-family: 'Orbitron', 'Inter', sans-serif;
+}
+
+.dws-pt-overlay.dws-pt-saindo,
+.dws-pt-overlay.dws-pt-entrando {
+    visibility: visible;
+    pointer-events: all;
+}
+
+.dws-pt-faixa {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f23535 0%, #c91f2c 50%, #a01824 100%);
+    box-shadow: 0 0 60px rgba(242, 53, 53, 0.6);
+    transition: left 0.55s cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+.dws-pt-overlay.dws-pt-saindo .dws-pt-faixa { left: 0%; }
+
+.dws-pt-linha-corte {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.9) 20%,
+        #ffffff 50%,
+        rgba(255, 255, 255, 0.9) 80%,
+        transparent 100%);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(242, 53, 53, 0.6);
+    transition: left 0.55s cubic-bezier(0.85, 0, 0.15, 1);
+    z-index: 2;
+}
+
+.dws-pt-overlay.dws-pt-saindo .dws-pt-linha-corte { left: 0%; }
+
+.dws-pt-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    transition: opacity 0.3s ease 0.3s;
+    z-index: 1;
+}
+
+.dws-pt-overlay.dws-pt-saindo .dws-pt-grid { opacity: 1; }
+
+.dws-pt-carro {
+    position: absolute;
+    top: 50%;
+    left: -15%;
+    transform: translateY(-50%);
+    font-size: 5rem;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.dws-pt-overlay.dws-pt-saindo .dws-pt-carro {
+    animation: dwsCarroPasseio 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+@keyframes dwsCarroPasseio {
+    0% { opacity: 0; left: -15%; transform: translateY(-50%) rotate(-3deg); }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; left: 110%; transform: translateY(-50%) rotate(3deg); }
+}
+
+.dws-pt-carro .dws-pt-rastro {
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    width: 200px;
+    height: 4px;
+    background: linear-gradient(270deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    transform: translateY(-50%);
+    border-radius: 2px;
+    filter: blur(1px);
+}
+
+.dws-pt-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.4s ease 0.4s, transform 0.4s ease 0.4s;
+    z-index: 4;
+    text-align: center;
+}
+
+.dws-pt-overlay.dws-pt-saindo .dws-pt-logo {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.dws-pt-logo img {
+    height: 70px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
+    animation: dwsPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dwsPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.dws-pt-texto {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dws-pt-pontos { display: flex; gap: 6px; }
+
+.dws-pt-pontos span {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    animation: dwsPonto 1.2s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.dws-pt-pontos span:nth-child(2) { animation-delay: 0.2s; }
+.dws-pt-pontos span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dwsPonto {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+.dws-pt-overlay.dws-pt-entrando .dws-pt-faixa {
+    left: 0;
+    animation: dwsSaidaFaixa 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+}
+
+.dws-pt-overlay.dws-pt-entrando .dws-pt-linha-corte {
+    left: 0;
+    animation: dwsSaidaLinha 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+}
+
+.dws-pt-overlay.dws-pt-entrando .dws-pt-logo {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: dwsFadeLogo 0.4s ease 0.15s forwards;
+}
+
+@keyframes dwsSaidaFaixa {
+    0% { left: 0%; }
+    100% { left: -100%; }
+}
+
+@keyframes dwsSaidaLinha {
+    0% { left: 0%; }
+    100% { left: -100%; }
+}
+
+@keyframes dwsFadeLogo {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dws-pt-faixa, .dws-pt-linha-corte, .dws-pt-logo, .dws-pt-carro {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .dws-pt-carro { font-size: 3rem; }
+    .dws-pt-texto { font-size: 0.8rem; letter-spacing: 5px; }
+    .dws-pt-logo img { height: 55px; }
+}

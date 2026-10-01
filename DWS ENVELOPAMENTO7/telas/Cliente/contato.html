@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendamento de Serviço - DWS Envelopamento</title>
+  <link rel="icon" type="image/png" href="../../img/logoabas.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .modelo-selects-container { display: flex; flex-wrap: wrap; gap: 10px; flex-direction: column; }
+    .btn-buscar-modelo { background: transparent; border: 2px dashed #555; color: #aaa; padding: 12px 20px; border-radius: 10px; width: 100%; transition: all 0.3s; cursor: pointer; }
+    .btn-buscar-modelo:hover { border-color: #f23535; color: #f23535; background: rgba(242, 53, 53, 0.05); }
+    .veiculo-selecionado-input { background: #1a1a2e; border: 2px solid #333; border-radius: 10px; padding: 12px 16px; width: 100%; font-weight: 500; font-size: 1rem; cursor: not-allowed; color: #fff; display: none; }
+    .veiculo-selecionado-input.visivel { display: block !important; }
+    .veiculo-selecionado-input.selecionado { border-color: #4caf50; color: #4caf50; }
+    .modelo-selecionado-info { background: #1a1a2e; border: 1px solid #f23535; border-radius: 10px; padding: 12px 16px; display: none; align-items: center; justify-content: space-between; width: 100%; }
+    .modelo-selecionado-info.visivel { display: flex !important; }
+    .modelo-selecionado-info .modelo-nome-selecionado { color: #fff; font-weight: 500; font-size: 1rem; word-break: break-word; }
+    .modelo-selecionado-info .modelo-remover { color: #f23535; cursor: pointer; background: none; border: none; font-size: 1.2rem; padding: 5px; flex-shrink: 0; }
+
+    .modal-modelos .modal-content { background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 16px; }
+    .modal-modelos .modal-header { border-bottom: 1px solid #333; padding: 16px 24px; }
+    .modal-modelos .modal-header .btn-close { filter: invert(1); }
+    .modal-modelos .modal-body { padding: 20px 24px; max-height: 60vh; overflow-y: auto; }
+    .modal-modelos .modal-footer { border-top: 1px solid #333; padding: 16px 24px; }
+    .modal-modelos .search-box { background: #2a2a3e; border: 1px solid #444; color: #fff; border-radius: 10px; padding: 10px 16px; width: 100%; margin-bottom: 16px; }
+    .modal-modelos .modelo-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #2a2a3e; gap: 10px; }
+    .modal-modelos .modelo-item:hover { background: #2a2a42; }
+    .modal-modelos .modelo-item.selecionado { background: #2a2a5e; border-left: 3px solid #f23535; }
+    .modal-modelos .modelo-select-btn { background: #f23535; color: #fff; border: none; border-radius: 8px; padding: 6px 16px; font-size: 0.8rem; font-weight: 600; flex-shrink: 0; }
+    .filter-tipo-btn.active { background: #f23535 !important; border-color: #f23535 !important; color: #fff !important; }
+
+    .footer { background: #0a0a0a; padding: 24px 32px; text-align: center; border-top: 1px solid rgba(255,255,255,0.03); }
+    .footer p { color: #555; font-size: 0.75rem; margin: 0; }
+    .footer p a { color: #888; text-decoration: none; }
+    .footer p a:hover { color: #f23535; }
+    .footer p .sep { color: #333; margin: 0 8px; }
+
+    .btn-login-agendamento {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        width: 100%; padding: 12px 18px;
+        background: linear-gradient(135deg, #f23535, #c91f2c);
+        color: #fff; font-weight: 700; font-size: 0.95rem;
+        text-decoration: none; border-radius: 12px; border: 2px solid #f23535;
+        transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(242, 53, 53, 0.35);
+        cursor: pointer; text-align: center; font-family: inherit;
+    }
+    .btn-login-agendamento:hover { background: linear-gradient(135deg, #c91f2c, #a01824); color: #fff; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(242, 53, 53, 0.5); text-decoration: none; }
+    .btn-login-agendamento:active { transform: translateY(0); }
+
+    .cliente-logado-info {
+        display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 18px;
+        background: rgba(76, 175, 80, 0.12); border: 2px solid rgba(76, 175, 80, 0.4);
+        border-radius: 12px; color: #4CAF50; font-weight: 600; font-size: 0.95rem;
+    }
+    .cliente-logado-info i { color: #4CAF50; font-size: 1.1rem; }
+    .cliente-logado-info span { color: #e8e8e8; }
+
+    .btn-forma-pagamento { width: 100%; display: flex; align-items: center; gap: 15px; padding: 18px 20px; background: rgba(255, 255, 255, 0.03); border: 2px solid rgba(255, 255, 255, 0.08); border-radius: 14px; color: #fff; cursor: pointer; transition: all 0.3s ease; margin-bottom: 15px; text-align: left; font-family: inherit; font-size: 1rem; }
+    .btn-forma-pagamento:hover { border-color: #f23535; background: rgba(242, 53, 53, 0.08); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(242, 53, 53, 0.15); }
+    .btn-forma-pagamento .forma-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; pointer-events: none; }
+    .btn-forma-pagamento .forma-icon.online { background: linear-gradient(135deg, #f23535, #c91f2c); color: #fff; }
+    .btn-forma-pagamento .forma-icon.local { background: linear-gradient(135deg, #25d366, #128c7e); color: #fff; }
+    .btn-forma-pagamento .forma-info { flex: 1; pointer-events: none; }
+    .btn-forma-pagamento .forma-info strong { display: block; font-size: 1rem; margin-bottom: 3px; color: #fff; }
+    .btn-forma-pagamento .forma-info span { display: block; color: #888; font-size: 0.8rem; }
+    .btn-forma-pagamento > i { color: #666; font-size: 1rem; pointer-events: none; }
+
+    #modalPagamento .modal-content { background: #1a1a2e !important; color: #fff; border-radius: 20px; border: 1px solid #333; }
+    #modalPagamento .modal-header { border-bottom: 1px solid #333; padding: 20px 25px; }
+    #modalPagamento .modal-header .btn-close { filter: invert(1); }
+    #modalPagamento .modal-body { padding: 25px; }
+
+    #calendario { min-height: 400px; width: 100%; display: block; }
+
+    @media (max-width: 768px) {
+      .modal-modelos .modal-body { max-height: 70vh; padding: 16px; }
+      .modal-modelos .modal-header { padding: 12px 16px; }
+      .modal-modelos .modal-footer { padding: 12px 16px; }
+      .modal-modelos .modal-footer .btn { padding: 10px; font-size: 14px; }
+      .modal-modelos .modelo-item { padding: 10px; flex-direction: column; align-items: stretch; }
+      .modal-modelos .modelo-select-btn { width: 100%; }
+      .filter-tipo-btn { font-size: 11px; padding: 4px 10px; }
+      .veiculo-selecionado-input { font-size: 0.9rem; padding: 10px 12px; }
+      #calendario { min-height: 350px; }
+    }
+
+    @media (max-width: 480px) {
+      .modal-modelos .modal-dialog { margin: 8px; }
+      .modal-modelos .modal-title { font-size: 15px; }
+      .modal-modelos .search-box { font-size: 13px; padding: 8px 12px; }
+      .modal-modelos .modelo-item .modelo-nome { font-size: 14px; }
+      .modal-modelos .modelo-item .modelo-detalhe { font-size: 11px; }
+      #calendario { min-height: 300px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button class="menu-toggle-global" id="menuToggleGlobal" aria-label="Abrir menu" type="button">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="logo">
+        <img src="../../img/logoLOJA.png" alt="Logo DWS">
+      </div>
+    </div>
+    <nav id="navGlobal">
+      <a href="principal.html"><i class="fas fa-home"></i> MENU</a>
+      <a href="servico.html"><i class="fas fa-tools"></i> SERVIÇOS</a>
+      <a href="sobre.html"><i class="fas fa-info-circle"></i> SOBRE NÓS</a>
+      <a href="contato.html"><i class="fas fa-calendar-check"></i> AGENDAR</a>
+    </nav>
+    <div class="icone-user">
+      <img src="../../img/icon.user2.png" id="userIcon" alt="User">
+      <div class="menu-user" id="menuUser">
+        <a href="loginClientes.html">Login</a>
+        <a href="CadastroCliente.html">Cadastro</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="agendamento-wrapper">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="calendario-container">
+          <h3><i class="fas fa-calendar-week"></i> Selecione a Data</h3>
+          <div id="calendario"></div>
+        </div>
+
+        <div class="horarios-container">
+          <h3><i class="fas fa-clock"></i> Horários Disponíveis</h3>
+          <div id="horariosList" class="horarios-grid">
+            <div class="text-center text-white p-4">Selecione uma data para ver os horários</div>
+          </div>
+        </div>
+
+        <div class="servico-grid" id="servicosGrid">
+          <div class="servico-card" data-tipo="carro" data-preco-base="800">
+            <div class="servico-icon"><i class="fas fa-car"></i></div>
+            <h4>Carro</h4>
+            <div class="servico-preco-base">R$ 800+</div>
+          </div>
+          <div class="servico-card" data-tipo="moto" data-preco-base="500">
+            <div class="servico-icon"><i class="fas fa-motorcycle"></i></div>
+            <h4>Moto</h4>
+            <div class="servico-preco-base">R$ 500+</div>
+          </div>
+          <div class="servico-card" data-tipo="caminhao" data-preco-base="2500">
+            <div class="servico-icon"><i class="fas fa-truck"></i></div>
+            <h4>Caminhão</h4>
+            <div class="servico-preco-base">R$ 2.500+</div>
+          </div>
+          <div class="servico-card" data-tipo="aquatico" data-preco-base="1800">
+            <div class="servico-icon"><i class="fas fa-ship"></i></div>
+            <h4>Aquático</h4>
+            <div class="servico-preco-base">R$ 1.800+</div>
+          </div>
+          <div class="servico-card" data-tipo="mobilia" data-preco-base="300">
+            <div class="servico-icon"><i class="fas fa-couch"></i></div>
+            <h4>Mobília</h4>
+            <div class="servico-preco-base">R$ 300+</div>
+          </div>
+        </div>
+
+        <div class="form-detalhes">
+          <h3><i class="fas fa-clipboard-list"></i> Dados do Cliente</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-user"></i> Cliente logado</label>
+
+                <a href="loginClientes.html?redirect=contato.html"
+                   id="btnLoginCliente"
+                   class="btn-login-agendamento">
+                  <i class="fas fa-sign-in-alt"></i>
+                  Faça login para agendar
+                </a>
+
+                <div id="clienteLogadoInfo" class="cliente-logado-info" style="display: none;">
+                  <i class="fas fa-check-circle"></i>
+                  <span id="clienteLogadoNome">Carregando...</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><i class="fas fa-palette"></i> Tipo de acabamento</label>
+                <select class="form-select" id="acabamento">
+                  <option value="1.0">Fosco (sem acréscimo)</option>
+                  <option value="1.15">Brilhante (+15%)</option>
+                  <option value="1.30">Perolizado (+30%)</option>
+                  <option value="1.40">Texturizado (+40%)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-car-side"></i> Modelo do Veículo/Mobília *</label>
+            <div id="modeloSelectsContainer" class="modelo-selects-container">
+              <button type="button" class="btn-buscar-modelo" id="btnAbrirModalModelos">
+                <i class="fas fa-search"></i> Buscar Modelo
+              </button>
+              <input type="text" class="veiculo-selecionado-input" id="veiculoInput" placeholder="Nenhum modelo selecionado" readonly />
+              <div class="modelo-selecionado-info" id="modeloSelecionadoInfo">
+                <span class="modelo-nome-selecionado" id="modeloSelecionadoNome">Nenhum modelo selecionado</span>
+                <button class="modelo-remover" id="btnRemoverModelo" title="Remover modelo selecionado" type="button">
+                  <i class="fas fa-times-circle"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-file-alt"></i> Descrição do serviço *</label>
+            <textarea class="form-control" id="descricao" placeholder="Descreva o que deseja envelopar, cores, observações..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="orcamento-sidebar">
+          <h3><i class="fas fa-calculator"></i> Resumo do Agendamento</h3>
+          <div class="info-agendamento">
+            <p><i class="fas fa-calendar-day"></i> <strong>Data:</strong> <span id="dataSelecionada">Nenhuma</span></p>
+            <p><i class="fas fa-clock"></i> <strong>Horário:</strong> <span id="horarioSelecionado">Nenhum</span></p>
+            <p><i class="fas fa-tools"></i> <strong>Serviço:</strong> <span id="servicoResumo">Nenhum</span></p>
+            <p><i class="fas fa-car-side"></i> <strong>Modelo:</strong> <span id="modeloResumo">Nenhum</span></p>
+          </div>
+
+          <div id="resumoOrcamento">
+            <div class="preco-item"><span>Valor base:</span><span id="valorBase">R$ 0,00</span></div>
+            <div class="preco-item"><span>Acabamento:</span><span id="valorAcabamento">0%</span></div>
+            <div class="preco-total"><span>VALOR TOTAL:</span><span id="valorTotal">R$ 0,00</span></div>
+          </div>
+
+          <button class="btn-agendar" id="btnAgendar" type="button">
+            <i class="fas fa-check-circle"></i> Confirmar Agendamento
+          </button>
+
+          <p style="color: #888; font-size: 0.7rem; text-align: center; margin-top: 15px;">
+            *Valor estimado. Confirmação após análise.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input type="hidden" id="dataAgendamentoHidden" />
+  <input type="hidden" id="horarioAgendamentoHidden" />
+  <input type="hidden" id="tipoServicoHidden" />
+  <input type="hidden" id="veiculo" />
+  <input type="hidden" id="valorBaseHidden" />
+  <input type="hidden" id="valorTotalHidden" />
+
+  <footer class="footer">
+    <p>
+      © 2026 <strong style="color: #f23535;">KRONYX</strong> — Todos os direitos reservados.
+      <span class="sep">•</span>
+      <a href="#">Política de Privacidade</a>
+      <span class="sep">•</span>
+      <a href="#">Termos de Uso</a>
+    </p>
+  </footer>
+
+  <div class="toast-notification" id="toastMsg">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastText">Agendamento realizado!</span>
+  </div>
+
+  <!-- MODAL DE MODELOS -->
+  <div class="modal fade modal-modelos" id="modalModelos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-list me-2"></i> Selecionar Modelo
+            <span class="count-badge ms-2" id="modalCountBadge">0</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex gap-2 mb-3 flex-wrap">
+            <input type="text" class="search-box" id="modalSearchInput" placeholder="🔍 Buscar modelo..." />
+            <div class="d-flex gap-1 flex-wrap">
+              <button type="button" class="btn btn-sm btn-outline-secondary filter-tipo-btn active" data-tipo="todos">Todos</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="carro">Carros</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="moto">Motos</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="caminhao">Caminhões</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="aquatico">Aquáticos</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary filter-tipo-btn" data-tipo="mobilia">Mobília</button>
+            </div>
+          </div>
+          <div id="modalModelosList">
+            <div class="text-center text-white-50 p-4">Carregando modelos...</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="modalConfirmBtn" disabled style="background:#f23535; border-color:#f23535;">
+            <i class="fas fa-check"></i> Selecionar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PAGAMENTO -->
+  <div class="modal fade" id="modalPagamento" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-credit-card" style="color: #f23535; margin-right: 10px;"></i>
+            Como deseja pagar?
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <p style="color: #aaa; margin-bottom: 25px; text-align: center;">
+            Escolha a forma de pagamento:
+          </p>
+
+          <button type="button" class="btn-forma-pagamento" id="btnPagarOnline">
+            <div class="forma-icon online">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="forma-info">
+              <strong>Pagar Online</strong>
+              <span>Cartão, PIX ou Boleto via Mercado Pago</span>
+            </div>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+
+          <button type="button" class="btn-forma-pagamento" id="btnPagarLocal">
+            <div class="forma-icon local">
+              <i class="fas fa-store"></i>
+            </div>
+            <div class="forma-info">
+              <strong>Pagar no Local</strong>
+              <span>Combine direto com o Dariel pelo WhatsApp</span>
+            </div>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/menu-mobile.js"></script>
+  <script src="../../js/menu-user.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/servicos.js"></script>
+  <script src="../../js/pagamento.js"></script>
+  <script src="../../js/agendamento.js?v=11"></script>
+  <script src="../../js/page-transition.js"></script>
+  <script src="../../js/login-transition.js"></script>
+
+  <!-- BOTÃO DE LOGIN DINÂMICO — versão reforçada -->
+  <script>
+  (function() {
+      const btnLogin   = document.getElementById('btnLoginCliente');
+      const infoLogado = document.getElementById('clienteLogadoInfo');
+      const nomeSpan   = document.getElementById('clienteLogadoNome');
+
+      if (!btnLogin || !infoLogado || !nomeSpan) return;
+
+      const params = new URLSearchParams(window.location.search);
+      const veioDoLogin = params.get('login') === 'ok';
+
+      // 🔥 Se veio do login, limpa cache do menu-user.js
+      if (veioDoLogin) {
+          try { sessionStorage.removeItem('dws_sessao_cliente'); } catch (e) {}
+          if (window.DWS_Sessao && typeof window.DWS_Sessao.limpar === 'function') {
+              try { window.DWS_Sessao.limpar(); } catch (e) {}
+          }
+      }
+
+      // Busca a sessão DIRETO do servidor
+      async function buscarSessaoDireto() {
+          try {
+              const res = await fetch('../../PHP/Clientes/sessao_cliente.php?t=' + Date.now(), {
+                  credentials: 'include',
+                  cache: 'no-store',
+                  headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+              });
+              if (!res.ok) return { logado: false };
+              return await res.json();
+          } catch (e) {
+              return { logado: false };
+          }
+      }
+
+      function aplicarEstado(sessao) {
+          if (sessao && sessao.logado) {
+              btnLogin.style.display = 'none';
+              infoLogado.style.display = 'flex';
+              nomeSpan.textContent = sessao.nome || 'Cliente';
+          } else {
+              btnLogin.style.display = 'flex';
+              infoLogado.style.display = 'none';
+              btnLogin.setAttribute('href', 'loginClientes.html?redirect=contato.html');
+          }
+      }
+
+      async function atualizarEstado() {
+          const sessao = await buscarSessaoDireto();
+          aplicarEstado(sessao);
+      }
+
+      // FLUXO PRINCIPAL
+      if (veioDoLogin) {
+          // Estado provisório (usa o nome da URL)
+          btnLogin.style.display = 'none';
+          infoLogado.style.display = 'flex';
+          nomeSpan.textContent = params.get('nome') || 'Cliente';
+
+          // Revalida depois que o overlay terminar
+          setTimeout(atualizarEstado, 3000);
+          setTimeout(atualizarEstado, 3500);
+      } else {
+          atualizarEstado();
+      }
+
+      // Escuta o evento disparado pelo login-transition.js
+      window.addEventListener('dws:login-completo', atualizarEstado);
+
+      // Revalida em pageshow/visibilitychange
+      window.addEventListener('pageshow', function(event) {
+          if (event.persisted) atualizarEstado();
+      });
+      document.addEventListener('visibilitychange', function() {
+          if (!document.hidden) atualizarEstado();
+      });
+  })();
+  </script>
+</body>
+</html>

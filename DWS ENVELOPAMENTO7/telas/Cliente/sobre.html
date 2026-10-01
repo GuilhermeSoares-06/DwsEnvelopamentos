@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre Nós — DWS Envelopamento</title>
+<link rel="icon" type="image/png" href="../../img/logoabas.png">
+<link rel="stylesheet" href="../../css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #000000;
+    overflow-x: hidden;
+    color: #fff;
+}
+
+.bg-animated {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -2;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(242, 53, 53, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(242, 53, 53, 0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, #0a0a0a 0%, #000000 100%);
+    background-attachment: fixed;
+}
+
+.bg-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background-image:
+        linear-gradient(rgba(242, 53, 53, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242, 53, 53, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+}
+
+.particle {
+    position: fixed;
+    color: rgba(242, 53, 53, 0.08);
+    font-size: 4rem;
+    z-index: -1;
+    pointer-events: none;
+    animation: float 20s ease-in-out infinite;
+}
+.particle:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; font-size: 5rem; }
+.particle:nth-child(2) { top: 20%; right: 8%; animation-delay: -3s; font-size: 3rem; }
+.particle:nth-child(3) { top: 50%; left: 3%; animation-delay: -6s; font-size: 4rem; }
+.particle:nth-child(4) { top: 70%; right: 5%; animation-delay: -9s; font-size: 5rem; }
+.particle:nth-child(5) { bottom: 10%; left: 15%; animation-delay: -12s; font-size: 3.5rem; }
+.particle:nth-child(6) { bottom: 20%; right: 15%; animation-delay: -15s; font-size: 4.5rem; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.06; }
+    50% { transform: translateY(-30px) rotate(10deg) scale(1.1); opacity: 0.12; }
+}
+
+header {
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(242, 53, 53, 0.3) !important;
+}
+
+.hero-section {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 100px 20px; position: relative; perspective: 1000px;
+}
+
+.hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(242, 53, 53, 0.1);
+    border: 1px solid rgba(242, 53, 53, 0.3);
+    color: #f23535; padding: 10px 24px; border-radius: 50px;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 30px;
+    animation: fadeInDown 1s ease both;
+    backdrop-filter: blur(10px);
+}
+.hero-badge i { animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 900; line-height: 1.05; letter-spacing: -2px;
+    margin-bottom: 25px; animation: fadeInUp 1s ease 0.2s both;
+}
+.hero-title span {
+    background: linear-gradient(135deg, #f23535 0%, #ff6b6b 50%, #f23535 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: gradientShift 3s ease infinite; display: inline-block;
+}
+@keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: #a4a5a6; max-width: 700px; line-height: 1.7;
+    margin-bottom: 50px; animation: fadeInUp 1s ease 0.4s both;
+}
+
+.hero-cta {
+    display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+    animation: fadeInUp 1s ease 0.6s both;
+}
+
+.btn-primary-3d {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 18px 40px;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; text-decoration: none;
+    font-weight: 700; font-size: 1rem; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(242, 53, 53, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; overflow: hidden;
+}
+.btn-primary-3d::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+.btn-primary-3d:hover::before { left: 100%; }
+.btn-primary-3d:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 40px rgba(242, 53, 53, 0.5); color: #fff; }
+
+.btn-outline-3d {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 18px 40px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff; text-decoration: none;
+    font-weight: 700; font-size: 1rem; border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px); transition: all 0.3s ease;
+}
+.btn-outline-3d:hover {
+    background: rgba(242, 53, 53, 0.1);
+    border-color: #f23535; color: #f23535;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(242, 53, 53, 0.2);
+}
+
+.scroll-indicator {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    color: #555; font-size: 0.8rem; letter-spacing: 2px;
+    text-transform: uppercase; animation: bounce 2s ease-in-out infinite;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.scroll-indicator i { font-size: 1.5rem; color: #f23535; }
+@keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+
+.stats-section { padding: 80px 20px; position: relative; }
+.stats-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+.stat-card {
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px; padding: 40px 25px; text-align: center;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; overflow: hidden;
+    transform-style: preserve-3d;
+}
+.stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, #f23535, transparent);
+    transform: scaleX(0); transition: transform 0.5s ease;
+}
+.stat-card:hover::before { transform: scaleX(1); }
+.stat-card:hover { transform: translateY(-10px) rotateX(5deg); border-color: rgba(242, 53, 53, 0.3); box-shadow: 0 30px 60px rgba(242, 53, 53, 0.15); }
+
+.stat-icon {
+    width: 70px; height: 70px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, rgba(242, 53, 53, 0.15), rgba(242, 53, 53, 0.05));
+    border-radius: 20px; display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: #f23535; transform: rotate(-5deg); transition: all 0.4s ease;
+}
+.stat-card:hover .stat-icon {
+    transform: rotate(0deg) scale(1.1);
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff;
+    box-shadow: 0 15px 30px rgba(242, 53, 53, 0.4);
+}
+.stat-number { font-size: 3rem; font-weight: 900; color: #fff; line-height: 1; margin-bottom: 8px; letter-spacing: -1px; }
+.stat-label { color: #888; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+.services-section { padding: 120px 20px; position: relative; }
+.section-header-3d { text-align: center; max-width: 800px; margin: 0 auto 80px; }
+.section-tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(242, 53, 53, 0.1);
+    border: 1px solid rgba(242, 53, 53, 0.3);
+    color: #f23535; padding: 8px 20px; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 20px;
+}
+.section-title-3d {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900; color: #fff; line-height: 1.1;
+    letter-spacing: -1px; margin-bottom: 20px;
+}
+.section-title-3d span { background: linear-gradient(135deg, #f23535, #ff6b6b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.section-desc { color: #a4a5a6; font-size: 1.1rem; line-height: 1.7; }
+
+.services-grid {
+    max-width: 1300px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+.service-card-3d {
+    position: relative; height: 420px; border-radius: 28px;
+    overflow: hidden; cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d; perspective: 1000px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.service-card-3d:hover { transform: translateY(-15px) rotateX(3deg); box-shadow: 0 40px 80px rgba(242, 53, 53, 0.25); }
+.service-card-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform 0.8s ease;
+}
+.service-card-3d:hover .service-card-bg { transform: scale(1.1); }
+.service-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0.95) 100%);
+    z-index: 1;
+}
+.service-card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 40px 35px; z-index: 2;
+    transform: translateY(30px); transition: transform 0.5s ease;
+}
+.service-card-3d:hover .service-card-content { transform: translateY(0); }
+.service-icon-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 65px; height: 65px;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    border-radius: 20px; color: #fff; font-size: 1.8rem;
+    margin-bottom: 20px;
+    box-shadow: 0 15px 35px rgba(242, 53, 53, 0.5);
+    transform: rotate(-5deg); transition: all 0.4s ease;
+}
+.service-card-3d:hover .service-icon-badge { transform: rotate(0deg) scale(1.1); }
+.service-title-3d { color: #fff; font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+.service-text-3d {
+    color: #ccc; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;
+    opacity: 0; max-height: 0; transition: all 0.5s ease; overflow: hidden;
+}
+.service-card-3d:hover .service-text-3d { opacity: 1; max-height: 100px; }
+.service-arrow { display: inline-flex; align-items: center; gap: 8px; color: #f23535; font-weight: 700; font-size: 0.9rem; transition: gap 0.3s ease; }
+.service-card-3d:hover .service-arrow { gap: 15px; }
+
+.process-section { padding: 120px 20px; position: relative; }
+.process-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px; position: relative;
+}
+.process-step {
+    position: relative;
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.6), rgba(20, 20, 20, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px; padding: 40px 30px; text-align: center;
+    backdrop-filter: blur(20px); transition: all 0.4s ease; overflow: hidden;
+}
+.process-step::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #f23535, #ff6b6b);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.5s ease;
+}
+.process-step:hover::before { transform: scaleX(1); }
+.process-step:hover { transform: translateY(-10px); border-color: rgba(242, 53, 53, 0.3); box-shadow: 0 25px 50px rgba(242, 53, 53, 0.15); }
+.step-number {
+    position: absolute; top: 20px; right: 25px;
+    font-size: 4rem; font-weight: 900;
+    color: rgba(242, 53, 53, 0.08); line-height: 1; letter-spacing: -3px;
+}
+.step-icon {
+    width: 80px; height: 80px; margin: 0 auto 25px;
+    background: linear-gradient(135deg, rgba(242, 53, 53, 0.15), rgba(242, 53, 53, 0.05));
+    border-radius: 24px; display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem; color: #f23535;
+    border: 1px solid rgba(242, 53, 53, 0.2); transition: all 0.4s ease;
+}
+.process-step:hover .step-icon {
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; transform: rotate(-10deg) scale(1.1);
+    box-shadow: 0 15px 35px rgba(242, 53, 53, 0.4);
+}
+.step-title { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+.step-desc { color: #888; font-size: 0.9rem; line-height: 1.6; }
+
+.testimonials-section { padding: 120px 20px; }
+.testimonials-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+.testimonial-card {
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px; padding: 35px 30px;
+    backdrop-filter: blur(20px); transition: all 0.4s ease;
+    position: relative; overflow: hidden;
+}
+.testimonial-card::before {
+    content: '"'; position: absolute; top: -30px; right: 20px;
+    font-size: 12rem; color: rgba(242, 53, 53, 0.06);
+    font-family: Georgia, serif; line-height: 1;
+}
+.testimonial-card:hover { transform: translateY(-8px); border-color: rgba(242, 53, 53, 0.3); box-shadow: 0 25px 50px rgba(242, 53, 53, 0.1); }
+.testimonial-stars { display: flex; gap: 4px; margin-bottom: 20px; color: #ffc107; }
+.testimonial-text { color: #ddd; font-size: 0.95rem; line-height: 1.7; margin-bottom: 25px; font-style: italic; position: relative; z-index: 1; }
+.testimonial-author { display: flex; align-items: center; gap: 15px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+.author-avatar {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 1.2rem; flex-shrink: 0;
+}
+.author-info .author-name { color: #fff; font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+.author-info .author-role { color: #888; font-size: 0.8rem; }
+
+.location-section { padding: 120px 20px; }
+.location-container {
+    max-width: 1300px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px; align-items: stretch;
+}
+.location-map {
+    border-radius: 28px; overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    min-height: 500px; position: relative;
+}
+.location-map iframe {
+    width: 100%; height: 100%; border: none; display: block;
+    filter: invert(90%) hue-rotate(180deg) brightness(0.9);
+    transition: filter 0.3s ease;
+}
+.location-map:hover iframe { filter: invert(85%) hue-rotate(180deg) brightness(1); }
+.location-info { display: flex; flex-direction: column; gap: 20px; }
+
+.info-card-3d {
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px; padding: 30px;
+    backdrop-filter: blur(20px); transition: all 0.4s ease;
+    position: relative; overflow: hidden;
+}
+.info-card-3d::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, #f23535, #c91f2c);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.4s ease;
+}
+.info-card-3d:hover::after { transform: scaleY(1); }
+.info-card-3d:hover { transform: translateX(8px); border-color: rgba(242, 53, 53, 0.3); box-shadow: 0 20px 40px rgba(242, 53, 53, 0.15); }
+
+.info-card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+.info-icon-3d {
+    width: 50px; height: 50px; border-radius: 15px;
+    background: linear-gradient(135deg, rgba(242, 53, 53, 0.15), rgba(242, 53, 53, 0.05));
+    border: 1px solid rgba(242, 53, 53, 0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: #f23535; font-size: 1.4rem; flex-shrink: 0; transition: all 0.4s ease;
+}
+.info-card-3d:hover .info-icon-3d {
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; transform: rotate(-10deg);
+    box-shadow: 0 10px 25px rgba(242, 53, 53, 0.4);
+}
+.info-card-title { color: #fff; font-size: 1.1rem; font-weight: 700; }
+.info-line { display: flex; align-items: flex-start; gap: 12px; color: #bbb; font-size: 0.92rem; line-height: 1.6; margin-bottom: 12px; }
+.info-line:last-child { margin-bottom: 0; }
+.info-line i { color: #f23535; width: 18px; flex-shrink: 0; margin-top: 3px; }
+.hours-list { list-style: none; padding: 0; margin: 0; }
+.hours-list li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 0.9rem; }
+.hours-list li:last-child { border-bottom: none; }
+.hours-list li span { color: #888; }
+.hours-list li strong { color: #fff; font-weight: 600; }
+
+.btn-route-3d {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 18px 30px;
+    background: linear-gradient(135deg, #f23535, #c91f2c);
+    color: #fff; text-decoration: none; font-weight: 700;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 30px rgba(242, 53, 53, 0.35);
+    margin-top: 10px; position: relative; overflow: hidden;
+}
+.btn-route-3d::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+.btn-route-3d:hover::before { left: 100%; }
+.btn-route-3d:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 25px 50px rgba(242, 53, 53, 0.5); color: #fff; }
+
+.cta-section { padding: 120px 20px; text-align: center; position: relative; }
+.cta-card {
+    max-width: 900px; margin: 0 auto;
+    background: linear-gradient(145deg, rgba(242, 53, 53, 0.08), rgba(201, 31, 44, 0.03));
+    border: 1px solid rgba(242, 53, 53, 0.25);
+    border-radius: 32px; padding: 70px 40px;
+    backdrop-filter: blur(20px); position: relative; overflow: hidden;
+}
+.cta-card::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(242, 53, 53, 0.1) 0%, transparent 60%);
+    animation: rotate 20s linear infinite;
+}
+@keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.cta-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900; color: #fff; margin-bottom: 20px;
+    letter-spacing: -1px; position: relative; z-index: 1;
+}
+.cta-title span { background: linear-gradient(135deg, #f23535, #ff6b6b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.cta-desc { color: #ccc; font-size: 1.1rem; max-width: 600px; margin: 0 auto 40px; line-height: 1.7; position: relative; z-index: 1; }
+.cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 992px) {
+    .location-container { grid-template-columns: 1fr; }
+    .location-map { min-height: 400px; }
+}
+
+@media (max-width: 768px) {
+    .hero-section { padding: 80px 20px; min-height: 90vh; }
+    .hero-cta { flex-direction: column; width: 100%; }
+    .btn-primary-3d, .btn-outline-3d { width: 100%; justify-content: center; padding: 16px 30px; }
+    .stats-section, .services-section, .process-section,
+    .testimonials-section, .location-section, .cta-section { padding: 80px 20px; }
+    .stat-card { padding: 30px 20px; }
+    .stat-number { font-size: 2.2rem; }
+    .service-card-3d { height: 380px; }
+    .service-card-content { padding: 30px 25px; }
+    .process-step { padding: 30px 20px; }
+    .step-number { font-size: 3rem; }
+    .testimonial-card { padding: 30px 25px; }
+    .info-card-3d { padding: 25px 20px; }
+    .cta-card { padding: 50px 25px; border-radius: 24px; }
+    .particle { display: none; }
+    .bg-grid { background-size: 40px 40px; }
+}
+
+@media (max-width: 480px) {
+    .hero-title { letter-spacing: -1px; }
+    .service-card-3d { height: 360px; }
+    .service-card-content { padding: 25px 20px; }
+    .service-title-3d { font-size: 1.3rem; }
+    .stats-grid, .services-grid, .process-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .location-map { min-height: 300px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-animated"></div>
+<div class="bg-grid"></div>
+
+<i class="fas fa-car particle"></i>
+<i class="fas fa-motorcycle particle"></i>
+<i class="fas fa-truck particle"></i>
+<i class="fas fa-ship particle"></i>
+<i class="fas fa-couch particle"></i>
+<i class="fas fa-spray-can particle"></i>
+
+<header>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle-global" id="menuToggleGlobal" aria-label="Abrir menu" type="button">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="logo">
+            <img src="../../img/logoLOJA.png" alt="Logo DWS">
+        </div>
+    </div>
+    <nav id="navGlobal">
+        <a href="principal.html"><i class="fas fa-home"></i> MENU</a>
+        <a href="servico.html"><i class="fas fa-tools"></i> SERVIÇOS</a>
+        <a href="sobre.html" class="active"><i class="fas fa-info-circle"></i> SOBRE NÓS</a>
+        <a href="contato.html"><i class="fas fa-calendar-check"></i> AGENDAR</a>
+    </nav>
+    <div class="icone-user">
+        <img src="../../img/icon.user2.png" id="userIcon" alt="User">
+        <div class="menu-user" id="menuUser">
+            <a href="loginClientes.html">Login</a>
+            <a href="CadastroCliente.html">Cadastro</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero-section">
+    <div class="hero-badge">
+        <i class="fas fa-star"></i>
+        Desde 2020 Transformando Veículos
+    </div>
+
+    <h1 class="hero-title">
+        Arte em cada<br>
+        <span>Envelopamento</span>
+    </h1>
+
+    <p class="hero-subtitle">
+        Somos especialistas em transformar veículos em obras de arte.
+        Qualidade premium, técnica impecável e paixão em cada detalhe.
+    </p>
+
+    <div class="hero-cta">
+        <a href="contato.html" class="btn-primary-3d">
+            <i class="fas fa-calendar-check"></i>
+            Agendar Agora
+        </a>
+        <a href="servico.html" class="btn-outline-3d">
+            <i class="fas fa-eye"></i>
+            Ver Serviços
+        </a>
+    </div>
+
+    <div class="scroll-indicator">
+        <span>Role</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card reveal">
+            <div class="stat-icon"><i class="fas fa-car-side"></i></div>
+            <div class="stat-number" id="statVeiculos" data-target="0">0</div>
+            <div class="stat-label">Veículos Transformados</div>
+        </div>
+
+        <div class="stat-card reveal reveal-delay-1">
+            <div class="stat-icon"><i class="fas fa-award"></i></div>
+            <div class="stat-number" id="statAnos" data-target="0">0</div>
+            <div class="stat-label">Anos de Experiência</div>
+        </div>
+
+        <div class="stat-card reveal reveal-delay-2">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-number" id="statClientes" data-target="0">0</div>
+            <div class="stat-label">Clientes Satisfeitos</div>
+        </div>
+
+        <div class="stat-card reveal reveal-delay-3">
+            <div class="stat-icon"><i class="fas fa-smile"></i></div>
+            <div class="stat-number" id="statSatisfacao" data-target="0">0</div>
+            <div class="stat-label">% Satisfação</div>
+        </div>
+    </div>
+</section>
+
+<section class="services-section">
+    <div class="section-header-3d reveal">
+        <div class="section-tag">
+            <i class="fas fa-tools"></i> Nossos Serviços
+        </div>
+        <h2 class="section-title-3d">
+            O que fazemos de <span>melhor</span>
+        </h2>
+        <p class="section-desc">
+            Cada projeto é único e tratado com dedicação total. Conheça nossas especialidades.
+        </p>
+    </div>
+
+    <div class="services-grid">
+        <div class="service-card-3d reveal">
+            <div class="service-card-bg" style="background-image: url('../../img/moto_sedicao.png');"></div>
+            <div class="service-card-overlay"></div>
+            <div class="service-card-content">
+                <div class="service-icon-badge">
+                    <i class="fas fa-motorcycle"></i>
+                </div>
+                <h3 class="service-title-3d">Envelopamento Moto</h3>
+                <p class="service-text-3d">
+                    Personalização completa com acabamento premium. Do design à aplicação, tudo feito por especialistas.
+                </p>
+                <span class="service-arrow">
+                    Saiba mais <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="service-card-3d reveal reveal-delay-1">
+            <div class="service-card-bg" style="background-image: url('../../img/bragado_sedicao.webp');"></div>
+            <div class="service-card-overlay"></div>
+            <div class="service-card-content">
+                <div class="service-icon-badge">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3 class="service-title-3d">Envelopamento Carro</h3>
+                <p class="service-text-3d">
+                    Proteção e estilo em um só serviço. Materiais de alta durabilidade e acabamento impecável.
+                </p>
+                <span class="service-arrow">
+                    Saiba mais <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="service-card-3d reveal reveal-delay-2">
+            <div class="service-card-bg" style="background-image: url('../../img/fachada_vidroarte.webp');"></div>
+            <div class="service-card-overlay"></div>
+            <div class="service-card-content">
+                <div class="service-icon-badge">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h3 class="service-title-3d">Fachadas Comerciais</h3>
+                <p class="service-text-3d">
+                    Design moderno e sofisticado para sua empresa. Sua marca vista com destaque.
+                </p>
+                <span class="service-arrow">
+                    Saiba mais <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="process-section">
+    <div class="section-header-3d reveal">
+        <div class="section-tag">
+            <i class="fas fa-route"></i> Como Trabalhamos
+        </div>
+        <h2 class="section-title-3d">
+            Nosso processo em <span>4 etapas</span>
+        </h2>
+        <p class="section-desc">
+            Do primeiro contato à entrega, cada passo é pensado para sua satisfação.
+        </p>
+    </div>
+
+    <div class="process-grid">
+        <div class="process-step reveal">
+            <span class="step-number">01</span>
+            <div class="step-icon"><i class="fas fa-comments"></i></div>
+            <h3 class="step-title">Consulta</h3>
+            <p class="step-desc">
+                Ouvimos suas ideias e entendemos exatamente o que você procura.
+            </p>
+        </div>
+
+        <div class="process-step reveal reveal-delay-1">
+            <span class="step-number">02</span>
+            <div class="step-icon"><i class="fas fa-drafting-compass"></i></div>
+            <h3 class="step-title">Projeto</h3>
+            <p class="step-desc">
+                Criamos um projeto personalizado com as melhores opções para você.
+            </p>
+        </div>
+
+        <div class="process-step reveal reveal-delay-2">
+            <span class="step-number">03</span>
+            <div class="step-icon"><i class="fas fa-spray-can"></i></div>
+            <h3 class="step-title">Execução</h3>
+            <p class="step-desc">
+                Aplicação profissional com materiais de alta qualidade e técnica apurada.
+            </p>
+        </div>
+
+        <div class="process-step reveal reveal-delay-3">
+            <span class="step-number">04</span>
+            <div class="step-icon"><i class="fas fa-check-double"></i></div>
+            <h3 class="step-title">Entrega</h3>
+            <p class="step-desc">
+                Revisão final, polimento e entrega com garantia de satisfação total.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section">
+    <div class="section-header-3d reveal">
+        <div class="section-tag">
+            <i class="fas fa-quote-left"></i> Depoimentos
+        </div>
+        <h2 class="section-title-3d">
+            O que nossos <span>clientes</span> dizem
+        </h2>
+    </div>
+
+    <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+            <div class="testimonial-stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">
+                "Serviço impecável! Transformaram minha moto em algo que eu nem imaginava ser possível. Recomendo de olhos fechados."
+            </p>
+            <div class="testimonial-author">
+                <div class="author-avatar">JM</div>
+                <div class="author-info">
+                    <div class="author-name">João Martins</div>
+                    <div class="author-role">Cliente desde 2022</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-1">
+            <div class="testimonial-stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">
+                "Profissionalismo do começo ao fim. Meu carro ficou incrível, superou todas as expectativas. Equipe nota 10!"
+            </p>
+            <div class="testimonial-author">
+                <div class="author-avatar">AS</div>
+                <div class="author-info">
+                    <div class="author-name">Ana Silva</div>
+                    <div class="author-role">Cliente desde 2021</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-2">
+            <div class="testimonial-stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">
+                "Fizeram a fachada da minha loja e o resultado foi espetacular. Atendimento rápido, qualidade e preço justo."
+            </p>
+            <div class="testimonial-author">
+                <div class="author-avatar">CR</div>
+                <div class="author-info">
+                    <div class="author-name">Carlos Rodrigues</div>
+                    <div class="author-role">Cliente desde 2023</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="location-section">
+    <div class="section-header-3d reveal">
+        <div class="section-tag">
+            <i class="fas fa-map-marker-alt"></i> Onde Estamos
+        </div>
+        <h2 class="section-title-3d">
+            Venha nos <span>visitar</span>
+        </h2>
+        <p class="section-desc">
+            Estamos localizados em Piraju - SP. Agende sua visita e conheça nossa estrutura.
+        </p>
+    </div>
+
+    <div class="location-container">
+        <div class="location-map reveal">
+            <iframe
+                src="https://www.google.com/maps?q=Av.+Ver.+Milton+Sp%C3%ADnola%2C+931%2C+Piraju+-+SP&output=embed"
+                allowfullscreen=""
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <div class="location-info reveal reveal-delay-1">
+            <div class="info-card-3d">
+                <div class="info-card-header">
+                    <div class="info-icon-3d"><i class="fas fa-store"></i></div>
+                    <h3 class="info-card-title">DWS Envelopamento</h3>
+                </div>
+                <div class="info-line">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Av. Ver. Milton Spínola, nº 931<br>Piraju - SP</span>
+                </div>
+                <div class="info-line">
+                    <i class="fas fa-phone"></i>
+                    <span>(14) 99650-0254</span>
+                </div>
+                <div class="info-line">
+                    <i class="fas fa-envelope"></i>
+                    <span>contato@dwsenvelopamento.com</span>
+                </div>
+            </div>
+
+            <div class="info-card-3d">
+                <div class="info-card-header">
+                    <div class="info-icon-3d"><i class="fas fa-clock"></i></div>
+                    <h3 class="info-card-title">Horário de Funcionamento</h3>
+                </div>
+                <ul class="hours-list">
+                    <li><span>Segunda - Sexta</span> <strong>08h - 18h</strong></li>
+                    <li><span>Sábado</span> <strong>08h - 12h</strong></li>
+                    <li><span>Domingo</span> <strong>Fechado</strong></li>
+                </ul>
+            </div>
+
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Av.+Ver.+Milton+Sp%C3%ADnola,+931,+Piraju+-+SP"
+               target="_blank" class="btn-route-3d">
+                <i class="fas fa-directions"></i>
+                Traçar Rota
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-card reveal">
+        <h2 class="cta-title">
+            Pronto para <span>transformar</span> seu veículo?
+        </h2>
+        <p class="cta-desc">
+            Agende agora seu atendimento e descubra como podemos deixar seu veículo único.
+        </p>
+        <div class="cta-buttons">
+            <a href="contato.html" class="btn-primary-3d">
+                <i class="fas fa-calendar-check"></i>
+                Agendar Agora
+            </a>
+            <a href="servico.html" class="btn-outline-3d">
+                <i class="fas fa-th-large"></i>
+                Ver Todos os Serviços
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>
+        © 2026 <strong style="color: #f23535;">KRONYX</strong> — Todos os direitos reservados.
+        <span class="sep">•</span>
+        <a href="#">Política de Privacidade</a>
+        <span class="sep">•</span>
+        <a href="#">Termos de Uso</a>
+        <span class="sep">•</span>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#" style="margin-left: 4px;"><i class="fab fa-linkedin"></i></a>
+        <a href="#" style="margin-left: 4px;"><i class="fab fa-whatsapp"></i></a>
+    </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/menu-mobile.js"></script>
+<script src="../../js/menu-user.js"></script>
+<script src="../../js/main.js"></script>
+<script src="../../js/servicos.js"></script>
+
+<script>
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+revealElements.forEach(el => revealObserver.observe(el));
+
+async function carregarEstatisticas() {
+    try {
+        const res = await fetch('../../PHP/Clientes/estatisticas.php', { credentials: 'include', cache: 'no-store' });
+        const data = await res.json();
+        if (data.status === 'sucesso' && data.estatisticas) {
+            const stats = data.estatisticas;
+            const statVeiculos = document.getElementById('statVeiculos');
+            const statAnos = document.getElementById('statAnos');
+            const statClientes = document.getElementById('statClientes');
+            const statSatisfacao = document.getElementById('statSatisfacao');
+            if (statVeiculos) statVeiculos.dataset.target = stats.veiculos_transformados;
+            if (statAnos) statAnos.dataset.target = stats.anos_experiencia;
+            if (statClientes) statClientes.dataset.target = stats.clientes_satisfeitos;
+            if (statSatisfacao) statSatisfacao.dataset.target = stats.percentual_satisfacao;
+            iniciarContadores();
+        } else { usarValoresPadrao(); }
+    } catch (e) { usarValoresPadrao(); }
+}
+
+function usarValoresPadrao() {
+    const statVeiculos = document.getElementById('statVeiculos');
+    const statAnos = document.getElementById('statAnos');
+    const statClientes = document.getElementById('statClientes');
+    const statSatisfacao = document.getElementById('statSatisfacao');
+    if (statVeiculos) statVeiculos.dataset.target = 0;
+    if (statAnos) statAnos.dataset.target = 5;
+    if (statClientes) statClientes.dataset.target = 0;
+    if (statSatisfacao) statSatisfacao.dataset.target = 98;
+    iniciarContadores();
+}
+
+function iniciarContadores() {
+    document.querySelectorAll('.stat-number[data-target]').forEach(counter => {
+        const target = parseInt(counter.dataset.target) || 0;
+        counter.dataset.animated = '';
+        counter.textContent = '0';
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.animated) {
+                    entry.target.dataset.animated = 'true';
+                    const duration = 2000;
+                    const startTime = performance.now();
+                    function updateCounter(currentTime) {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const easeOut = 1 - Math.pow(1 - progress, 3);
+                        const current = Math.floor(easeOut * target);
+                        entry.target.textContent = current.toLocaleString('pt-BR');
+                        if (progress < 1) requestAnimationFrame(updateCounter);
+                        else entry.target.textContent = target.toLocaleString('pt-BR');
+                    }
+                    requestAnimationFrame(updateCounter);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        observer.observe(counter);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', carregarEstatisticas);
+
+document.querySelectorAll('.service-card-3d').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotateX = (y - rect.height / 2) / 20;
+        const rotateY = (rect.width / 2 - x) / 20;
+        card.style.transform = `translateY(-15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+});
+
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    document.querySelectorAll('.particle').forEach((particle, index) => {
+        const speed = 0.1 + (index * 0.05);
+        particle.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+});
+</script>
+
+<script src="../../js/page-transition.js"></script>
+</body>
+</html>
