@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meus Agendamentos - DWS Envelopamento</title>
+<link rel="icon" type="image/png" href="../../img/logoabas.png">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #0a0a0a;
+    background-image:
+        radial-gradient(ellipse at top left, rgba(242, 53, 53, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(242, 53, 53, 0.05) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0a 0%, #111111 25%, #000000 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    font-family: 'Inter', Arial, sans-serif;
+    padding: 30px 20px;
+}
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .page-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .page-header h1 {
+        color: #fff;
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+    .page-header h1 i {
+        color: #F23535;
+        margin-right: 12px;
+    }
+    .page-header p {
+        color: #888;
+        font-size: 0.95rem;
+    }
+    .btn-voltar {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #aaa;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        margin-bottom: 20px;
+        transition: 0.3s;
+        font-size: 14px;
+    }
+    .btn-voltar:hover {
+        background: rgba(242, 53, 53, 0.1);
+        color: #F23535;
+    }
+    .loading {
+        text-align: center;
+        color: #888;
+        padding: 60px 20px;
+    }
+    .loading i {
+        font-size: 40px;
+        color: #F23535;
+        margin-bottom: 15px;
+    }
+    .agendamento-card {
+        background: linear-gradient(145deg, #1e1e1e, #252525);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-left: 4px solid #F23535;
+        transition: 0.3s;
+    }
+    .agendamento-card:hover {
+        border-color: rgba(242, 53, 53, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(242, 53, 53, 0.1);
+    }
+    .agendamento-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .agendamento-id {
+        color: #F23535;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+    .status-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .status-badge.pendente {
+        background: rgba(255, 152, 0, 0.15);
+        color: #FF9800;
+        border: 1px solid rgba(255, 152, 0, 0.3);
+    }
+    .status-badge.aprovado {
+        background: rgba(76, 175, 80, 0.15);
+        color: #4CAF50;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+    .status-badge.cancelado,
+    .status-badge.rejeitado {
+        background: rgba(244, 67, 54, 0.15);
+        color: #f44336;
+        border: 1px solid rgba(244, 67, 54, 0.3);
+    }
+    .agendamento-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: #ccc;
+        font-size: 0.9rem;
+    }
+    .info-item i {
+        color: #F23535;
+        width: 18px;
+        margin-top: 3px;
+        flex-shrink: 0;
+    }
+    .info-item strong {
+        color: #fff;
+        font-weight: 600;
+    }
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: #666;
+    }
+    .empty-state i {
+        font-size: 60px;
+        color: #333;
+        margin-bottom: 20px;
+        display: block;
+    }
+    .empty-state h3 {
+        color: #aaa;
+        margin-bottom: 8px;
+    }
+    .empty-state p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+    .btn-agendar {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #F23535;
+        color: white;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+    .btn-agendar:hover {
+        background: #c91f2c;
+        transform: translateY(-2px);
+    }
+    @media (max-width: 480px) {
+        body { padding: 20px 12px; }
+        .page-header h1 { font-size: 1.4rem; }
+        .agendamento-info { grid-template-columns: 1fr; }
+    }
+    /* Badges lado a lado */
+.badges-wrap {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Card quando finalizado ganha destaque verde */
+.agendamento-card.servico-finalizado {
+    border-left-color: #4CAF50;
+    background: linear-gradient(145deg, #1a2a1e, #252525);
+}
+
+/* Badge de serviço em andamento */
+.status-badge.em-andamento {
+    background: rgba(242, 53, 53, 0.15);
+    color: #F23535;
+    border: 1px solid rgba(242, 53, 53, 0.3);
+}
+
+/* Badge de serviço finalizado */
+.status-badge.finalizado {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .badges-wrap {
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+    }
+    .badges-wrap .status-badge {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <a href="principal.html" class="btn-voltar">
+        <i class="fas fa-arrow-left"></i> Voltar
+    </a>
+
+    <div class="page-header">
+        <h1><i class="fas fa-calendar-alt"></i> Meus Agendamentos</h1>
+        <p>Acompanhe o status dos seus serviços</p>
+    </div>
+
+    <div id="conteudo">
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Carregando agendamentos...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const container = document.getElementById('conteudo');
+
+    try {
+        const res = await fetch('../../PHP/Clientes/meus_agendamentos.php', {
+            credentials: 'include'
+        });
+        const data = await res.json();
+
+        if (!data.logado) {
+            window.location.href = 'loginClientes.html';
+            return;
+        }
+
+        if (data.status !== 'sucesso') {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Erro ao carregar</h3>
+                    <p>${data.mensagem || 'Tente novamente mais tarde.'}</p>
+                </div>
+            `;
+            return;
+        }
+
+        if (!data.agendamentos || data.agendamentos.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>Nenhum agendamento ainda</h3>
+                    <p>Você ainda não agendou nenhum serviço.</p>
+                    <a href="contato.html" class="btn-agendar">
+                        <i class="fas fa-plus"></i> Agendar agora
+                    </a>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = data.agendamentos.map(ag => {
+            const statusPgto = (ag.serstatus_pagamento || 'pendente').toLowerCase();
+            const statusServ = (ag.serstatus_servico || 'pendente').toLowerCase();
+            const dataFormatada = formatarData(ag.serdata_servico);
+            const valorFormatado = formatarMoeda(ag.servalor);
+
+            // Badge de PAGAMENTO
+            const badgePgto = `<span class="status-badge ${statusPgto}">${traduzirStatus(statusPgto)}</span>`;
+
+            // 🔥 Badge de SERVIÇO (novo)
+            const badgeServ = statusServ === 'finalizado'
+                ? `<span class="status-badge finalizado">✅ Serviço Finalizado</span>`
+                : `<span class="status-badge em-andamento">🔧 Em andamento</span>`;
+
+            return `
+                <div class="agendamento-card ${statusServ === 'finalizado' ? 'servico-finalizado' : ''}">
+                    <div class="agendamento-header">
+                        <span class="agendamento-id">#${ag.serid} - ${traduzirTipo(ag.tipo_servico)}</span>
+                        <div class="badges-wrap">
+                            ${badgePgto}
+                            ${badgeServ}
+                        </div>
+                    </div>
+                    <div class="agendamento-info">
+                        <div class="info-item">
+                            <i class="fas fa-calendar-day"></i>
+                            <span><strong>Data:</strong> ${dataFormatada}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span><strong>Valor:</strong> ${valorFormatado}</span>
+                        </div>
+                        <div class="info-item" style="grid-column: 1 / -1;">
+                            <i class="fas fa-align-left"></i>
+                            <span><strong>Descrição:</strong> ${escapeHtml(ag.serdescricao || '—')}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+    } catch (e) {
+        console.error(e);
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Erro de conexão</h3>
+                <p>Verifique sua internet e tente novamente.</p>
+            </div>
+        `;
+    }
+});
+
+function formatarData(dataStr) {
+    if (!dataStr) return '—';
+    try {
+        const d = new Date(dataStr.replace(' ', 'T'));
+        return d.toLocaleDateString('pt-BR', {
+            day: '2-digit', month: '2-digit', year: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+        });
+    } catch (e) { return dataStr; }
+}
+
+function formatarMoeda(valor) {
+    if (!valor) return 'R$ 0,00';
+    // Se já está formatado como "800,00"
+    if (typeof valor === 'string' && valor.includes(',')) {
+        return 'R$ ' + valor;
+    }
+    return 'R$ ' + parseFloat(valor || 0).toFixed(2).replace('.', ',');
+}
+
+function traduzirTipo(tipo) {
+    const tipos = {
+        'carro': 'Carro', 'moto': 'Moto', 'caminhao': 'Caminhão',
+        'aquatico': 'Aquático', 'mobilia': 'Mobília'
+    };
+    return tipos[tipo] || tipo;
+}
+
+function traduzirStatus(status) {
+    const map = {
+        'pendente': '⏳ Pagamento Pendente',
+        'aprovado': '✅ Pago',
+        'pagar_no_local': '💰 Pagar no Local',
+        'cancelado': '❌ Cancelado',
+        'rejeitado': '❌ Rejeitado',
+        'estornado': '↩️ Estornado'
+    };
+    return map[status] || status;
+}
+
+function escapeHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto;
+    return div.innerHTML;
+}
+</script>
+
+</body>
+</html>
