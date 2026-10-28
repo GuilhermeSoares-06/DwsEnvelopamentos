@@ -2,6 +2,7 @@
 // =============================================
 // agendar.php - Processa agendamento
 // REGRA: 1 agendamento por DIA (global — se alguém agendou o dia, ninguém mais agenda)
+// Online não pago expira após config('agenda.expira_pendente_horas') e libera o dia
 // SEM horário: grava 12:00:00 fixo (só a data importa)
 // =============================================
 require_once __DIR__ . '/../bootstrap.php';
@@ -15,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 if (empty($_SESSION['cliid'])) {
     responderErro('Você precisa estar logado para agendar.', 401);
 }
+
+exigirCSRF();
 
 $cliid = (int)$_SESSION['cliid'];
 
@@ -90,9 +93,14 @@ if (!isset($precos_base[$tipo])) $erros[] = 'Tipo de serviço inválido.';
 if (!isset($acabamentos[$acabamento])) $erros[] = 'Acabamento inválido.';
 if (!in_array($tipo_pagamento, ['online', 'local'], true)) $erros[] = 'Pagamento inválido.';
 if (!empty($email) && !validarEmail($email)) $erros[] = 'E-mail inválido.';
+if (mb_strlen($veiculo) > 100)   $erros[] = 'Nome do veículo muito longo (máx. 100).';
+if (mb_strlen($descricao) > 500) $erros[] = 'Descrição muito longa (máx. 500 caracteres).';
 
 if (!empty($erros)) responderErro(implode(' ', $erros), 400);
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_ag)) responderErro('Formato de data inválido.', 400);
+if (!checkdate((int) substr($data_ag, 5, 2), (int) substr($data_ag, 8, 2), (int) substr($data_ag, 0, 4))) {
+    responderErro('Data inválida.', 400);
+}
 if (strtotime($data_ag) < strtotime(date('Y-m-d'))) responderErro('Data no passado não é permitida.', 400);
 
 // =============================================
@@ -106,26 +114,35 @@ $valor_total_str = number_format($valor_total, 2, '.', '');
 // =============================================
 // TRANSAÇÃO + REGRA "1 POR DIA (GLOBAL)"
 // =============================================
+// GET_LOCK serializa agendamentos do mesmo dia: duas requisições
+// simultâneas não conseguem passar pela checagem ao mesmo tempo
+$nomeLock = 'dws_agenda_' . $data_ag;
+$lockObtido = false;
+
 try {
+    $stmt = $pdo->prepare("SELECT GET_LOCK(:nome, 10)");
+    $stmt->execute([':nome' => $nomeLock]);
+    $lockObtido = (int) $stmt->fetchColumn() === 1;
+    if (!$lockObtido) {
+        responderErro('Sistema ocupado. Tente novamente em alguns segundos.', 503);
+    }
+
     $pdo->beginTransaction();
 
+    [$diaIni, $diaFim] = intervaloDia($data_ag);
     $stmt = $pdo->prepare("
         SELECT serid FROM servicos
-        WHERE DATE(serdata_servico) = :data
-          AND serstatus_pagamento NOT IN ('cancelado', 'rejeitado', 'estornado')
+        WHERE serdata_servico >= :ini AND serdata_servico < :fim
+          AND " . sqlAgendamentoAtivo() . "
         LIMIT 1
         FOR UPDATE
     ");
-    $stmt->execute([':data' => $data_ag]);
+    $stmt->execute([':ini' => $diaIni, ':fim' => $diaFim]);
 
     if ($stmt->fetch()) {
         $pdo->rollBack();
         responderErro('Este dia já tem um agendamento. Só é permitido 1 agendamento por dia. Escolha outra data.', 409);
     }
-
-    // Atualiza telefone
-    $stmt = $pdo->prepare("UPDATE clientes SET clitel = :tel WHERE cliid = :id");
-    $stmt->execute([':tel' => $telefone, ':id' => $cliid]);
 
     // Descrição
     $nome_acabamento = $acabamentos[$acabamento]['nome'];
@@ -152,6 +169,8 @@ try {
 
     $serid = (int)$pdo->lastInsertId();
     $pdo->commit();
+    $pdo->query("SELECT RELEASE_LOCK(" . $pdo->quote($nomeLock) . ")");
+    $lockObtido = false;
 
     logAuditoria('agendamento_criado', ['serid' => $serid, 'cliid' => $cliid, 'tipo' => $tipo, 'data' => $data_ag]);
 
@@ -185,13 +204,14 @@ try {
 
     responderSucesso("Agendamento #$serid realizado!", [
         'servico_id'     => $serid,
-        'whatsapp_url'   => "https://wa.me/5514996175617?text=$msg",
+        'whatsapp_url'   => 'https://wa.me/' . preg_replace('/\D/', '', (string) config('contato.whatsapp', '')) . "?text=$msg",
         'tipo_pagamento' => $tipo_pagamento,
         'valor_total'    => $valor_total_str,
     ]);
 
 } catch (PDOException $e) {
     if ($pdo->inTransaction()) $pdo->rollBack();
+    if ($lockObtido) $pdo->query("SELECT RELEASE_LOCK(" . $pdo->quote($nomeLock) . ")");
     error_log("ERRO PDO agendar: " . $e->getMessage());
     $debug = (defined('DEBUG') && DEBUG) ? $e->getMessage() : null;
     responderErro('Erro interno ao processar. Tente novamente.', 500, ['debug' => $debug]);

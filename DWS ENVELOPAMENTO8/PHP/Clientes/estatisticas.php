@@ -4,11 +4,10 @@
 // Retorna estatísticas REAIS do banco
 // =============================================
 
-include("../Banco/conexao.php");
+require_once __DIR__ . '/../bootstrap.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+enviarHeadersSeguranca(true);
+
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -29,7 +28,7 @@ try {
     // =============================================
     // Conta TODOS os clientes cadastrados
     // (sem filtrar por tipocliente para não perder ninguém)
-    $stmt = $pdo->query("SELECT COUNT(*) FROM clientes");
+    $stmt = $pdo->query("SELECT COUNT(*) FROM clientes WHERE tipocliente = 'cliente' OR tipocliente IS NULL");
     $totalClientes = (int)$stmt->fetchColumn();
 
     // =============================================
@@ -51,15 +50,6 @@ try {
     $percentualSatisfacao = 98;
 
     // =============================================
-    // LOG PARA DEBUG
-    // =============================================
-    error_log("=== ESTATÍSTICAS ===");
-    error_log("Serviços: $totalServicos");
-    error_log("Clientes: $totalClientes");
-    error_log("Anos: $anosExperiencia");
-    error_log("Satisfação: $percentualSatisfacao%");
-
-    // =============================================
     // RETORNA
     // =============================================
     echo json_encode([
@@ -69,10 +59,6 @@ try {
             'clientes_satisfeitos' => $totalClientes,
             'anos_experiencia' => $anosExperiencia,
             'percentual_satisfacao' => $percentualSatisfacao
-        ],
-        'debug' => [
-            'total_servicos_banco' => $totalServicos,
-            'total_clientes_banco' => $totalClientes
         ]
     ], JSON_UNESCAPED_UNICODE);
 
@@ -80,7 +66,7 @@ try {
     error_log("Erro estatisticas: " . $e->getMessage());
     echo json_encode([
         'status' => 'erro',
-        'mensagem' => 'Erro ao buscar estatísticas: ' . $e->getMessage(),
+        'mensagem' => 'Erro ao buscar estatísticas.',
         'estatisticas' => [
             'veiculos_transformados' => 0,
             'clientes_satisfeitos' => 0,
@@ -89,4 +75,3 @@ try {
         ]
     ]);
 }
-?>

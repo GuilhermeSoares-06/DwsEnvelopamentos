@@ -2,7 +2,9 @@
 // =============================================
 // precos.php - Retorna preços dinâmicos do banco
 // =============================================
-include("../Banco/conexao.php");
+require_once __DIR__ . '/../bootstrap.php';
+
+enviarHeadersSeguranca(true);
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -41,4 +43,3 @@ try {
         'acabamentos' => ['1.0' => 1.0, '1.15' => 1.15, '1.30' => 1.30, '1.40' => 1.40]
     ]);
 }
-?>

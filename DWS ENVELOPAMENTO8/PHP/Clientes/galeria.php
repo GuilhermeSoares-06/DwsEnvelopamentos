@@ -65,7 +65,7 @@ header {
 .hero-loja { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 100px 20px 60px; }
 .hero-loja-bg {
     position: absolute; inset: 0;
-    background-image: url('../../img/loja.jpg');
+    background-image: url('../../img/loja.webp');
     background-size: cover; background-position: center;
     filter: brightness(0.35) saturate(1.2); z-index: 1;
 }

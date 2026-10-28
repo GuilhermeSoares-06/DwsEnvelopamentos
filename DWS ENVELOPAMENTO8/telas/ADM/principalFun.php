@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../../PHP/bootstrap.php';
+
+enviarHeadersSeguranca();
+exigirLoginAdmin('login.html');
+$isSuperAdmin = isSuperAdmin();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -65,11 +72,14 @@ td{padding:11px 10px;color:#ccc;font-size:.85rem;border-bottom:1px solid rgba(25
     <div class="brand"><i class="fas fa-crown"></i>DWS ADMIN</div>
     <div class="who">Logado como <span id="sidebarName">...</span></div>
     <nav>
-        <a href="principalFUN.php" class="active"><i class="fas fa-chart-line"></i> Painel</a>
+        <a href="principalFun.php" class="active"><i class="fas fa-chart-line"></i> Painel</a>
         <a href="../../PHP/ADM/ListarPedidos.php"><i class="fas fa-clipboard-list"></i> Todos os Pedidos</a>
         <a href="../../PHP/Clientes/ListarCliente.php"><i class="fas fa-users"></i> Todos os Clientes</a>
         <a href="../Cliente/CadastroCliente.html?origem=adm"><i class="fas fa-user-plus"></i> Novo cliente</a>
+        <?php if ($isSuperAdmin): ?>
+        <a href="../../PHP/ADM/GerenciarFuncionarios.php"><i class="fas fa-user-plus"></i> Novo Funcionário</a>
         <a href="../../PHP/ADM/Faturamento.php"><i class="fas fa-dollar-sign"></i> Faturamento</a>
+        <?php endif; ?>
         <a href="../../PHP/ADM/GerenciarPrecos.php"><i class="fas fa-tags"></i> Preços</a>
         <a href="../../PHP/ADM/GerenciarGaleria.php"><i class="fas fa-images"></i> Galeria</a>
         <a href="../Cliente/principal.html"><i class="fas fa-globe"></i> Ver o site</a>
@@ -90,10 +100,6 @@ td{padding:11px 10px;color:#ccc;font-size:.85rem;border-bottom:1px solid rgba(25
         <div class="card"><div class="lbl"><i class="fas fa-car-side"></i> Serviços</div><div class="val" id="stServicos">-</div>
             <div class="sub"><span id="stFinal">-</span> finalizados · <span id="stPend">-</span> pendentes</div></div>
         <div class="card"><div class="lbl"><i class="fas fa-calendar-day"></i> Faturamento do mês</div><div class="val" id="stMes">-</div>
-            <div class="sub" id="stVar">&nbsp;</div></div>
-        <div class="card"><div class="lbl"><i class="fas fa-check-circle"></i> Aprovado</div><div class="val" id="stAprov">-</div>
-            <div class="sub">Pago online ou no local</div></div>
-        <div class="card"><div class="lbl"><i class="fas fa-receipt"></i> Ticket médio</div><div class="val" id="stTicket">-</div></div>
     </section>
 
     <section class="grid2">

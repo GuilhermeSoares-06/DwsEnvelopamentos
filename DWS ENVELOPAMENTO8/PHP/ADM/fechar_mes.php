@@ -1,18 +1,12 @@
 <?php
 // =============================================
-// fechar_mes.php - Fecha o mês anterior
+// fechar_mes.php — Fecha o mês anterior
 // =============================================
 require_once __DIR__ . '/../bootstrap.php';
 
 enviarHeadersSeguranca(true);
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['admin_id'])) {
-    responderErro('Acesso restrito.', 401);
-}
+exigirAdminApi();
 
 try {
     // Data atual

@@ -1,5 +1,7 @@
 <?php
-include("../Banco/conexao.php");
+require_once __DIR__ . '/../bootstrap.php';
+
+enviarHeadersSeguranca(true);
 
 // =============================================
 // status_pagamento.php - Consulta o status atual
@@ -7,9 +9,6 @@ include("../Banco/conexao.php");
 // de retorno para saber se já foi confirmado)
 // =============================================
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 header('Content-Type: application/json; charset=utf-8');
 

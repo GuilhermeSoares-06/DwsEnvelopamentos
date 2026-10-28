@@ -2,15 +2,14 @@
 // =============================================
 // sessao_cliente.php - Status de login do cliente
 // =============================================
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../bootstrap.php';
+
+enviarHeadersSeguranca(true);
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 header('Expires: 0');
-header('Access-Control-Allow-Credentials: true');
 
 if (empty($_SESSION['cliid'])) {
     echo json_encode(['logado' => false]);
@@ -18,7 +17,6 @@ if (empty($_SESSION['cliid'])) {
 }
 
 // 🔍 Confirma que o cliente ainda existe
-require_once __DIR__ . '/../Banco/conexao.php';
 
 try {
     $stmt = $pdo->prepare("
@@ -46,7 +44,8 @@ try {
         'cliid'    => (int)$cli['cliid'],
         'nome'     => $cli['clinome'],
         'telefone' => $cli['clitel'],
-        'cpf'      => $cli['clicpf']
+        'cpf'      => $cli['clicpf'],
+        'csrf_token' => gerarTokenCSRF(),
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {

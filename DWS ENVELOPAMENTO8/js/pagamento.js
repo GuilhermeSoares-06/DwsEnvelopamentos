@@ -5,12 +5,14 @@
 async function iniciarPagamento(servicoId, emailCliente = '') {
     console.log('💳 Iniciando pagamento...');
     console.log('📦 Serviço ID:', servicoId);
-    console.log('📧 Email:', emailCliente);
 
     try {
-        const resposta = await fetch('../../PHP/Pagamento/criar_preferencia.php', {
+        const resposta = await fetch('../../PHP/pagamento/criar_preferencia.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                ...(typeof window.headersPost === 'function' ? await window.headersPost() : {}),
+            },
             credentials: 'include',
             body: `servico_id=${encodeURIComponent(servicoId)}&email=${encodeURIComponent(emailCliente)}`
         });
@@ -57,7 +59,7 @@ async function iniciarPagamento(servicoId, emailCliente = '') {
 
 async function verificarStatusPagamento(servicoId) {
     try {
-        const resposta = await fetch(`../../PHP/Pagamento/status_pagamento.php?servico_id=${servicoId}`, {
+        const resposta = await fetch(`../../PHP/pagamento/status_pagamento.php?servico_id=${servicoId}`, {
             credentials: 'include'
         });
         const dados = await resposta.json();

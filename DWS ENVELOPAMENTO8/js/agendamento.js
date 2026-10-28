@@ -615,6 +615,7 @@
       try {
         const res = await fetch("../../PHP/Servico/agendar.php", {
           method: "POST",
+          headers: typeof window.headersPost === "function" ? await window.headersPost() : {},
           body: fd,
           credentials: "include",
         });

@@ -1,52 +1,63 @@
 <?php
 // =============================================
-// verificar_sessao.php - Valida admin no banco
+// verificar_sessao.php — Valida admin no banco
 // =============================================
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../bootstrap.php';
+
+enviarHeadersSeguranca(true);
 
 header('Content-Type: application/json; charset=utf-8');
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Pragma: no-cache');
-header('Expires: 0');
 
-// Timeout de 2h
-if (isset($_SESSION['admin_login_time']) && time() - $_SESSION['admin_login_time'] > 7200) {
-    session_destroy();
-    echo json_encode(['logado' => false, 'motivo' => 'timeout']);
-    exit;
-}
-
+// Sem sessão de admin?
 if (empty($_SESSION['admin_id'])) {
     echo json_encode(['logado' => false, 'motivo' => 'sem_sessao']);
     exit;
 }
 
-require_once __DIR__ . '/../Banco/conexao.php';
+// Timeout 2h
+if (isset($_SESSION['admin_login_time'])
+    && time() - (int) $_SESSION['admin_login_time'] > 7200) {
+    unset(
+        $_SESSION['admin_id'],
+        $_SESSION['admin_nome'],
+        $_SESSION['admin_logado'],
+        $_SESSION['admin_login_time']
+    );
+    echo json_encode(['logado' => false, 'motivo' => 'timeout']);
+    exit;
+}
 
+// Confirma no banco que ainda é funcionário
 try {
+    // O login (LoginADM.php) autentica pela tabela `funcionarios`
     $stmt = $pdo->prepare("
-        SELECT cliid, clinome FROM clientes 
-        WHERE cliid = :id AND tipocliente = 'funcionario' 
+        SELECT id, nome
+        FROM funcionarios
+        WHERE id = :id
         LIMIT 1
     ");
-    $stmt->execute([':id' => (int)$_SESSION['admin_id']]);
+    $stmt->execute([':id' => (int) $_SESSION['admin_id']]);
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$admin) {
-        session_destroy();
+        unset(
+            $_SESSION['admin_id'],
+            $_SESSION['admin_nome'],
+            $_SESSION['admin_logado'],
+            $_SESSION['admin_login_time']
+        );
         echo json_encode(['logado' => false, 'motivo' => 'excluido']);
         exit;
     }
 
     echo json_encode([
         'logado' => true,
-        'nome'   => $admin['clinome'],
-        'id'     => (int)$admin['cliid']
+        'nome'   => $admin['nome'],
+        'id'     => (int) $admin['id'],
+        'super_admin' => isSuperAdmin(),
     ]);
 } catch (PDOException $e) {
-    error_log("Erro verificar_sessao: " . $e->getMessage());
+    error_log('[verificar_sessao] ' . $e->getMessage());
     echo json_encode(['logado' => false, 'motivo' => 'erro']);
 }
 exit;

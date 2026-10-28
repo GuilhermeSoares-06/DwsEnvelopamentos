@@ -115,7 +115,8 @@ body {
         border: 1px solid rgba(76, 175, 80, 0.3);
     }
     .status-badge.cancelado,
-    .status-badge.rejeitado {
+    .status-badge.rejeitado,
+    .status-badge.expirado {
         background: rgba(244, 67, 54, 0.15);
         color: #f44336;
         border: 1px solid rgba(244, 67, 54, 0.3);
@@ -372,7 +373,8 @@ function traduzirStatus(status) {
         'pagar_no_local': '💰 Pagar no Local',
         'cancelado': '❌ Cancelado',
         'rejeitado': '❌ Rejeitado',
-        'estornado': '↩️ Estornado'
+        'estornado': '↩️ Estornado',
+        'expirado': '⌛ Expirado (não pago)'
     };
     return map[status] || status;
 }

@@ -24,6 +24,26 @@ window.fetchComTimeout = async function (url, options = {}, timeoutMs = 15000) {
     }
 };
 
+// Token CSRF da sessão do cliente (enviado no header X-CSRF-Token dos POSTs)
+let _tokenCSRF = null;
+window.obterTokenCSRF = async function (forcar = false) {
+    if (_tokenCSRF && !forcar) return _tokenCSRF;
+    const res = await fetch('../../PHP/Clientes/sessao_cliente.php?t=' + Date.now(), {
+        credentials: 'include',
+        cache: 'no-store',
+    });
+    const data = await res.json();
+    _tokenCSRF = data.csrf_token || null;
+    return _tokenCSRF;
+};
+
+window.headersPost = async function () {
+    return {
+        'X-CSRF-Token': (await window.obterTokenCSRF()) || '',
+        'X-Requested-With': 'XMLHttpRequest',
+    };
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log('✅ main.js carregado');
 
@@ -76,7 +96,7 @@ async function verificarSessaoAdmin() {
             });
             localStorage.setItem('adminNome', nome);
         } else {
-            if (window.location.pathname.includes('principalFUN.html')) {
+            if (window.location.pathname.includes('principalFun.php')) {
                 window.location.href = 'login.html';
             }
         }

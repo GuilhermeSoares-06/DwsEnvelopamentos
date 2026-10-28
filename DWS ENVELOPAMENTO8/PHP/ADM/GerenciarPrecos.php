@@ -1,49 +1,64 @@
 <?php
 // =============================================
-// GerenciarPrecos.php - Admin edita preços
+// GerenciarPrecos.php — Admin edita preços
 // =============================================
-require_once __DIR__ . '/../Banco/conexao.php';
+require_once __DIR__ . '/../bootstrap.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../../telas/ADM/login.html');
-    exit;
-}
+enviarHeadersSeguranca();
+exigirLoginAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json; charset=utf-8');
-    
-    $acao = $_POST['acao'] ?? '';
-    
-    if ($acao === 'salvar') {
-        $chave = trim($_POST['chave'] ?? '');
-        $valor = trim($_POST['valor'] ?? '');
-        
-        if (empty($chave)) {
-            echo json_encode(['status' => 'erro', 'mensagem' => 'Chave inválida']);
-            exit;
-        }
-        
-        try {
-            $stmt = $pdo->prepare("UPDATE configuracoes SET valor = :v WHERE chave = :c");
-            $stmt->execute([':v' => $valor, ':c' => $chave]);
-            echo json_encode(['status' => 'sucesso', 'mensagem' => 'Preço atualizado!']);
-        } catch (PDOException $e) {
-            error_log("Erro ao atualizar preço: " . $e->getMessage());
-            echo json_encode(['status' => 'erro', 'mensagem' => 'Erro ao atualizar']);
-        }
+    exigirCSRF();
+
+    $acao  = $_POST['acao'] ?? '';
+    $chave = trim($_POST['chave'] ?? '');
+    $valor = trim($_POST['valor'] ?? '');
+
+    if ($acao !== 'salvar' || $chave === '') {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Requisição inválida.']);
         exit;
     }
+
+    // Só permite chaves conhecidas
+    $permitidas = [
+        'preco_carro', 'preco_moto', 'preco_caminhao', 'preco_aquatico', 'preco_mobilia',
+        'acabamento_brilhante', 'acabamento_perolizado', 'acabamento_texturizado',
+    ];
+    if (!in_array($chave, $permitidas, true)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Chave não permitida.']);
+        exit;
+    }
+
+    // Precisa ser numérico
+    if (!is_numeric($valor)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Valor precisa ser numérico.']);
+        exit;
+    }
+
+    $valor = (float) $valor;
+    if ($valor < 0 || $valor > 9999999.99) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Valor fora do permitido.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare("UPDATE configuracoes SET valor = :v WHERE chave = :c");
+        $stmt->execute([':v' => number_format($valor, 4, '.', ''), ':c' => $chave]);
+
+        logAuditoria('admin_alterar_preco', ['chave' => $chave, 'valor' => $valor]);
+
+        echo json_encode(['status' => 'sucesso', 'mensagem' => 'Preço atualizado!']);
+    } catch (PDOException $e) {
+        error_log('[GerenciarPrecos] ' . $e->getMessage());
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Erro ao atualizar']);
+    }
+    exit;
 }
 
 $configs = $pdo->query("SELECT * FROM configuracoes ORDER BY chave")->fetchAll(PDO::FETCH_ASSOC);
 $cfg = [];
-foreach ($configs as $c) {
-    $cfg[$c['chave']] = $c;
-}
+foreach ($configs as $c) $cfg[$c['chave']] = $c;
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -63,77 +78,28 @@ body {
         radial-gradient(ellipse at bottom right, rgba(242, 53, 53, 0.05) 0%, transparent 50%),
         linear-gradient(135deg, #0a0a0a 0%, #111111 25%, #000000 100%);
     background-attachment: fixed;
-    min-height: 100vh;
-    padding: 30px 20px;
-    color: #fff;
+    min-height: 100vh; padding: 30px 20px; color: #fff;
 }
 .container { max-width: 900px; margin: 0 auto; }
-.page-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 30px; flex-wrap: wrap; gap: 15px;
-}
-.page-header h1 {
-    font-size: 1.8rem;
-    background: linear-gradient(135deg, #fff, #f23535);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+.page-header h1 { font-size: 1.8rem; background: linear-gradient(135deg, #fff, #f23535); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .page-header h1 i { -webkit-text-fill-color: #f23535; margin-right: 10px; }
-.btn-voltar {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 20px; background: rgba(255, 255, 255, 0.05);
-    color: #aaa; text-decoration: none; border-radius: 10px;
-    font-size: 14px; transition: 0.3s;
-}
-.btn-voltar:hover { background: rgba(242, 53, 53, 0.1); color: #f23535; }
-.card {
-    background: linear-gradient(145deg, rgba(30,30,30,0.8), rgba(20,20,20,0.9));
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 20px; padding: 30px;
-    margin-bottom: 20px; backdrop-filter: blur(20px);
-}
-.card h2 {
-    font-size: 1.1rem; color: #fff; margin-bottom: 20px;
-    padding-bottom: 15px; border-bottom: 1px solid rgba(242,53,53,0.15);
-    display: flex; align-items: center; gap: 10px;
-}
+.btn-voltar { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(255,255,255,0.05); color: #aaa; text-decoration: none; border-radius: 10px; font-size: 14px; transition: 0.3s; }
+.btn-voltar:hover { background: rgba(242,53,53,0.1); color: #f23535; }
+.card { background: linear-gradient(145deg, rgba(30,30,30,0.8), rgba(20,20,20,0.9)); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 30px; margin-bottom: 20px; backdrop-filter: blur(20px); }
+.card h2 { font-size: 1.1rem; color: #fff; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(242,53,53,0.15); display: flex; align-items: center; gap: 10px; }
 .card h2 i { color: #f23535; }
-.form-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
-}
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
 .form-group { display: flex; flex-direction: column; gap: 8px; }
 .form-group label { color: #aaa; font-size: 0.85rem; font-weight: 500; }
-.form-group input {
-    padding: 12px 16px; background: #1a1a1a; border: 2px solid #333;
-    border-radius: 10px; color: #fff; font-size: 1rem;
-    outline: none; transition: 0.3s;
-}
-.form-group input:focus {
-    border-color: #f23535; background: #222;
-    box-shadow: 0 0 0 4px rgba(242,53,53,0.1);
-}
+.form-group input { padding: 12px 16px; background: #1a1a1a; border: 2px solid #333; border-radius: 10px; color: #fff; font-size: 1rem; outline: none; transition: 0.3s; }
+.form-group input:focus { border-color: #f23535; background: #222; box-shadow: 0 0 0 4px rgba(242,53,53,0.1); }
 .form-group .hint { color: #666; font-size: 0.75rem; }
-.btn-salvar {
-    width: 100%; padding: 14px; margin-top: 25px;
-    background: linear-gradient(135deg, #f23535, #c91f2c);
-    color: #fff; border: none; border-radius: 12px;
-    font-weight: 700; font-size: 1rem; cursor: pointer;
-    transition: 0.3s; display: flex; align-items: center;
-    justify-content: center; gap: 10px;
-}
+.btn-salvar { width: 100%; padding: 14px; margin-top: 25px; background: linear-gradient(135deg, #f23535, #c91f2c); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .btn-salvar:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(242,53,53,0.4); }
-.toast {
-    position: fixed; bottom: 30px; right: 30px;
-    padding: 16px 24px; background: #4CAF50; color: #fff;
-    border-radius: 12px; font-weight: 600; z-index: 9999;
-    display: none; align-items: center; gap: 10px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
+.toast { position: fixed; bottom: 30px; right: 30px; padding: 16px 24px; background: #4CAF50; color: #fff; border-radius: 12px; font-weight: 600; z-index: 9999; display: none; align-items: center; gap: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 .toast.error { background: #f23535; }
-@media (max-width: 600px) {
-    .page-header h1 { font-size: 1.4rem; }
-    .card { padding: 20px 15px; }
-}
+@media (max-width: 600px) { .page-header h1 { font-size: 1.4rem; } .card { padding: 20px 15px; } }
 </style>
 </head>
 <body>
@@ -141,12 +107,13 @@ body {
 <div class="container">
     <div class="page-header">
         <h1><i class="fas fa-dollar-sign"></i> Gerenciar Preços</h1>
-        <a href="../../telas/ADM/principalFUN.php" class="btn-voltar">
+        <a href="../../telas/ADM/principalFun.php" class="btn-voltar">
             <i class="fas fa-arrow-left"></i> Voltar
         </a>
     </div>
 
     <form id="formPrecos" class="card">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(gerarTokenCSRF()) ?>">
         <h2><i class="fas fa-car"></i> Preços Base dos Serviços</h2>
         <div class="form-grid">
             <div class="form-group">
@@ -209,22 +176,25 @@ body {
 <script>
 document.getElementById('formPrecos').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const formData = new FormData(e.target);
+    const csrf = formData.get('csrf_token');
     const btn = e.target.querySelector('.btn-salvar');
     const originalHTML = btn.innerHTML;
-    
+
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
     btn.disabled = true;
 
     try {
         const promises = [];
         for (const [chave, valor] of formData.entries()) {
+            if (chave === 'csrf_token') continue;
             const fd = new FormData();
             fd.append('acao', 'salvar');
             fd.append('chave', chave);
             fd.append('valor', valor);
-            
+            fd.append('csrf_token', csrf);
+
             promises.push(fetch('GerenciarPrecos.php', {
                 method: 'POST', body: fd
             }).then(r => r.json()));
@@ -236,7 +206,8 @@ document.getElementById('formPrecos').addEventListener('submit', async (e) => {
         if (todosOk) {
             mostrarToast('✅ Preços atualizados com sucesso!');
         } else {
-            mostrarToast('⚠️ Alguns preços não foram salvos', 'error');
+            const erros = resultados.filter(r => r.status !== 'sucesso').map(r => r.mensagem).join(' ');
+            mostrarToast('⚠️ ' + (erros || 'Alguns preços não foram salvos'), 'error');
         }
     } catch (erro) {
         console.error(erro);
@@ -252,7 +223,7 @@ function mostrarToast(msg, tipo = 'success') {
     document.getElementById('toastText').textContent = msg;
     toast.className = 'toast ' + (tipo === 'error' ? 'error' : '');
     toast.style.display = 'flex';
-    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    setTimeout(() => { toast.style.display = 'none'; }, 3500);
 }
 </script>
 

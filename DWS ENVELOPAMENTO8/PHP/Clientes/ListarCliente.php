@@ -1,7 +1,6 @@
 <?php
 // =============================================
-// ListarCliente.php - Admin vê TODOS os clientes (com paginação)
-// Ação de excluir REMOVIDA por decisão de produto.
+// ListarCliente.php - Admin vê TODOS os clientes
 // =============================================
 require_once __DIR__ . '/../bootstrap.php';
 
@@ -178,7 +177,7 @@ tbody tr:hover td { background: rgba(242,53,53,0.04); }
 <div class="container">
     <div class="page-header">
         <h1><i class="fas fa-users"></i> Todos os Clientes</h1>
-        <a href="../../telas/ADM/principalFUN.php" class="btn-voltar">
+        <a href="../../telas/ADM/principalFun.php" class="btn-voltar">
             <i class="fas fa-arrow-left"></i> Voltar ao Painel
         </a>
     </div>
@@ -220,7 +219,8 @@ tbody tr:hover td { background: rgba(242,53,53,0.04); }
                         <tr><td colspan="7" class="vazio"><i class="fas fa-user-slash"></i> Nenhum cliente encontrado.</td></tr>
                     <?php else: ?>
                         <?php foreach ($clientes as $i => $c): ?>
-                        <tr class="linha-cliente" data-index="<?= $i ?>">
+                        <!-- REMOVIDO o style display:none e a classe linha-cliente -->
+                        <tr>
                             <td>
                                 <div class="avatar-cliente">
                                     <?= htmlspecialchars(mb_substr($c['clinome'] ?? '?', 0, 1)) ?>
@@ -228,7 +228,7 @@ tbody tr:hover td { background: rgba(242,53,53,0.04); }
                             </td>
                             <td>#<?= (int)$c['cliid'] ?></td>
                             <td class="nome-cell"><?= htmlspecialchars($c['clinome'] ?? '—') ?></td>
-                            <td><?= htmlspecialchars($c['clicpf'] ?? '—') ?></td>
+                            <td><?= htmlspecialchars(formatarCPF($c['clicpf'] ?? '')) ?></td>
                             <td class="tel-cell"><?= htmlspecialchars($c['clitel'] ?? '—') ?></td>
                             <td><?= htmlspecialchars($c['cliemail'] ?? '—') ?></td>
                             <td><?= htmlspecialchars($c['cliendereco'] ?? '—') ?></td>
@@ -242,16 +242,29 @@ tbody tr:hover td { background: rgba(242,53,53,0.04); }
 </div>
 
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
     const POR_PAGINA = 10;
-    const linhas = document.querySelectorAll('.linha-cliente');
+    const tbody = document.getElementById('tbodyClientes');
+    
+    // Pega todas as linhas da tabela (exceto a de "Nenhum cliente")
+    const linhas = Array.from(tbody.querySelectorAll('tr')).filter(tr => !tr.querySelector('.vazio'));
+    
     const containerAbas = document.getElementById('abasClientes');
 
-    if (linhas.length === 0) { containerAbas.style.display = 'none'; return; }
+    if (linhas.length === 0) { 
+        containerAbas.style.display = 'none'; 
+        return; 
+    }
 
     const totalPaginas = Math.ceil(linhas.length / POR_PAGINA);
-    if (totalPaginas <= 1) { containerAbas.style.display = 'none'; return; }
+    
+    // Se só tem 1 página, não precisa fazer mais nada (deixa todas visíveis)
+    if (totalPaginas <= 1) { 
+        containerAbas.style.display = 'none'; 
+        return; 
+    }
 
+    // Se tem mais de 1 página, cria os botões
     for (let i = 0; i < totalPaginas; i++) {
         const inicio = i * POR_PAGINA + 1;
         const fim = Math.min((i + 1) * POR_PAGINA, linhas.length);
@@ -268,14 +281,22 @@ tbody tr:hover td { background: rgba(242,53,53,0.04); }
         document.querySelectorAll('.aba-btn').forEach(b => {
             b.classList.toggle('active', parseInt(b.dataset.pagina) === pagina);
         });
+        
         const inicio = pagina * POR_PAGINA;
         const fim = inicio + POR_PAGINA;
+        
         linhas.forEach((linha, i) => {
-            linha.style.display = (i >= inicio && i < fim) ? '' : 'none';
+            if (i >= inicio && i < fim) {
+                linha.style.display = ''; // Mostra
+            } else {
+                linha.style.display = 'none'; // Esconde
+            }
         });
     }
+
+    // Inicializa mostrando a primeira página (esconde o resto)
     mostrarPagina(0);
-})();
+});
 </script>
 </body>
 </html>

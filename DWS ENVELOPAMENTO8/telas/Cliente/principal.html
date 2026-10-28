@@ -5,399 +5,285 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <meta name="format-detection" content="telephone=no">
-<title>Galeria de Serviços — DWS Envelopamento</title>
+
+<title>DWS Envelopamento — Envelopamento Profissional de Veículos, Embarcações e Móveis</title>
+<meta name="description" content="DWS Envelopamento: envelopamento e personalização de carros, motos, caminhões, embarcações e móveis com acabamento de alto padrão. Desde 2020 em Piraju - SP.">
+<meta name="keywords" content="envelopamento, envelopamento automotivo, envelopamento náutico, envelopamento de móveis, DWS, Piraju">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="DWS Envelopamento — Arte em cada Envelopamento">
+<meta property="og:description" content="Especialistas em transformar veículos em obras de arte. Qualidade premium e paixão em cada detalhe.">
+<meta property="og:image" content="../../img/logoLOJA.png">
+<meta property="og:locale" content="pt_BR">
+
 <link rel="icon" type="image/png" href="../../img/logoabas.png">
 <link rel="stylesheet" href="../../css/style.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-    --primary: #f23535;
-    --primary-dark: #c91f2c;
-    --primary-light: #ff6b6b;
-    --bg-dark: #050505;
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoBodyShop",
+  "name": "DWS Envelopamento",
+  "description": "Especialistas em envelopamento automotivo, náutico e de mobiliário.",
+  "image": "../../img/logoLOJA.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. Ver. Milton Spínola, 931",
+    "addressLocality": "Piraju",
+    "addressRegion": "SP",
+    "addressCountry": "BR"
+  },
+  "telephone": "+55-14-99650-0254",
+  "email": "contato@dwsenvelopamento.com",
+  "priceRange": "$$",
+  "openingHours": "Mo-Fr 08:00-18:00, Sa 08:00-12:00"
 }
+</script>
 
-/* =============================================
-   CORREÇÕES CRÍTICAS PARA A GALERIA
-   ============================================= */
-body {
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
-    background: var(--bg-dark); color: #fff;
-    overflow-x: clip;
-    line-height: 1.6;
-    /* Força layout de documento normal (não centralizado) */
-    display: block !important;
-    align-items: initial !important;
-    justify-content: initial !important;
-    padding: 0 !important;
-}
-
-/* Header SEMPRE fixo no topo */
-header {
-    background: rgba(0, 0, 0, 0.85) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 2px solid rgba(242, 53, 53, 0.3) !important;
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 9999 !important;
-}
-
-.bg-animated {
-    position: fixed; inset: 0; z-index: -2;
-    background:
-        radial-gradient(ellipse at 15% 15%, rgba(242, 53, 53, 0.10) 0%, transparent 45%),
-        radial-gradient(ellipse at 85% 85%, rgba(242, 53, 53, 0.08) 0%, transparent 45%),
-        radial-gradient(ellipse at 50% 50%, #0a0a0a 0%, #000000 100%);
-}
-.bg-grid {
-    position: fixed; inset: 0; z-index: -1;
-    background-image:
-        linear-gradient(rgba(242, 53, 53, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(242, 53, 53, 0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
-    animation: gridMove 25s linear infinite;
-}
-@keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
-
-.hero-loja { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 100px 20px 60px; }
-.hero-loja-bg {
-    position: absolute; inset: 0;
-    background-image: url('../../img/loja.jpg');
-    background-size: cover; background-position: center;
-    filter: brightness(0.35) saturate(1.2); z-index: 1;
-}
-.hero-loja-bg::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.95) 100%);
-}
-.hero-loja-content { position: relative; z-index: 2; max-width: 900px; text-align: center; padding: 40px 30px; }
-.hero-loja-content::before {
-    content: ''; position: absolute; inset: -3px; border-radius: 30px; padding: 3px;
-    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    animation: ledRotate 4s linear infinite; pointer-events: none;
-}
-@keyframes ledRotate { 0% { --angle: 0deg; } 100% { --angle: 360deg; } }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-
-.hero-badge-loja {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: rgba(242, 53, 53, 0.15); border: 1px solid rgba(242, 53, 53, 0.4);
-    color: #f23535; padding: 10px 24px; border-radius: 50px;
-    font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600;
-    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px;
-    backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease both;
-}
-.hero-badge-loja i { animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
-
-.hero-loja-content h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2.2rem, 6vw, 4.5rem);
-    font-weight: 900; color: #fff; line-height: 1.05;
-    letter-spacing: -2px; margin-bottom: 25px; text-transform: uppercase;
-    animation: fadeInUp 0.8s ease 0.2s both;
-    text-shadow: 0 4px 30px rgba(0,0,0,0.8);
-}
-.hero-loja-content h1 span {
-    background: linear-gradient(135deg, #f23535, #ff6b6b);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    display: inline-block;
-}
-.hero-endereco {
-    display: inline-block;
-    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px; padding: 25px 40px; margin-top: 20px;
-    animation: fadeInUp 0.8s ease 0.4s both;
-}
-.hero-endereco .tag-novo {
-    display: inline-block;
-    background: linear-gradient(135deg, #f23535, #c91f2c);
-    color: #fff; padding: 5px 16px; border-radius: 50px;
-    font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
-    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    margin-bottom: 15px; box-shadow: 0 8px 20px rgba(242, 53, 53, 0.4);
-}
-.hero-endereco .endereco-linha {
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-    color: #fff; font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;
-}
-.hero-endereco .endereco-linha i { color: #f23535; font-size: 1.3rem; }
-.hero-endereco .endereco-ref { color: #aaa; font-size: 0.9rem; font-style: italic; }
-
-.section-header-galeria { text-align: center; max-width: 900px; margin: 0 auto 70px; padding: 0 20px; }
-.section-tag-galeria {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: rgba(242, 53, 53, 0.08); border: 1px solid rgba(242, 53, 53, 0.3);
-    color: #f23535; padding: 8px 22px; border-radius: 50px;
-    font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 600;
-    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px;
-}
-.section-title-galeria {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1.8rem, 4.5vw, 3rem);
-    font-weight: 900; color: #fff; line-height: 1.1;
-    letter-spacing: -1px; margin-bottom: 20px; text-transform: uppercase;
-}
-.section-title-galeria span {
-    background: linear-gradient(135deg, #f23535, #ff6b6b);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.section-desc-galeria { color: #a4a5a6; font-size: 1.05rem; line-height: 1.7; max-width: 600px; margin: 0 auto; }
-
-.filtros-container {
-    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-    margin-bottom: 50px; padding: 0 20px;
-}
-.filtro-btn {
-    background: rgba(255, 255, 255, 0.03);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: #ccc; padding: 12px 26px; border-radius: 50px;
-    font-family: 'Orbitron', sans-serif; font-size: 0.75rem;
-    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-}
-.filtro-btn:hover { border-color: #f23535; color: #fff; background: rgba(242, 53, 53, 0.08); transform: translateY(-3px); }
-.filtro-btn.active {
-    background: linear-gradient(135deg, #f23535, #c91f2c);
-    border-color: #f23535; color: #fff;
-    box-shadow: 0 10px 30px rgba(242, 53, 53, 0.4);
-    transform: translateY(-3px);
-}
-
-.galeria-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 20px 100px; }
-.galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
-
-.galeria-card {
-    position: relative; border-radius: 24px; overflow: hidden;
-    background: #0a0a0a; cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    aspect-ratio: 4/5;
-}
-.galeria-card::before {
-    content: ''; position: absolute; inset: -2px; border-radius: 24px; padding: 2px;
-    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    animation: ledRotate 4s linear infinite;
-    opacity: 0; transition: opacity 0.4s ease; z-index: 5; pointer-events: none;
-}
-.galeria-card:hover::before { opacity: 1; }
-.galeria-card:hover {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(242, 53, 53, 0.25);
-}
-.galeria-card-img {
-    position: absolute; inset: 0; background-size: cover; background-position: center;
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.galeria-card:hover .galeria-card-img { transform: scale(1.15); }
-.galeria-card-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0.95) 100%);
-    z-index: 1;
-}
-.galeria-card-content {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 35px 30px; z-index: 2;
-    transform: translateY(25px); transition: transform 0.5s ease;
-}
-.galeria-card:hover .galeria-card-content { transform: translateY(0); }
-.galeria-card-tipo {
-    display: inline-block;
-    background: linear-gradient(135deg, #f23535, #c91f2c);
-    color: #fff; padding: 5px 16px; border-radius: 50px;
-    font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
-    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    margin-bottom: 15px; box-shadow: 0 8px 20px rgba(242, 53, 53, 0.4);
-}
-.galeria-card-titulo {
-    font-family: 'Orbitron', sans-serif; color: #fff;
-    font-size: 1.3rem; font-weight: 800;
-    margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2;
-}
-.galeria-card-desc {
-    color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 18px;
-    opacity: 0; max-height: 0; transition: all 0.5s ease; overflow: hidden;
-}
-.galeria-card:hover .galeria-card-desc { opacity: 1; max-height: 100px; }
-.galeria-card-info {
-    display: flex; align-items: center; gap: 12px;
-    color: #888; font-size: 0.8rem; padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-.galeria-card-info i { color: #f23535; }
-
-.empty-galeria { grid-column: 1 / -1; text-align: center; padding: 100px 20px; color: #555; }
-.empty-galeria i { font-size: 5rem; color: rgba(242, 53, 53, 0.15); margin-bottom: 25px; display: block; }
-.empty-galeria h3 {
-    font-family: 'Orbitron', sans-serif; color: #888;
-    font-size: 1.2rem; margin-bottom: 10px;
-    text-transform: uppercase; letter-spacing: 2px;
-}
-.empty-galeria p { color: #666; font-size: 0.95rem; }
-
-.cta-galeria { padding: 120px 20px; text-align: center; position: relative; overflow: hidden; }
-.cta-galeria-card {
-    position: relative; max-width: 900px; margin: 0 auto;
-    background: linear-gradient(145deg, rgba(242, 53, 53, 0.08), rgba(201, 31, 44, 0.02));
-    border-radius: 32px; padding: 80px 50px;
-    backdrop-filter: blur(20px); overflow: hidden;
-}
-.cta-galeria-card::before {
-    content: ''; position: absolute; inset: -3px; border-radius: 32px; padding: 3px;
-    background: linear-gradient(var(--angle, 0deg), transparent, #f23535, #ff6b6b, #f23535, transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    animation: ledRotate 4s linear infinite;
-}
-.cta-galeria-card h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    font-weight: 900; color: #fff; margin-bottom: 20px;
-    letter-spacing: -1px; text-transform: uppercase;
-    position: relative; z-index: 1;
-}
-.cta-galeria-card h2 span {
-    background: linear-gradient(135deg, #f23535, #ff6b6b);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.cta-galeria-card p {
-    color: #ccc; font-size: 1.05rem; max-width: 550px;
-    margin: 0 auto 40px; line-height: 1.7;
-    position: relative; z-index: 1;
-}
-.btn-cta-galeria {
-    position: relative;
-    display: inline-flex; align-items: center; gap: 14px;
-    padding: 20px 45px;
-    background: linear-gradient(135deg, #f23535, #c91f2c);
-    color: #fff; text-decoration: none;
-    font-family: 'Orbitron', sans-serif; font-weight: 700;
-    font-size: 0.9rem; letter-spacing: 1.5px; text-transform: uppercase;
-    border-radius: 14px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 15px 35px rgba(242, 53, 53, 0.35);
-    z-index: 1; overflow: hidden;
-}
-.btn-cta-galeria::before {
-    content: ''; position: absolute; top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s ease;
-}
-.btn-cta-galeria:hover::before { left: 100%; }
-.btn-cta-galeria:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 25px 55px rgba(242, 53, 53, 0.5); color: #fff; }
-
-.footer {
-    background: #0a0a0a; padding: 40px 32px; text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.03); position: relative;
-}
-.footer::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, #f23535, #ff6b6b, #f23535, transparent);
-    background-size: 200% 100%; animation: ledMove 3s linear infinite;
-}
-@keyframes ledMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-.footer p { color: #555; font-size: 0.75rem; margin: 0; letter-spacing: 0.3px; }
-.footer p a { color: #888; text-decoration: none; transition: 0.2s; }
-.footer p a:hover { color: #f23535; }
-.footer p .sep { color: #333; margin: 0 8px; }
-
-.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.reveal.active { opacity: 1; transform: translateY(0); }
-
-@media (max-width: 768px) {
-    .hero-loja-content { padding: 30px 20px; }
-    .hero-endereco { padding: 20px 25px; }
-    .hero-endereco .endereco-linha { font-size: 1rem; }
-    .galeria-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-    .galeria-card { aspect-ratio: 3/4; }
-    .cta-galeria-card { padding: 55px 30px; border-radius: 24px; }
-    .filtros-container { gap: 8px; }
-    .filtro-btn { padding: 10px 18px; font-size: 0.7rem; }
-}
-@media (max-width: 480px) {
-    .galeria-grid { grid-template-columns: 1fr; }
-    .hero-endereco .endereco-linha { flex-direction: column; gap: 5px; font-size: 0.95rem; }
-}
-</style>
+<link rel="stylesheet" href="../../css/principal.css">
 </head>
 
 <body>
 
+<!-- FUNDO -->
 <div class="bg-animated"></div>
 <div class="bg-grid"></div>
 
+<!-- PARTÍCULAS -->
+<i class="fas fa-car particle"></i>
+<i class="fas fa-motorcycle particle"></i>
+<i class="fas fa-truck particle"></i>
+<i class="fas fa-ship particle"></i>
+<i class="fas fa-couch particle"></i>
+<i class="fas fa-spray-can particle"></i>
+
+<!-- ==================== HEADER ==================== -->
 <header>
     <div style="display: flex; align-items: center; gap: 12px;">
         <button class="menu-toggle-global" id="menuToggleGlobal" aria-label="Abrir menu" type="button">
             <i class="fas fa-bars"></i>
         </button>
         <div class="logo">
-            <img src="../../img/logoLOJA.png" alt="Logo DWS">
+            <a href="principal.html" style="display:inline-block;">
+                <img src="../../img/logoLOJA.png" alt="Logo DWS">
+            </a>
         </div>
     </div>
-    <nav id="navGlobal">
-        <a href="principal.html" class="active"><i class="fas fa-home"></i> MENU</a>
-        <a href="servico.html"><i class="fas fa-tools"></i> SERVIÇOS</a>
-        <a href="sobre.html"><i class="fas fa-info-circle"></i> SOBRE NÓS</a>
+    <nav id="navGlobal" aria-label="Navegação principal">
+        <a href="#inicio"><i class="fas fa-home"></i> INÍCIO</a>
+        <a href="#sobre"><i class="fas fa-info-circle"></i> SOBRE</a>
+        <a href="#galeria"><i class="fas fa-images"></i> GALERIA</a>
         <a href="contato.html"><i class="fas fa-calendar-check"></i> AGENDAR</a>
     </nav>
     <div class="icone-user">
-        <img src="../../img/icon.user2.png" id="userIcon" alt="User">
-        <div class="menu-user" id="menuUser">
-            <a href="loginClientes.html">Login</a>
-            <a href="CadastroCliente.html">Cadastro</a>
+        <img src="../../img/icon.user2.png" id="userIcon" alt="Menu do usuário">
+        <div class="menu-user" id="menuUser" role="menu">
+            <a href="loginClientes.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="CadastroCliente.html"><i class="fas fa-user-plus"></i> Cadastro</a>
         </div>
     </div>
 </header>
 
-<section class="hero-loja">
-    <div class="hero-loja-bg"></div>
-    <div class="hero-loja-content">
-        <div class="hero-badge-loja">
-            <i class="fas fa-map-marker-alt"></i>
-            NOVO ENDEREÇO
+<!-- ==================== HERO ==================== -->
+<section class="hero-section" id="inicio">
+    <div class="hero-badge">
+        <i class="fas fa-star"></i>
+        Desde 2020 Transformando Veículos
+    </div>
+
+    <h1 class="hero-title">
+        Arte em cada<br>
+        <span>Envelopamento</span>
+    </h1>
+
+    <p class="hero-subtitle">
+        Somos especialistas em transformar veículos em obras de arte.
+        Qualidade premium, técnica impecável e paixão em cada detalhe.
+    </p>
+
+    <div class="hero-cta">
+        <a href="contato.html" class="btn-primary-3d">
+            <i class="fas fa-calendar-check"></i>
+            Agendar Agora
+        </a>
+        <a href="#servicos" class="btn-outline-3d">
+            <i class="fas fa-eye"></i>
+            Ver Serviços
+        </a>
+    </div>
+
+    <div class="scroll-indicator">
+        <span>Role</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- ==================== ESTATÍSTICAS ==================== -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card reveal">
+            <div class="stat-icon"><i class="fas fa-car-side"></i></div>
+            <div class="stat-number" id="statVeiculos" data-target="0">0</div>
+            <div class="stat-label">Veículos Transformados</div>
         </div>
-        <h1>
-            BEM-VINDO À<br>
-            <span>DWS ENVELOPAMENTOS</span>
-        </h1>
-        <div class="hero-endereco">
-            <div class="tag-novo">✨ AGORA EM NOVO ENDEREÇO</div>
-            <div class="endereco-linha">
-                <i class="fas fa-location-dot"></i>
-                <span>Av. Ver. Milton Spínola, nº 931</span>
-            </div>
-            <div class="endereco-ref">Passando a pousada Manacá</div>
+        <div class="stat-card reveal reveal-delay-2">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-number" id="statClientes" data-target="0">0</div>
+            <div class="stat-label">Clientes Satisfeitos</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+            <div class="stat-icon"><i class="fas fa-smile"></i></div>
+            <div class="stat-number" id="statSatisfacao" data-target="0">0</div>
+            <div class="stat-label">% Satisfação</div>
         </div>
     </div>
 </section>
 
-<section style="padding: 100px 0 0;">
-    <div class="section-header-galeria reveal">
-        <div class="section-tag-galeria">
-            <i class="fas fa-images"></i>
-            NOSSOS TRABALHOS
+<!-- ==================== SOBRE (integrado) ==================== -->
+<section class="sobre-section" id="sobre">
+    <div class="sobre-container">
+        <div class="sobre-texto reveal">
+            <div class="section-tag">
+                <i class="fas fa-info-circle"></i> Sobre a DWS
+            </div>
+            <h2>
+                Paixão por<br>
+                <span>Detalhes Perfeitos</span>
+            </h2>
+            <p>
+                A <strong>DWS Envelopamento</strong> nasceu da obsessão por acabamento impecável.
+                Desde 2020, somos especialistas em envelopamento automotivo, náutico e de mobiliário,
+                unindo técnica, materiais de primeira linha e um olhar apurado para o design.
+            </p>
+            <p>
+                Cada projeto é tratado de forma única. Da preparação da superfície à aplicação final,
+                seguimos um rigoroso processo de qualidade que garante aderência, durabilidade e
+                um resultado visual que supera expectativas.
+            </p>
+            <blockquote class="sobre-quote">
+                "Não envelopamos apenas superfícies. Transformamos a identidade do que você ama."
+            </blockquote>
         </div>
-        <h2 class="section-title-galeria">
-            GALERIA DE <span>SERVIÇOS</span>
+
+        <div class="sobre-imagem reveal reveal-delay-1">
+            <img src="../../img/loja.webp" alt="Oficina DWS Envelopamento" loading="lazy" decoding="async">
+            <div class="sobre-badge">
+                <div class="num">+5</div>
+                <div class="txt">
+                    <strong>Anos de Experiência</strong>
+                    Transformando veículos com excelência
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SERVIÇOS ==================== -->
+<section class="services-section" id="servicos">
+    <div class="section-header-3d reveal">
+        <div class="section-tag">
+            <i class="fas fa-tools"></i> Nossos Serviços
+        </div>
+        <h2 class="section-title-3d">
+            O que fazemos de <span>melhor</span>
         </h2>
-        <p class="section-desc-galeria">
+        <p class="section-desc">
+            Cada projeto é único e tratado com dedicação total. Conheça nossas especialidades.
+        </p>
+    </div>
+
+    <div class="services-grid">
+        <div class="service-card-3d reveal">
+            <div class="service-card-bg" style="background-image: url('../../img/moto_sedicao.webp');"></div>
+            <div class="service-card-overlay"></div>
+            <div class="service-card-content">
+                <div class="service-icon-badge"><i class="fas fa-motorcycle"></i></div>
+                <h3 class="service-title-3d">Envelopamento Moto</h3>
+                <p class="service-text-3d">
+                    Personalização completa com acabamento premium. Do design à aplicação, tudo feito por especialistas.
+                </p>
+                <span class="service-arrow">Saiba mais <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </div>
+
+        <div class="service-card-3d reveal reveal-delay-1">
+            <div class="service-card-bg" style="background-image: url('../../img/bragado_sedicao.webp');"></div>
+            <div class="service-card-overlay"></div>
+            <div class="service-card-content">
+                <div class="service-icon-badge"><i class="fas fa-car"></i></div>
+                <h3 class="service-title-3d">Envelopamento Carro</h3>
+                <p class="service-text-3d">
+                    Proteção e estilo em um só serviço. Materiais de alta durabilidade e acabamento impecável.
+                </p>
+                <span class="service-arrow">Saiba mais <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </div>
+
+        <div class="service-card-3d reveal reveal-delay-2">
+            <div class="service-card-bg" style="background-image: url('../../img/fachada_vidroarte.webp');"></div>
+            <div class="service-card-overlay"></div>
+            <div class="service-card-content">
+                <div class="service-icon-badge"><i class="fas fa-store"></i></div>
+                <h3 class="service-title-3d">Fachadas Comerciais</h3>
+                <p class="service-text-3d">
+                    Design moderno e sofisticado para sua empresa. Sua marca vista com destaque.
+                </p>
+                <span class="service-arrow">Saiba mais <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PROCESSO ==================== -->
+<section class="process-section">
+    <div class="section-header-3d reveal">
+        <div class="section-tag"><i class="fas fa-route"></i> Como Trabalhamos</div>
+        <h2 class="section-title-3d">Nosso processo em <span>4 etapas</span></h2>
+        <p class="section-desc">
+            Do primeiro contato à entrega, cada passo é pensado para sua satisfação.
+        </p>
+    </div>
+
+    <div class="process-grid">
+        <div class="process-step reveal">
+            <span class="step-number">01</span>
+            <div class="step-icon"><i class="fas fa-comments"></i></div>
+            <h3 class="step-title">Consulta</h3>
+            <p class="step-desc">Ouvimos suas ideias e entendemos exatamente o que você procura.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-1">
+            <span class="step-number">02</span>
+            <div class="step-icon"><i class="fas fa-drafting-compass"></i></div>
+            <h3 class="step-title">Projeto</h3>
+            <p class="step-desc">Criamos um projeto personalizado com as melhores opções para você.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+            <span class="step-number">03</span>
+            <div class="step-icon"><i class="fas fa-spray-can"></i></div>
+            <h3 class="step-title">Execução</h3>
+            <p class="step-desc">Aplicação profissional com materiais de alta qualidade e técnica apurada.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+            <span class="step-number">04</span>
+            <div class="step-icon"><i class="fas fa-check-double"></i></div>
+            <h3 class="step-title">Entrega</h3>
+            <p class="step-desc">Revisão final, polimento e entrega com garantia de satisfação total.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== GALERIA (integrada) ==================== -->
+<section class="galeria-section" id="galeria">
+    <div class="section-header-3d reveal">
+        <div class="section-tag"><i class="fas fa-images"></i> Nossos Trabalhos</div>
+        <h2 class="section-title-3d">Galeria de <span>Serviços</span></h2>
+        <p class="section-desc">
             Veja alguns dos nossos trabalhos mais recentes. Cada projeto é único.
         </p>
     </div>
@@ -421,20 +307,151 @@ header {
     </div>
 </section>
 
-<section class="cta-galeria">
-    <div class="cta-galeria-card reveal">
-        <h2>GOSTOU DO NOSSO <span>TRABALHO</span>?</h2>
-        <p>Agende agora seu atendimento e transforme seu veículo com a DWS Envelopamento.</p>
-        <a href="contato.html" class="btn-cta-galeria">
-            <i class="fas fa-calendar-check"></i>
-            AGENDAR AGORA
-        </a>
+<!-- ==================== DEPOIMENTOS ==================== -->
+<section class="testimonials-section">
+    <div class="section-header-3d reveal">
+        <div class="section-tag"><i class="fas fa-quote-left"></i> Depoimentos</div>
+        <h2 class="section-title-3d">O que nossos <span>clientes</span> dizem</h2>
+    </div>
+
+    <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+            <div class="testimonial-stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">
+                "Serviço impecável! Transformaram minha moto em algo que eu nem imaginava ser possível. Recomendo de olhos fechados."
+            </p>
+            <div class="testimonial-author">
+                <div class="author-avatar">JM</div>
+                <div class="author-info">
+                    <div class="author-name">João Martins</div>
+                    <div class="author-role">Cliente desde 2022</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-1">
+            <div class="testimonial-stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">
+                "Profissionalismo do começo ao fim. Meu carro ficou incrível, superou todas as expectativas. Equipe nota 10!"
+            </p>
+            <div class="testimonial-author">
+                <div class="author-avatar">AS</div>
+                <div class="author-info">
+                    <div class="author-name">Ana Silva</div>
+                    <div class="author-role">Cliente desde 2021</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-2">
+            <div class="testimonial-stars">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-text">
+                "Fizeram a fachada da minha loja e o resultado foi espetacular. Atendimento rápido, qualidade e preço justo."
+            </p>
+            <div class="testimonial-author">
+                <div class="author-avatar">CR</div>
+                <div class="author-info">
+                    <div class="author-name">Carlos Rodrigues</div>
+                    <div class="author-role">Cliente desde 2023</div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
+<!-- ==================== LOCALIZAÇÃO ==================== -->
+<section class="location-section">
+    <div class="section-header-3d reveal">
+        <div class="section-tag"><i class="fas fa-map-marker-alt"></i> Onde Estamos</div>
+        <h2 class="section-title-3d">Venha nos <span>visitar</span></h2>
+        <p class="section-desc">
+            Estamos localizados em Piraju - SP. Agende sua visita e conheça nossa estrutura.
+        </p>
+    </div>
+
+    <div class="location-container">
+        <div class="location-map reveal">
+            <iframe
+                src="https://www.google.com/maps?q=Av.+Ver.+Milton+Sp%C3%ADnola%2C+931%2C+Piraju+-+SP&output=embed"
+                allowfullscreen=""
+                loading="lazy"
+                title="Localização DWS Envelopamento">
+            </iframe>
+        </div>
+
+        <div class="location-info reveal reveal-delay-1">
+            <div class="info-card-3d">
+                <div class="info-card-header">
+                    <div class="info-icon-3d"><i class="fas fa-store"></i></div>
+                    <h3 class="info-card-title">DWS Envelopamento</h3>
+                </div>
+                <div class="info-line">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Av. Ver. Milton Spínola, nº 931<br>Piraju - SP</span>
+                </div>
+                <div class="info-line">
+                    <i class="fas fa-phone"></i>
+                    <span>(14) 99650-0254</span>
+                </div>
+                <div class="info-line">
+                    <i class="fas fa-envelope"></i>
+                    <span>contato@dwsenvelopamento.com</span>
+                </div>
+            </div>
+
+            <div class="info-card-3d">
+                <div class="info-card-header">
+                    <div class="info-icon-3d"><i class="fas fa-clock"></i></div>
+                    <h3 class="info-card-title">Horário de Funcionamento</h3>
+                </div>
+                <ul class="hours-list">
+                    <li><span>Segunda - Sexta</span> <strong>08h - 18h</strong></li>
+                    <li><span>Sábado</span> <strong>08h - 12h</strong></li>
+                    <li><span>Domingo</span> <strong>Fechado</strong></li>
+                </ul>
+            </div>
+
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Av.+Ver.+Milton+Sp%C3%ADnola,+931,+Piraju+-+SP"
+               target="_blank" rel="noopener" class="btn-route-3d">
+                <i class="fas fa-directions"></i>
+                Traçar Rota
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA FINAL ==================== -->
+<section class="cta-section">
+    <div class="cta-card reveal">
+        <h2 class="cta-title">
+            Pronto para <span>transformar</span> seu veículo?
+        </h2>
+        <p class="cta-desc">
+            Agende agora seu atendimento e descubra como podemos deixar seu veículo único.
+        </p>
+        <div class="cta-buttons">
+            <a href="contato.html" class="btn-primary-3d">
+                <i class="fas fa-calendar-check"></i>
+                Agendar Agora
+            </a>
+            <a href="servico.html" class="btn-outline-3d">
+                <i class="fas fa-th-large"></i>
+                Ver Todos os Serviços
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
 <footer class="footer">
     <p>
-        © 2026 <strong style="color: #f23535;">KRONYX</strong> — Todos os direitos reservados.
+        © 2026 <strong style="color: #f23535;">DWS Envelopamento</strong> — Todos os direitos reservados.
         <span class="sep">•</span>
         <a href="#">Política de Privacidade</a>
         <span class="sep">•</span>
@@ -446,136 +463,14 @@ header {
     </p>
 </footer>
 
+<!-- ==================== SCRIPTS ==================== -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/menu-mobile.js"></script>
 <script src="../../js/menu-user.js"></script>
 <script src="../../js/main.js"></script>
 <script src="../../js/servicos.js"></script>
 
-<script>
-// =============================================
-// SEGURANÇA EXTRA: Remove overlay travado do page-transition
-// =============================================
-(function() {
-    function limparOverlay() {
-        const overlay = document.querySelector('.dws-pt-overlay');
-        if (overlay) {
-            overlay.classList.remove('dws-pt-saindo', 'dws-pt-entrando');
-            overlay.style.visibility = 'hidden';
-            overlay.style.pointerEvents = 'none';
-            overlay.style.opacity = '0';
-        }
-    }
-    // Limpa imediatamente
-    limparOverlay();
-    // Limpa depois de 1s (caso o page-transition.js recrie)
-    setTimeout(limparOverlay, 1000);
-    // Limpa depois de 2s (segurança)
-    setTimeout(limparOverlay, 2000);
-})();
-
-document.querySelectorAll('.galeria-card, .hero-loja-content, .cta-galeria-card').forEach((el, index) => {
-    let angle = 0;
-    const speed = 1.2 + (index % 5) * 0.15;
-    function animate() {
-        angle = (angle + speed) % 360;
-        el.style.setProperty('--angle', angle + 'deg');
-        requestAnimationFrame(animate);
-    }
-    animate();
-});
-
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-let galeriaCompleta = [];
-let filtroAtual = 'todos';
-
-async function carregarGaleria() {
-    const grid = document.getElementById('galeriaGrid');
-    try {
-        const res = await fetch('../../PHP/Clientes/galeria.php', { credentials: 'include', cache: 'no-store' });
-        const data = await res.json();
-        if (data.status === 'sucesso' && data.items && data.items.length > 0) {
-            galeriaCompleta = data.items;
-            renderizarGaleria();
-        } else {
-            grid.innerHTML = `<div class="empty-galeria"><i class="fas fa-images"></i><h3>Nenhum trabalho ainda</h3><p>Em breve adicionaremos nossos trabalhos mais recentes.</p></div>`;
-        }
-    } catch (e) {
-        grid.innerHTML = `<div class="empty-galeria"><i class="fas fa-exclamation-triangle"></i><h3>Erro ao carregar</h3><p>Verifique sua conexão e tente novamente.</p></div>`;
-    }
-}
-
-function renderizarGaleria() {
-    const grid = document.getElementById('galeriaGrid');
-    let items = galeriaCompleta;
-    if (filtroAtual !== 'todos') items = items.filter(i => i.tipo === filtroAtual);
-    if (items.length === 0) {
-        grid.innerHTML = `<div class="empty-galeria"><i class="fas fa-search"></i><h3>Nenhum item nesta categoria</h3><p>Tente selecionar outra categoria.</p></div>`;
-        return;
-    }
-    grid.innerHTML = items.map((item, index) => `
-        <div class="galeria-card reveal" style="transition-delay: ${index * 0.05}s">
-            <div class="galeria-card-img" style="background-image: url('../../${item.imagem}');"></div>
-            <div class="galeria-card-overlay"></div>
-            <div class="galeria-card-content">
-                <span class="galeria-card-tipo">${traduzirTipo(item.tipo)}</span>
-                <h3 class="galeria-card-titulo">${escapeHtml(item.titulo)}</h3>
-                ${item.descricao ? `<p class="galeria-card-desc">${escapeHtml(item.descricao)}</p>` : ''}
-                <div class="galeria-card-info">
-                    <i class="fas fa-calendar-day"></i>
-                    <span>${formatarData(item.criado_em)}</span>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-    grid.querySelectorAll('.galeria-card').forEach((el, index) => {
-        let angle = 0;
-        const speed = 1.2 + (index % 5) * 0.15;
-        function animate() {
-            angle = (angle + speed) % 360;
-            el.style.setProperty('--angle', angle + 'deg');
-            requestAnimationFrame(animate);
-        }
-        animate();
-    });
-}
-
-function traduzirTipo(tipo) {
-    const map = { 'carro': 'Carro', 'moto': 'Moto', 'caminhao': 'Caminhão', 'aquatico': 'Aquático', 'mobilia': 'Mobília' };
-    return map[tipo] || tipo;
-}
-function formatarData(dataStr) {
-    if (!dataStr) return '—';
-    try {
-        const d = new Date(dataStr.replace(' ', 'T'));
-        return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
-    } catch (e) { return dataStr; }
-}
-function escapeHtml(texto) {
-    const div = document.createElement('div');
-    div.textContent = texto;
-    return div.innerHTML;
-}
-
-document.querySelectorAll('.filtro-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        filtroAtual = this.dataset.tipo;
-        renderizarGaleria();
-    });
-});
-
-const foto = localStorage.getItem('fotoPerfilDWS');
-if (foto) document.getElementById('userIcon').src = foto;
-
-document.addEventListener('DOMContentLoaded', carregarGaleria);
-</script>
+<script src="../../js/principal.js"></script>
 
 </body>
 </html>

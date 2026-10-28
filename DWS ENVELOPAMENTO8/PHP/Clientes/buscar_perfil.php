@@ -2,11 +2,10 @@
 // =============================================
 // buscar_perfil.php - Retorna dados do cliente logado
 // =============================================
-include("../Banco/conexao.php");
+require_once __DIR__ . '/../bootstrap.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+enviarHeadersSeguranca(true);
+
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');

@@ -1,16 +1,19 @@
 <?php
-include("../Banco/conexao.php");
+require_once __DIR__ . '/../bootstrap.php';
+
+enviarHeadersSeguranca(true);
 header('Content-Type: application/json; charset=utf-8');
 
 try {
     $stmt = $pdo->query("
         SELECT DISTINCT DATE(serdata_servico) as data
         FROM servicos
-        WHERE serstatus_pagamento NOT IN ('cancelado', 'rejeitado', 'estornado')
-          AND serdata_servico >= CURDATE()
+        WHERE serdata_servico >= CURDATE()
+          AND " . sqlAgendamentoAtivo() . "
     ");
     $dias = $stmt->fetchAll(PDO::FETCH_COLUMN);
     echo json_encode($dias);
 } catch (PDOException $e) {
+    error_log('[dias_ocupados] ' . $e->getMessage());
     echo json_encode([]);
 }

@@ -1,13 +1,18 @@
 <?php
 // =============================================
 // GerenciarServico.php (Área ADM)
-// Ação de excluir REMOVIDA por decisão de produto.
 // =============================================
 require_once __DIR__ . '/../bootstrap.php';
 
 date_default_timezone_set('America/Sao_Paulo');
 enviarHeadersSeguranca();
 exigirLoginAdmin();
+
+// ... resto do arquivo igual, MAS:
+
+// No bloco `if ($_SERVER['REQUEST_METHOD'] === 'POST') {`
+// ADICIONE como PRIMEIRA linha:
+exigirCSRF();
 
 // =============================================
 // AÇÕES POST (JSON)
@@ -353,7 +358,7 @@ $ultimos = $pdo->query(
                 <div class="admin-badge"><i class="fas fa-shield-alt"></i> Área Administrativa</div>
             </div>
 
-            <a class="btn-back" href="../../telas/ADM/principalFUN.php">
+            <a class="btn-back" href="../../telas/ADM/principalFun.php">
                 <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
             </a>
 

@@ -1,24 +1,16 @@
 <?php
 // =============================================
-// DadosPFun.php - Dados do dashboard admin
+// DadosPFun.php — Dados do dashboard admin
 // =============================================
+require_once __DIR__ . '/../bootstrap.php';
+
+enviarHeadersSeguranca(true);
+
 header('Content-Type: application/json; charset=utf-8');
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
-require_once __DIR__ . '/../Banco/conexao.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['admin_id'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'erro' => 'Não autorizado']);
-    exit;
-}
+exigirAdminApi();
 
 try {
-    // 🔥 Últimos serviços COM status do serviço
     $stmtServicos = $pdo->prepare("
         SELECT
             c.clinome,
@@ -35,7 +27,6 @@ try {
     $stmtServicos->execute();
     $servicos = $stmtServicos->fetchAll(PDO::FETCH_ASSOC);
 
-    // Últimos clientes
     $stmtClientes = $pdo->prepare("
         SELECT cliid, clinome, clitel, cliendereco
         FROM clientes
@@ -47,16 +38,17 @@ try {
     $clientes = $stmtClientes->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode([
-        'success' => true,
+        'success'  => true,
         'servicos' => $servicos,
         'clientes' => $clientes,
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {
-    error_log("Erro no dashboard: " . $e->getMessage());
+    error_log('[DadosPFun] ' . $e->getMessage());
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'erro' => 'Erro ao consultar o banco de dados.'
+        'erro'    => 'Erro ao consultar o banco de dados.',
     ], JSON_UNESCAPED_UNICODE);
 }
+exit;

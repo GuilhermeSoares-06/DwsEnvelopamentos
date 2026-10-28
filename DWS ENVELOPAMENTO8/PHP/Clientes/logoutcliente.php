@@ -2,9 +2,7 @@
 // =============================================
 // logoutcliente.php - Logout do Cliente
 // =============================================
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../bootstrap.php';
 
 $_SESSION = array();
 

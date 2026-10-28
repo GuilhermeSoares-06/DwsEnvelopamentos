@@ -1,11 +1,10 @@
 <?php
 // =============================================
-// Logincliente.php - Login + redirect limpo + anti-cache
+// Logincliente.php - Login do Cliente
 // =============================================
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-require_once __DIR__ . '/../Banco/conexao.php';
+require_once __DIR__ . '/../bootstrap.php';
+
+enviarHeadersSeguranca();
 
 function paginaErro($titulo, $mensagem) {
     echo "
@@ -63,6 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+// 🔥 PROTEÇÃO CONTRA FORÇA BRUTA (5 tentativas / 15 min por IP)
+verificarRateLimit('login_cli_' . ipCliente(), 5, 900);
+
 $cpf   = preg_replace('/\D/', '', $_POST['cpf'] ?? '');
 $senha = trim($_POST['senha'] ?? '');
 
@@ -91,15 +93,10 @@ if ($redirect === '' || !in_array($redirect, $permitidos, true)) {
 }
 
 try {
-    // -------------------------------------------------
-    // BUSCA O CLIENTE — compara CPF normalizado (só dígitos).
-    // Funciona se o banco tiver "123.456.789-09" ou "12345678909".
-    // -------------------------------------------------
     $stmt = $pdo->prepare("
         SELECT cliid, clinome, clisenha, clitel, clicpf, cliendereco, tipocliente
         FROM clientes
-        WHERE REPLACE(REPLACE(REPLACE(clicpf, '.', ''), '-', ''), ' ', '') = :cpf
-        ORDER BY cliid DESC
+        WHERE clicpf = :cpf
         LIMIT 1
     ");
     $stmt->execute([':cpf' => $cpf]);
@@ -123,11 +120,14 @@ try {
         }
     }
 
-    // Mensagem genérica (não revela se o CPF existe)
+    // Mensagem genérica
     if (!$senhaConfere) {
+        registrarTentativa('login_cli_' . ipCliente());
         paginaErro('Login inválido', 'CPF ou senha incorretos.');
     }
 
+    // Sucesso: limpa tentativas e regenera ID
+    limparTentativas('login_cli_' . ipCliente());
     session_regenerate_id(true);
 
     $_SESSION['cliid']        = (int)$cliente['cliid'];
@@ -137,17 +137,15 @@ try {
     $_SESSION['cliendereco']  = $cliente['cliendereco'] ?? '';
     $_SESSION['tipocliente']  = 'cliente';
     $_SESSION['_login_time']  = time();
-    $_SESSION['_login_fresh'] = time(); // marca sessão recém-criada
+    $_SESSION['_login_fresh'] = time();
 
-    // 🔥 Headers anti-cache pra o navegador não reusar a página antiga
+    logAuditoria('cliente_login', ['cliid' => $cliente['cliid']]);
+
     header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
     header('Pragma: no-cache');
     header('Expires: 0');
 
-    // 🔥 Timestamp pra o JS saber que é sessão nova
     $ts = time();
-
-    // 🔥 Redireciona com ?login=ok&nome=Nome&t=timestamp
     $urlFinal = '../../telas/Cliente/' . $redirect
               . '?login=ok'
               . '&nome=' . urlencode($cliente['clinome'])

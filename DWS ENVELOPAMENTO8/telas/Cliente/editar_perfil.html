@@ -378,6 +378,7 @@
                     cache: 'no-store'
                 });
                 const dataSessao = await resSessao.json();
+                window._tokenCSRF = dataSessao.csrf_token || '';
 
                 if (!dataSessao.logado) {
                     showToast('Você precisa estar logado!', 'error');
@@ -461,6 +462,7 @@
             try {
                 const res = await fetch('../../PHP/Clientes/atualizar_perfil.php', {
                     method: 'POST',
+                    headers: { 'X-CSRF-Token': window._tokenCSRF || '', 'X-Requested-With': 'XMLHttpRequest' },
                     body: fd,
                     credentials: 'include'
                 });

@@ -7,9 +7,12 @@ require_once __DIR__ . '/../bootstrap.php';
 enviarHeadersSeguranca();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../../telas/Cliente/CadastroCliente.php');
+    header('Location: ../../telas/Cliente/CadastroCliente.html');
     exit;
 }
+
+// Máx. 5 cadastros por IP a cada hora
+verificarRateLimit('cadastro_' . ipCliente(), 5, 3600);
 
 // =============================================
 // COLETA + SANITIZAÇÃO
@@ -121,32 +124,18 @@ $enderecoCompleto = implode(', ', $partesEndereco);
 // INSERE
 // =============================================
 try {
-    // -------------------------------------------------
-    // CPF ÚNICO — compara normalizado (só dígitos),
-    // assim funciona tanto se o banco tiver "123.456.789-09"
-    // quanto "12345678909".
-    // -------------------------------------------------
-    $stmt = $pdo->prepare("
-        SELECT cliid FROM clientes
-        WHERE REPLACE(REPLACE(REPLACE(clicpf, '.', ''), '-', ''), ' ', '') = :cpf
-        LIMIT 1
-    ");
+    // CPF ÚNICO — o banco guarda só dígitos (índice uq_clientes_cpf)
+    $stmt = $pdo->prepare("SELECT cliid FROM clientes WHERE clicpf = :cpf LIMIT 1");
     $stmt->execute([':cpf' => $cpf]);
     if ($stmt->fetch()) {
         responderErro('Este CPF já está cadastrado.', 409);
     }
 
-    // -------------------------------------------------
-    // E-MAIL ÚNICO (se a coluna existir)
-    // -------------------------------------------------
-    try {
-        $stmt = $pdo->prepare("SELECT cliid FROM clientes WHERE cliemail = :em LIMIT 1");
-        $stmt->execute([':em' => $email]);
-        if ($stmt->fetch()) {
-            responderErro('Este e-mail já está cadastrado.', 409);
-        }
-    } catch (PDOException $e) {
-        error_log("Aviso: coluna cliemail não existe ou falhou: " . $e->getMessage());
+    // E-MAIL ÚNICO
+    $stmt = $pdo->prepare("SELECT cliid FROM clientes WHERE cliemail = :em LIMIT 1");
+    $stmt->execute([':em' => $email]);
+    if ($stmt->fetch()) {
+        responderErro('Este e-mail já está cadastrado.', 409);
     }
 
     $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
@@ -157,29 +146,23 @@ try {
     // -------------------------------------------------
     $stmt = $pdo->prepare("
         INSERT INTO clientes
-            (clinome, clicpf, clitel, cliendereco, clisenha, tipocliente)
+            (clinome, clicpf, clitel, cliendereco, cliemail, clisenha, tipocliente, cli_ip_cadastro)
         VALUES
-            (:nome, :cpf, :tel, :end, :senha, 'cliente')
+            (:nome, :cpf, :tel, :end, :email, :senha, 'cliente', :ip)
     ");
     $stmt->execute([
         ':nome'  => $nome,
         ':cpf'   => $cpf,                                  // ✅ SÓ DÍGITOS
         ':tel'   => formatarTelefone($telefone),
-        ':end'   => $enderecoCompleto,
+        ':end'   => mb_substr($enderecoCompleto, 0, 255),
+        ':email' => $email,
         ':senha' => $senhaHash,
+        ':ip'    => ipCliente(),
     ]);
 
     $novoId = (int)$pdo->lastInsertId();
+    registrarTentativa('cadastro_' . ipCliente());
 
-    // -------------------------------------------------
-    // Salva e-mail separado (se a coluna existir)
-    // -------------------------------------------------
-    try {
-        $stmt = $pdo->prepare("UPDATE clientes SET cliemail = :em WHERE cliid = :id");
-        $stmt->execute([':em' => $email, ':id' => $novoId]);
-    } catch (PDOException $e) {
-        error_log("Aviso: não foi possível gravar cliemail: " . $e->getMessage());
-    }
 
     logAuditoria('cliente_cadastrado', ['cliid' => $novoId, 'cpf' => $cpf]);
 

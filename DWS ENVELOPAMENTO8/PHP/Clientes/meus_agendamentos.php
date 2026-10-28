@@ -2,11 +2,10 @@
 // =============================================
 // meus_agendamentos.php
 // =============================================
-include("../Banco/conexao.php");
+require_once __DIR__ . '/../bootstrap.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+enviarHeadersSeguranca(true);
+
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -29,7 +28,8 @@ try {
             tipo_servico,
             serdescricao,
             servalor,
-            serstatus_pagamento,
+            CASE WHEN serstatus_pagamento = 'pendente' AND NOT (" . sqlAgendamentoAtivo() . ")
+                 THEN 'expirado' ELSE serstatus_pagamento END AS serstatus_pagamento,
             serstatus_servico,
             serdata_servico
         FROM servicos
